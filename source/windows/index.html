@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>PlainCAT</title>
+
+    <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script>window.$ = window.jQuery = require('./../bower_components/jquery/dist/jquery.min.js');</script>
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    
+    <script src="js/app.js"></script>
+  </head>
+  <body ng-app="myApp" ng-controller="mainController">
+    <h1>PlainCAT</h1>
+
+    <button ng-click="openFile()">Open file</button>
+  </body>
+</html>

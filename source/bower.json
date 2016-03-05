@@ -1,0 +1,22 @@
+{
+  "name": "PlainCAT",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "authors": [
+    "JFMDev"
+  ],
+  "license": "GPLv3",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial"
+  ],
+  "homepage": "https://github.com/atom/electron-quick-start",
+  "moduleType": [],
+  "private": true,
+  "dependencies": {
+    "bootstrap": "~3.3.6",
+    "angular": "~1.5.0"
+  }
+}
