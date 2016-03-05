@@ -3,10 +3,10 @@
 var ipcRenderer = require('electron').ipcRenderer
 
 // Declare application.
-var myApp = angular.module('myApp', ['menuSvc']);
+var myApp = angular.module('myApp', ['menuSvc', 'blockUI', 'ngAnimate', 'toastr']);
 
 // Define controller.
-myApp.controller('mainController', ['$scope', 'Menu', function ($scope, Menu) {
+myApp.controller('mainController', ['$scope', 'Menu', 'blockUI', 'toastr', function ($scope, Menu, blockUI, toastr) {
     // Initialize.
     $scope.sourceDoc = [];
     $scope.destinationDoc = [];
@@ -21,20 +21,27 @@ myApp.controller('mainController', ['$scope', 'Menu', function ($scope, Menu) {
                 $scope.destinationDoc = result.data;
             }
         } else {
-            // TODO: Print error.
+            // Display error.
+            toastr.error(result.error, 'Error');
         }
-        // TODO: Show loading dialog.
         
+        // Unblock the user interface
+        blockUI.stop();
+
         // Update UI.
         $scope.$apply();
-        
-        // TODO: Close loading dialog.
     }
 
+    // Function for open a file selector.
+    $scope.openFile = function(target) {
+        blockUI.start(); 
+        ipcRenderer.send('open-file', target); 
+    };
+    
     // Initialize menu, defining methods for open files.
     Menu.init({
-        openSource: function(item, focusedWindow) { ipcRenderer.send('open-file', 'source'); },
-        openDestination: function(item, focusedWindow) { ipcRenderer.send('open-file', 'destination'); }
+        openSource: function(item, focusedWindow) { $scope.openFile('source'); },
+        openDestination: function(item, focusedWindow) { $scope.openFile('destination'); }
     });
     ipcRenderer.on('file-read', $scope.onFileRead);
 }]);

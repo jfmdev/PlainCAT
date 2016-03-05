@@ -1,0 +1,11 @@
+
+#divider {
+    top: 0; 
+    left: 50%; 
+    width: 4px; 
+    height: 100%; 
+    position: absolute; 
+    background-color: lightgray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+}

@@ -3,33 +3,53 @@
   <head>
     <meta charset="UTF-8">
     <title>PlainCAT</title>
-
     <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="../bower_components/angular-block-ui/dist/angular-block-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../bower_components/angular-toastr/dist/angular-toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
   </head>
   <body ng-app="myApp" ng-controller="mainController">
-    <h1>PlainCAT</h1>
-    
-    <div class="row">
-      <!-- Source file -->
-      <div class="col-sm-6" id="left-pane" style="border-right:1px solid gray;">
-        <p ng-repeat="line in sourceDoc" data-index="{{line.index}}" contenteditable="true">
-          {{line.text}}
-        </p>
-      </div>
-      
-      <!-- Destination file -->
-      <div class="col-sm-6" id="right-pane">
-        <p ng-repeat="line in destinationDoc" data-index="{{line.index}}" contenteditable="true">
-          {{line.text}}
-        </p>
+  
+    <div id="divider"></div>
+  
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Source file -->
+        <div class="col-sm-6" id="left-pane">
+          <div class="text-center" ng-show="sourceDoc.length == 0">
+            <br><br><br><br><br>
+            <p>You have not selected the source file.</p>
+            <p><button ng-click="openFile('source')">Select file</button></p>
+          </div>
+        
+          <p ng-repeat="line in sourceDoc" data-index="{{line.index}}" contenteditable="true">
+            {{line.text}}
+          </p>
+        </div>
+
+        <!-- Destination file -->
+        <div class="col-sm-6" id="right-pane">
+          <div class="text-center" ng-show="destinationDoc.length == 0">
+            <br><br><br><br><br>
+            <p>You have not selected the destination file.</p>
+            <p><button ng-click="openFile('destination')">Select file</button></p>
+          </div>
+        
+          <p ng-repeat="line in destinationDoc" data-index="{{line.index}}" contenteditable="true">
+            {{line.text}}
+          </p>
+        </div>
       </div>
     </div>
     
     <!-- Include libraries -->
     <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
     <script>window.$ = window.jQuery = require('./../bower_components/jquery/dist/jquery.min.js');</script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../bower_components/angular-block-ui/dist/angular-block-ui.min.js"></script>
+    <script src="../bower_components/angular-toastr/dist/angular-toastr.min.js"></script>
     
     <!-- Include app files -->
     <script src="js/menu.js"></script>    
