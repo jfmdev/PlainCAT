@@ -54,26 +54,35 @@ app.on('activate', function () {
   }
 });
 
+// ----- Application code ----- // 
 
-// ----- Custom code ----- // 
-
+// Load modules.
 const ipcMain = require('electron').ipcMain;
 const dialog = require('electron').dialog;
+const fs = require('fs');
 
-// ipcMain.on('asynchronous-message', function(event, arg) {
-  // console.log(arg);  // prints "ping"
-  // event.sender.send('asynchronous-reply', 'pong');
-// });
-
-// ipcMain.on('synchronous-message', function(event, arg) {
-  // console.log(arg);  // prints "ping"
-  // event.returnValue = 'pong';
-// });
-
+// Event for open and read a text file.
 ipcMain.on('open-file', function(event) {
-
-  var files = dialog.showOpenDialog({ properties: [ 'openFile' ]});
-  console.log('open-file', files);
-  
-  event.sender.send('file-read', files);
+    // Read file.
+    var files = dialog.showOpenDialog({ properties: [ 'openFile' ]});
+    
+    // Verify if the file was selected.
+    if(files != null && files.length > 0) {
+        // Read file.
+        fs.readFile(files[0], 'utf8', function (err, data) {   
+            // Verify if the file was read.
+            if (!err) {
+                // TODO: Save file's path and data.
+              
+                // Return data.
+                event.sender.send('file-read', {'error': null, 'data': data});
+            } else {
+                // Return error.
+                event.sender.send('file-read', {'error': {'code': "UNEXPECTED_ERROR", 'message': err}, 'data': null});
+            }
+        });
+    } else {
+        // Return error.
+        event.sender.send('file-read', {'error': {'code': "NO_FILE_SELECTED", 'message': "No file was selected"}, 'data': null});
+    }
 });

@@ -17,5 +17,10 @@
     <h1>PlainCAT</h1>
 
     <button ng-click="openFile()">Open file</button>
+    
+    <div ng-repeat="line in document">
+        <em>{{line.index}}</em>
+        <textarea style="width:100%;">{{line.text}}</textarea>
+    </div>
   </body>
 </html>
