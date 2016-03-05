@@ -1,59 +1,41 @@
 
-// Load modules.
+// Load dependencies.
 var ipcRenderer = require('electron').ipcRenderer
 
 // Declare application.
-var myApp = angular.module('myApp', []);
+var myApp = angular.module('myApp', ['menuSvc']);
 
 // Define controller.
-myApp.controller('mainController', function ($scope) {
+myApp.controller('mainController', ['$scope', 'Menu', function ($scope, Menu) {
     // Initialize.
-    $scope.document = {};
+    $scope.sourceDoc = [];
+    $scope.destinationDoc = [];
   
     // Event handler for when a file is read.
     $scope.onFileRead = function(event, result) {
         // Verify if the operation was successful.
         if(result && !result.error) {
-            $scope.document = parseFile(result.data);
+            if(result.target == 'source') {
+                $scope.sourceDoc = result.data;
+            } else {
+                $scope.destinationDoc = result.data;
+            }
         } else {
             // TODO: Print error.
         }
-        $scope.$apply();
-    }
-
-    // Behaviour for when the 'open file' button is pressed.
-    $scope.openFile = function() {
-        ipcRenderer.send('open-file');
-    }
-    ipcRenderer.on('file-read', $scope.onFileRead);
-});
-
-// Parse a file, separating his lines.
-function parseFile(text) {
-    // Initialization.
-    var result = [];
-    var regexp = /(\n\r|\n)+/g;
-
-    // Generate indexes.
-    var match, indexes= [];
-    while (match = regexp.exec(text)) {
-        indexes.push({
-            'start': match.index, 
-            'end': (match.index+match[0].length) 
-        });
-    }
-    
-    // Generate result.
-    var start = 0, end;
-    for(var i=0; i<=indexes.length; i++) {
-        start = (i > 0)? indexes[i-1].end : 0;
-        end = (i < indexes.length)? indexes[i].start : text.length;
+        // TODO: Show loading dialog.
         
-        if(start != end) {
-            result.push({'index': start, 'text': text.substring(start, end)});
-        }              
+        // Update UI.
+        $scope.$apply();
+        
+        // TODO: Close loading dialog.
     }
-    
-    // Return result.
-    return result;
-}
+
+    // Initialize menu, defining methods for open files.
+    Menu.init({
+        openSource: function(item, focusedWindow) { ipcRenderer.send('open-file', 'source'); },
+        openDestination: function(item, focusedWindow) { ipcRenderer.send('open-file', 'destination'); }
+    });
+    ipcRenderer.on('file-read', $scope.onFileRead);
+}]);
+

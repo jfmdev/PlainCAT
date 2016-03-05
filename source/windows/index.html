@@ -6,21 +6,33 @@
 
     <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
-
+  </head>
+  <body ng-app="myApp" ng-controller="mainController">
+    <h1>PlainCAT</h1>
+    
+    <div class="row">
+      <!-- Source file -->
+      <div class="col-sm-6" id="left-pane" style="border-right:1px solid gray;">
+        <p ng-repeat="line in sourceDoc" data-index="{{line.index}}" contenteditable="true">
+          {{line.text}}
+        </p>
+      </div>
+      
+      <!-- Destination file -->
+      <div class="col-sm-6" id="right-pane">
+        <p ng-repeat="line in destinationDoc" data-index="{{line.index}}" contenteditable="true">
+          {{line.text}}
+        </p>
+      </div>
+    </div>
+    
+    <!-- Include libraries -->
     <script src="../bower_components/angular/angular.min.js"></script>
     <script>window.$ = window.jQuery = require('./../bower_components/jquery/dist/jquery.min.js');</script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     
-    <script src="js/app.js"></script>
-  </head>
-  <body ng-app="myApp" ng-controller="mainController">
-    <h1>PlainCAT</h1>
-
-    <button ng-click="openFile()">Open file</button>
-    
-    <div ng-repeat="line in document">
-        <em>{{line.index}}</em>
-        <textarea style="width:100%;">{{line.text}}</textarea>
-    </div>
+    <!-- Include app files -->
+    <script src="js/menu.js"></script>    
+    <script src="js/app.js"></script>    
   </body>
 </html>

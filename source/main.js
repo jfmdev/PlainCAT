@@ -62,7 +62,7 @@ const dialog = require('electron').dialog;
 const fs = require('fs');
 
 // Event for open and read a text file.
-ipcMain.on('open-file', function(event) {
+ipcMain.on('open-file', function(event, target) {
     // Read file.
     var files = dialog.showOpenDialog({ properties: [ 'openFile' ]});
     
@@ -75,7 +75,7 @@ ipcMain.on('open-file', function(event) {
                 // TODO: Save file's path and data.
               
                 // Return data.
-                event.sender.send('file-read', {'error': null, 'data': data});
+                event.sender.send('file-read', {'error': null, 'data': parseFile(data), 'target': target});
             } else {
                 // Return error.
                 event.sender.send('file-read', {'error': {'code': "UNEXPECTED_ERROR", 'message': err}, 'data': null});
@@ -86,3 +86,35 @@ ipcMain.on('open-file', function(event) {
         event.sender.send('file-read', {'error': {'code': "NO_FILE_SELECTED", 'message': "No file was selected"}, 'data': null});
     }
 });
+
+// Parse a file, separating his lines.
+function parseFile(text) {
+    // Initialization.
+    var result = [];
+    var regexp = /(\n\r|\n)+/g;
+
+    if(text != null && typeof text == 'string') {
+        // Generate indexes.
+        var match, indexes= [];
+        while (match = regexp.exec(text)) {
+            indexes.push({
+                'start': match.index, 
+                'end': (match.index+match[0].length) 
+            });
+        }
+        
+        // Generate result.
+        var start = 0, end;
+        for(var i=0; i<=indexes.length; i++) {
+            start = (i > 0)? indexes[i-1].end : 0;
+            end = (i < indexes.length)? indexes[i].start : text.length;
+            
+            if(start != end) {
+                result.push({'index': start, 'text': text.substring(start, end)});
+            }              
+        }
+    }
+    
+    // Return result.
+    return result;
+}
