@@ -34,7 +34,8 @@ myApp.controller('mainController', ['$scope', 'Menu', 'blockUI', 'toastr', funct
 
     // Function for open a file selector.
     $scope.openFile = function(target) {
-        blockUI.start(); 
+        blockUI.start();
+        if (!$scope.$$phase) $scope.$apply();
         ipcRenderer.send('open-file', target); 
     };
     
