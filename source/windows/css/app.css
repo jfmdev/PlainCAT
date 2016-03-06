@@ -9,3 +9,20 @@
     border-left: 1px solid gray;
     border-right: 1px solid gray;
 }
+
+#source-file p:hover,
+#destination-file p:hover {
+    background-color: lightgreen;
+}
+
+.highlight {
+    background-color: cyan;
+}
+
+.editing {
+    background-color: #cfc;
+}
+
+.editing_bis {
+    background-color: #cff;
+}

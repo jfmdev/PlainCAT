@@ -16,29 +16,25 @@
     <div class="container-fluid">
       <div class="row">
         <!-- Source file -->
-        <div class="col-sm-6" id="left-pane">
-          <div class="text-center" ng-show="sourceDoc.length == 0">
+        <div class="col-sm-6" id="source-pane">
+          <div class="text-center" ng-hide="sourceLoaded">
             <br><br><br><br><br>
-            <p>You have not selected the source file.</p>
+            <p>You have not selected the source file</p>
             <p><button ng-click="openFile('source')">Select file</button></p>
           </div>
         
-          <p ng-repeat="line in sourceDoc" data-index="{{line.index}}" contenteditable="true">
-            {{line.text}}
-          </p>
+          <div id="source-file"></div>
         </div>
 
         <!-- Destination file -->
-        <div class="col-sm-6" id="right-pane">
-          <div class="text-center" ng-show="destinationDoc.length == 0">
+        <div class="col-sm-6" id="destination-pane">
+          <div class="text-center" ng-hide="destinationLoaded">
             <br><br><br><br><br>
-            <p>You have not selected the destination file.</p>
+            <p>You have not selected the destination file</p>
             <p><button ng-click="openFile('destination')">Select file</button></p>
           </div>
         
-          <p ng-repeat="line in destinationDoc" data-index="{{line.index}}" contenteditable="true">
-            {{line.text}}
-          </p>
+          <div id="destination-file" class=""></div>
         </div>
       </div>
     </div>
