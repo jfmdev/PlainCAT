@@ -16,7 +16,7 @@
     <div class="container-fluid">
       <div class="row">
         <!-- Source file -->
-        <div class="col-sm-6" id="source-pane">
+        <div class="col-sm-6">
           <div class="text-center" ng-hide="sourceLoaded">
             <br><br><br><br><br>
             <p>You have not selected the source file</p>
@@ -27,7 +27,7 @@
         </div>
 
         <!-- Destination file -->
-        <div class="col-sm-6" id="destination-pane">
+        <div class="col-sm-6">
           <div class="text-center" ng-hide="destinationLoaded">
             <br><br><br><br><br>
             <p>You have not selected the destination file</p>
@@ -46,9 +46,11 @@
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../bower_components/angular-block-ui/dist/angular-block-ui.min.js"></script>
     <script src="../bower_components/angular-toastr/dist/angular-toastr.min.js"></script>
+    <script src="lib/autosize.js"></script>    
     
     <!-- Include app files -->
     <script src="js/menu.js"></script>    
+    <script src="js/editor.js"></script>    
     <script src="js/app.js"></script>    
   </body>
 </html>

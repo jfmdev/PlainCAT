@@ -91,7 +91,7 @@ ipcMain.on('open-file', function(event, target) {
 function parseFile(text) {
     // Initialization.
     var result = [];
-    var regexp = /(\n\r|\n)+/g;
+    var regexp = /(\r\n|\n)+/g;
 
     if(text != null && typeof text == 'string') {
         // Generate indexes.
@@ -99,7 +99,7 @@ function parseFile(text) {
         while (match = regexp.exec(text)) {
             indexes.push({
                 'start': match.index, 
-                'end': (match.index+match[0].length) 
+                'end': (match.index+match[0].length)
             });
         }
         

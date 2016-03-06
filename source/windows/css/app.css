@@ -10,19 +10,22 @@
     border-right: 1px solid gray;
 }
 
+.highlight ,
 #source-file p:hover,
 #destination-file p:hover {
-    background-color: lightgreen;
+    background-color: #dff;
 }
 
-.highlight {
-    background-color: cyan;
+textarea {
+    width: 100%;
+    resize: none;
 }
 
 .editing {
-    background-color: #cfc;
+    background-color: #dfd;
 }
 
-.editing_bis {
-    background-color: #cff;
+p {
+    cursor: pointer;
+    border-radius: 5px;
 }

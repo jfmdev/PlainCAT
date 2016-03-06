@@ -3,10 +3,10 @@
 var ipcRenderer = require('electron').ipcRenderer
 
 // Declare application.
-var myApp = angular.module('myApp', ['menuSvc', 'blockUI', 'ngAnimate', 'toastr']);
+var myApp = angular.module('myApp', ['menuSvc', 'editorSvc', 'blockUI', 'ngAnimate', 'toastr']);
 
 // Define controller.
-myApp.controller('mainController', ['$scope', 'Menu', 'blockUI', 'toastr', function ($scope, Menu, blockUI, toastr) {
+myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'blockUI', 'toastr', function ($scope, Menu, Editor, blockUI, toastr) {
     // Initialize.
     $scope.sourceLoaded = false;
     $scope.destinationLoaded = false;
@@ -16,39 +16,13 @@ myApp.controller('mainController', ['$scope', 'Menu', 'blockUI', 'toastr', funct
         // Verify if the operation was successful.
         if(result && !result.error) {
             if(result.target == 'source') {
+                // Load file on source.
                 $scope.sourceLoaded = true;
-                $('#source-file').html(formatText(result.data));
-                
-                $('#source-file p').focus(function(event) {
-                   $(this).addClass('editing');
-                   $('#destination-file').children().eq($(this).index()).addClass('editing_bis');
-                }).blur(function(event) {
-                   $(this).removeClass('editing');
-                    $('#destination-file').children().eq($(this).index()).removeClass('editing_bis');
-                });
-                
-                $('#source-file p').mouseenter(function(event) {
-                    $('#destination-file').children().eq($(this).index()).addClass('highlight');
-                }).mouseleave(function(event) {
-                    $('#destination-file').children().eq($(this).index()).removeClass('highlight');
-                });
+                Editor.initialize('#source-file', '#destination-file', result.data);
             } else {
+                // Load file on destination.
                 $scope.destinationLoaded = true;
-                $('#destination-file').html(formatText(result.data));
-                
-                $('#destination-file p').focus(function(event) {                 
-                   $(this).addClass('editing');
-                   $('#source-file').children().eq($(this).index()).addClass('editing_bis');
-                }).blur(function(event) {                 
-                   $(this).removeClass('editing');
-                    $('#source-file').children().eq($(this).index()).removeClass('editing_bis');
-                });
-                
-                $('#destination-file p').mouseenter(function(event) {
-                    $('#source-file').children().eq($(this).index()).addClass('highlight');
-                }).mouseleave(function(event) {
-                    $('#source-file').children().eq($(this).index()).removeClass('highlight');
-                });
+                Editor.initialize('#destination-file', '#source-file', result.data);
             }
         } else {
             // Display error.
@@ -76,11 +50,3 @@ myApp.controller('mainController', ['$scope', 'Menu', 'blockUI', 'toastr', funct
     ipcRenderer.on('file-read', $scope.onFileRead);
 }]);
 
-// Format a document read from a file.
-function formatText(lines) {
-    var res = '';
-    for(var i=0; i<lines.length; i++) {
-        res += '<p data-index="'+i+'" contenteditable="true">' + lines[i].text + '</p>';
-    }
-    return res;
-}
