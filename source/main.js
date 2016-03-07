@@ -61,6 +61,9 @@ const ipcMain = require('electron').ipcMain;
 const dialog = require('electron').dialog;
 const fs = require('fs');
 
+// Initialize files.
+var openedFiles = {};
+
 // Event for open and read a text file.
 ipcMain.on('open-file', function(event, target) {
     // Read file.
@@ -72,10 +75,14 @@ ipcMain.on('open-file', function(event, target) {
         fs.readFile(files[0], 'utf8', function (err, data) {   
             // Verify if the file was read.
             if (!err) {
-                // TODO: Save file's path and data.
+                // Parse file's data.
+                var docLines = getDocLines(data);
+              
+                // Save file's path and data.
+                openedFiles[target] = {'path': files[0], 'data': docLines};
               
                 // Return data.
-                event.sender.send('file-read', {'error': null, 'data': parseFile(data), 'target': target});
+                event.sender.send('file-read', {'error': null, 'data': docLines, 'target': target});
             } else {
                 // Return error.
                 event.sender.send('file-read', {'error': {'code': "UNEXPECTED_ERROR", 'message': err}, 'data': null});
@@ -87,8 +94,13 @@ ipcMain.on('open-file', function(event, target) {
     }
 });
 
+// Verify if a file already opened can be read.
+ipcMain.on('cached-file', function(event, target) {
+   event.returnValue = openedFiles[target] != null? openedFiles[target].data : null;
+});
+
 // Parse a file, separating his lines.
-function parseFile(text) {
+function getDocLines(text) {
     // Initialization.
     var result = [];
     var regexp = /(\r\n|\n)+/g;

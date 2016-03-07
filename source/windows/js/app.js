@@ -11,19 +11,25 @@ myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'blockUI', 'toas
     $scope.sourceLoaded = false;
     $scope.destinationLoaded = false;
   
+    // Load a file on either the source or the destination pane.
+    $scope.loadFile = function(target, fileData) {
+        if(target == 'source') {
+            // Load file on source.
+            $scope.sourceLoaded = true;
+            Editor.initialize('#source-file', '#destination-file', fileData);
+        } else {
+            // Load file on destination.
+            $scope.destinationLoaded = true;
+            Editor.initialize('#destination-file', '#source-file', fileData);
+        }
+    }
+  
     // Event handler for when a file is read.
     $scope.onFileRead = function(event, result) {   
         // Verify if the operation was successful.
         if(result && !result.error) {
-            if(result.target == 'source') {
-                // Load file on source.
-                $scope.sourceLoaded = true;
-                Editor.initialize('#source-file', '#destination-file', result.data);
-            } else {
-                // Load file on destination.
-                $scope.destinationLoaded = true;
-                Editor.initialize('#destination-file', '#source-file', result.data);
-            }
+            // Load file.
+            $scope.loadFile(result.target, result.data);
         } else {
             // Display error.
             toastr.error(result.error, 'Error');
@@ -48,5 +54,11 @@ myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'blockUI', 'toas
         openDestination: function(item, focusedWindow) { $scope.openFile('destination'); $scope.$apply(); }
     });
     ipcRenderer.on('file-read', $scope.onFileRead);
+    
+    // Verify if they are files already loaded.
+    var cachedSource = ipcRenderer.sendSync('cached-file', 'source');
+    if(cachedSource != null) { $scope.loadFile('source', cachedSource); }
+    var cachedDestination = ipcRenderer.sendSync('cached-file', 'destination');
+    if(cachedDestination != null) { $scope.loadFile('destination', cachedDestination); }
 }]);
 
