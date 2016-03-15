@@ -32,11 +32,18 @@ menuSvc.factory('Editor', function() {
                 twinParagraph.addClass('editing');
                 
                 // Add textarea and hide paragraph.
-                var content = paragraph.text();
-                paragraph.after('<textarea rows="1">' + content + '</textarea>');
+                var content = paragraph.text();             
+                paragraph.after('<textarea rows="1">'+content+'</textarea>');
                 var textarea = paragraph.next();
+                textarea.val(content);
                 textarea.focus();
                 paragraph.hide();
+
+                // In order to trigger the spellchecker for all words (an not only on active words) move the caret around the text.
+                for(var i=0; i<content.length; i++) {
+                    textarea.selectRange(i,i+1);
+                }
+                textarea.selectRange(content.length, content.length);
                 
                 // Make height of the textarea to match the content.
                 autosize(textarea);
@@ -126,3 +133,24 @@ menuSvc.factory('Editor', function() {
     return factory;
 });
 
+// jQuery extension for set the cursor position in a text area.
+// Source: http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
+$.fn.selectRange = function(start, end) {
+    if(end === undefined) {
+        end = start;
+    }
+    return this.each(function() {
+        if('selectionStart' in this) {
+            this.selectionStart = start;
+            this.selectionEnd = end;
+        } else if(this.setSelectionRange) {
+            this.setSelectionRange(start, end);
+        } else if(this.createTextRange) {
+            var range = this.createTextRange();
+            range.collapse(true);
+            range.moveEnd('character', end);
+            range.moveStart('character', start);
+            range.select();
+        }
+    });
+};

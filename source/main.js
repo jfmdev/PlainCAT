@@ -141,12 +141,18 @@ var Dictionaries = {};
 
 // Event for load a dictionary.
 ipcMain.on('dictionary.load', function(event, lang) {
-    // Load dictionary.
-    SpellChecker.getDictionary(lang, DICTIONARIES_FOLDER, function(err, result) {
-        // Return result.
-        Dictionaries[lang] = result;
-        event.sender.send('dictionary.loaded', {'error': err, 'success': result != null});
-    }); 
+    // Verify if the dictionary is not already loaded.
+    if(Dictionaries[lang] == null) {
+        // Load dictionary.
+        SpellChecker.getDictionary(lang, DICTIONARIES_FOLDER, function(err, result) {
+            // Return result.
+            Dictionaries[lang] = result;
+            event.sender.send('dictionary.loaded', {'error': err, 'success': result != null});
+        }); 
+    } else {
+        // Return success message.
+        event.sender.send('dictionary.loaded', {'error': null, 'success': true});
+    }
 });
 
 // Check a word in a loaded dictionary.
