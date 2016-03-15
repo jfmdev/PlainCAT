@@ -1,7 +1,7 @@
 PlainCAT
 ========
 
-> Simple Computer Assisted Translation tool for translate plain text files
+> A simple Computer Assisted Translation tool for translate plain text files
 
 
 License

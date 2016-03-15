@@ -2,6 +2,24 @@
 // Load dependencies.
 var ipcRenderer = require('electron').ipcRenderer
 
+
+// Get web frame.
+var webFrame = require('electron').webFrame;
+
+// Ask, by default, to load the en-US dictionary.
+ipcRenderer.send('dictionary.load', "en-US"); 
+
+// When the dictionary is loaded, use it.
+ipcRenderer.on('dictionary.loaded', function(event, result) {
+    webFrame.setSpellCheckProvider("en-US", false, {
+        spellCheck: function(text) {      
+            var res = ipcRenderer.sendSync('dictionary.check-word', 'en-US', text);
+            return res != null? res : true;
+        }
+    });
+});
+
+
 // Declare application.
 var myApp = angular.module('myApp', ['menuSvc', 'editorSvc', 'blockUI', 'ngAnimate', 'toastr']);
 
@@ -61,4 +79,3 @@ myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'blockUI', 'toas
     var cachedDestination = ipcRenderer.sendSync('cached-file', 'destination');
     if(cachedDestination != null) { $scope.loadFile('destination', cachedDestination); }
 }]);
-

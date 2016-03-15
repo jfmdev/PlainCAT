@@ -1,8 +1,13 @@
 'use strict';
 
-// ----- Initialization ----- // 
-
+// Load modules.
 const electron = require('electron');
+const ipcMain = electron.ipcMain;
+const dialog = electron.dialog;
+const fs = require('fs');
+
+
+// ----- Initialization ----- // 
 
 // Module to control application life.
 const app = electron.app;
@@ -54,12 +59,8 @@ app.on('activate', function () {
   }
 });
 
-// ----- Application code ----- // 
 
-// Load modules.
-const ipcMain = require('electron').ipcMain;
-const dialog = require('electron').dialog;
-const fs = require('fs');
+// ----- File management ----- // 
 
 // Initialize files.
 var openedFiles = {};
@@ -130,3 +131,31 @@ function getDocLines(text) {
     // Return result.
     return result;
 }
+
+
+// ----- Spell check ----- //
+
+const SpellChecker = require('simple-spellchecker');
+const DICTIONARIES_FOLDER = "./node_modules/simple-spellchecker/dict";
+var Dictionaries = {};
+
+// Event for load a dictionary.
+ipcMain.on('dictionary.load', function(event, lang) {
+    // Load dictionary.
+    SpellChecker.getDictionary(lang, DICTIONARIES_FOLDER, function(err, result) {
+        // Return result.
+        Dictionaries[lang] = result;
+        event.sender.send('dictionary.loaded', {'error': err, 'success': result != null});
+    }); 
+});
+
+// Check a word in a loaded dictionary.
+ipcMain.on('dictionary.check-word', function(event, lang, word) {
+  var res = null;
+  if(lang != null && Dictionaries[lang] != null && word != null) {
+    res = Dictionaries[lang].spellCheck(word);
+  }
+  event.returnValue = res;
+});
+
+

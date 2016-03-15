@@ -1,27 +1,30 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "plaincat",
+  "version": "0.5.0",
+  "description": "A simple Computer Assisted Translation tool for translate plain text files",
   "main": "main.js",
   "scripts": {
     "start": "electron main.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/atom/electron-quick-start.git"
+    "url": "git+https://github.com/jfmdev/plaincat.git"
   },
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial"
+    "CAT",
+    "computer",
+    "assisted",
+    "translation",
+    "tool",
+    "plain",
+    "text"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "JFMDev",
+  "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/atom/electron-quick-start/issues"
+    "url": "https://github.com/jfmdev/plaincat/issues"
   },
-  "homepage": "https://github.com/atom/electron-quick-start#readme",
+  "homepage": "https://github.com/jfmdev/plaincat#readme",
   "devDependencies": {
     "electron-prebuilt": "^0.36.0"
   }
