@@ -86,10 +86,19 @@ menuSvc.factory('Editor', function() {
                 // Search for an automatic translation.
                 var APIkey = "somekey"; // TODO: use a key selected by the user.
                 var lang = 'en-es'; // TODO: use the languages selected by the user.
-                $.getJSON("https://translate.yandex.net/api/v1.5/tr.json/translate", {'key': APIkey, 'lang': lang, 'text': content},  function(data) {
-                    $("#footer > div").text(data.text);
+                $("#footer > div").html('<div class="loading">Translating...</div>');
+                $.ajax({
+                    dataType: "json",
+                    url: "https://translate.yandex.net/api/v1.5/tr.json/translate",
+                    data: {'key': APIkey, 'lang': lang, 'text': content},
+                    success: function(data) {
+                        $("#footer > div").text(data.text);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $("#footer > div").html('<div class="error">Translation could not be obtained (' + textStatus + " - " + errorThrown + ')</div>');
+                    }
                 });
-            }
+            };
         },
         
         // Behaviour for the mouse enter event on a paragraph.

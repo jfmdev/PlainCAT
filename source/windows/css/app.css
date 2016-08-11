@@ -18,6 +18,7 @@
     position: fixed;
     border-top: 1px solid gray;
     background-color: white;
+    overflow-y: auto;
     z-index: 50;
 }
 
@@ -25,6 +26,14 @@
     border-top: 4px solid lightgray;
     padding: 3px;
     height: 80px;
+}
+
+#footer div.loading {
+    color: gray;
+}
+
+#footer div.error {
+    color: darkred;
 }
 
 #body {
