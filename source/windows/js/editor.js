@@ -82,6 +82,13 @@ menuSvc.factory('Editor', function() {
                     // Remove text area.
                     textarea.remove();
                 });
+                
+                // Search for an automatic translation.
+                var APIkey = "somekey"; // TODO: use a key selected by the user.
+                var lang = 'en-es'; // TODO: use the languages selected by the user.
+                $.getJSON("https://translate.yandex.net/api/v1.5/tr.json/translate", {'key': APIkey, 'lang': lang, 'text': content},  function(data) {
+                    $("#footer > div").text(data.text);
+                });
             }
         },
         
@@ -90,7 +97,7 @@ menuSvc.factory('Editor', function() {
             return function(event) {
                 var paragraph = $(this);
                 var index = paragraph.parent().children('p').index(paragraph);
-                var twinParagraph = twinContainer.children().eq(index);
+                var twinParagraph = twinContainer.children('p').eq(index);
                 twinParagraph.addClass('highlight');
             }
         },

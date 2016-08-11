@@ -8,6 +8,27 @@
     background-color: lightgray;
     border-left: 1px solid gray;
     border-right: 1px solid gray;
+    z-index: 40px;
+}
+
+#footer {
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    position: fixed;
+    border-top: 1px solid gray;
+    background-color: white;
+    z-index: 50;
+}
+
+#footer > div {
+    border-top: 4px solid lightgray;
+    padding: 3px;
+    height: 80px;
+}
+
+#body {
+    padding-bottom: 80px; /* match with #footer height */
 }
 
 .highlight ,
