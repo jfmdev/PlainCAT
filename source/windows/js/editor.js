@@ -11,7 +11,7 @@ menuSvc.factory('Editor', function() {
             // Initialize variables.
             var container = $(selector);
             var twinContainer = $(twinSelector);
-            
+          
             // Load document.
             container.html(factory.formatText(docLines));
             
@@ -108,6 +108,7 @@ menuSvc.factory('Editor', function() {
         // Get all non empty lines from a text.
         getLines: function(text) {
             var res = [];
+           
             if(text != null && text.length > 0) {
                 var lines = text.split(/\r\n|\r|\n/);
                 for(var i=0; i<lines.length; i++) {
@@ -123,7 +124,7 @@ menuSvc.factory('Editor', function() {
         formatText: function(lines) {
             var res = '';
             for(var i=0; i<lines.length; i++) {
-                res += '<p data-index="'+i+'" contenteditable="true">' + lines[i].text + '</p>';
+                res += '<p data-index="'+i+'" contenteditable="true">' + _.escape(lines[i].text) + '</p>';
             }
             return res;
         }
