@@ -11,6 +11,17 @@
     z-index: 40px;
 }
 
+#header {
+    left: 0;
+    top: 0;
+    width: 100%;
+    position: fixed;
+    border-bottom: 1px solid gray;
+    background-color: lightgray;
+    padding: 3px;
+    z-index: 50;
+}
+
 #footer {
     left: 0;
     bottom: 0;

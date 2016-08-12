@@ -6,26 +6,12 @@ var ipcRenderer = require('electron').ipcRenderer
 // Get web frame.
 var webFrame = require('electron').webFrame;
 
-// Ask, by default, to load the en-US dictionary.
-ipcRenderer.send('dictionary.load', "en-US"); 
-
-// When the dictionary is loaded, use it.
-ipcRenderer.on('dictionary.loaded', function(event, result) {
-    webFrame.setSpellCheckProvider("en-US", false, {
-        spellCheck: function(text) {      
-            var res = ipcRenderer.sendSync('dictionary.check-word', 'en-US', text);
-            return res != null? res : true;
-        }
-    });
-});
-
-
 // Declare application.
-var myApp = angular.module('myApp', ['menuSvc', 'editorSvc', 'blockUI', 'ngAnimate', 'toastr']);
+var myApp = angular.module('myApp', ['menuSvc', 'editorSvc', 'translatorSvc', 'blockUI', 'ngAnimate', 'toastr']);
 
 // Define controller.
-myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'blockUI', 'toastr', function ($scope, Menu, Editor, blockUI, toastr) {
-    // Initialize.
+myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'blockUI', 'toastr', function ($scope, Menu, Editor, Translator, blockUI, toastr) {
+    // Initialize file's flags.
     $scope.sourceLoaded = false;
     $scope.destinationLoaded = false;
   
@@ -34,11 +20,11 @@ myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'blockUI', 'toas
         if(target == 'source') {
             // Load file on source.
             $scope.sourceLoaded = true;
-            Editor.initialize('#source-file', '#destination-file', fileData);
+            Editor.initialize('source', '#source-file', '#destination-file', fileData);
         } else {
             // Load file on destination.
             $scope.destinationLoaded = true;
-            Editor.initialize('#destination-file', '#source-file', fileData);
+            Editor.initialize('destination', '#destination-file', '#source-file', fileData);
         }
     }
   
@@ -78,4 +64,28 @@ myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'blockUI', 'toas
     if(cachedSource != null) { $scope.loadFile('source', cachedSource); }
     var cachedDestination = ipcRenderer.sendSync('cached-file', 'destination');
     if(cachedDestination != null) { $scope.loadFile('destination', cachedDestination); }
+
+    
+    // Function invoked when a language is selected.
+    $scope.languageSelected = function(type, newValue) {
+        // Update translator.
+        Translator.setLanguage(type, newValue);
+    }
+    
+    // Initialize list of available languages (TODO: This list should be configurable by the user, i.e. not harcoded).
+    $scope.mainLanguages = [
+        {name: 'Dutch', lang_code: 'nl', dictionary: 'nl-NL'},
+        {name: 'English (US)', lang_code: 'en', dictionary: 'en-US'},
+        {name: 'English (UK)', lang_code: 'en', dictionary: 'en-GB'},
+        {name: 'French', lang_code: 'fr', dictionary: 'fr-FR'},
+        {name: 'German', lang_code: 'de', dictionary: 'de-DE'},
+        {name: 'Spanish (Spain)', lang_code: 'es', dictionary: 'es-ES'},
+        {name: 'Spanish (Mexico)', lang_code: 'es', dictionary: 'es-MX'},
+    ];
+    
+    // Initialize translation languages (TODO: should initialize with last selected values).
+    $scope.sourceLang = _.find($scope.mainLanguages, function(item) {return item.dictionary == 'en-US'});
+    Translator.setLanguage('source', $scope.sourceLang);
+    $scope.destinationLang = _.find($scope.mainLanguages, function(item) {return item.dictionary == 'es-ES'}); 
+    Translator.setLanguage('destination', $scope.destinationLang);
 }]);

@@ -1,31 +1,34 @@
 
 // Declare module.
-var editorSvc = angular.module('editorSvc', []);
+var editorSvc = angular.module('editorSvc', ['translatorSvc']);
 
 // Service for initialize the application's menu.
-menuSvc.factory('Editor', function() {
+editorSvc.factory('Editor', function(Translator) {
     // Define factory.
     var factory = {
         // Initialize an editor.
-        initialize: function(selector, twinSelector, docLines) {
+        initialize: function(type, selector, twinSelector, docLines) {
             // Initialize variables.
             var container = $(selector);
             var twinContainer = $(twinSelector);
-          
+                
             // Load document.
             container.html(factory.formatText(docLines));
             
             // Assign behaviour for focus and hover event.
             $(selector).children('p')
-              .focus( factory.onFocus(container, twinContainer) )
+              .focus( factory.onFocus(type, container, twinContainer) )
               .mouseenter( factory.onMouseEnter(container, twinContainer) )
               .mouseleave( factory.onMouseLeave(container, twinContainer) );
         },
         
         // Behaviour for the focus event on a paragraph.
-        onFocus: function(container, twinContainer) {
+        onFocus: function(type, container, twinContainer) {
             return function(event) {
                 var paragraph = $(this);
+
+                // Update spellchecker.
+                Translator.updateSpellchecker(type);
                 
                 // Highlight twin paragraph.
                 var twinParagraph = twinContainer.children().eq(paragraph.index());
@@ -85,7 +88,7 @@ menuSvc.factory('Editor', function() {
                 
                 // Search for an automatic translation.
                 var APIkey = "somekey"; // TODO: use a key selected by the user.
-                var lang = 'en-es'; // TODO: use the languages selected by the user.
+                var lang = Translator.getLanguage('source') + "-" + Translator.getLanguage('destination');
                 $("#footer > div").html('<div class="loading">Translating...</div>');
                 $.ajax({
                     dataType: "json",

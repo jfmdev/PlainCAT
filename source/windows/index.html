@@ -13,7 +13,16 @@
   
     <div id="divider"></div>
   
-    <div id="header"></div> 
+    <div id="header">
+        <div class="row">
+            <div class="col-xs-6">
+                <select ng-options="language as language.name for language in mainLanguages" ng-model="sourceLang" ng-change="languageSelected('source', sourceLang)"></select>
+            </div>
+            <div class="col-xs-6">
+                <select ng-options="language as language.name for language in mainLanguages" ng-model="destinationLang" ng-change="languageSelected('destination', destinationLang)"></select>
+            </div>
+        </div>
+    </div> 
     
     <div id="footer">
         <div></div>
@@ -51,13 +60,14 @@
     <script>window.$ = window.jQuery = require('./../bower_components/jquery/dist/jquery.min.js');</script>
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../bower_components/angular-block-ui/dist/angular-block-ui.min.js"></script>
-    <script src="../bower_components/angular-toastr/dist/angular-toastr.min.js"></script>  
-    <script src="../bower_components/underscore/underscore-min.js"></script>  
-    <script src="lib/autosize.js"></script>    
+    <script src="../bower_components/angular-toastr/dist/angular-toastr.min.js"></script>
+    <script src="../bower_components/underscore/underscore-min.js"></script>
+    <script src="lib/autosize.js"></script>
     
     <!-- Include app files -->
-    <script src="js/menu.js"></script>    
-    <script src="js/editor.js"></script>    
-    <script src="js/app.js"></script>    
+    <script src="js/menu.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/translator.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
