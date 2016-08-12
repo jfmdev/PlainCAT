@@ -35,7 +35,7 @@ editorSvc.factory('Editor', function(Translator) {
                 twinParagraph.addClass('editing');
                 
                 // Add textarea and hide paragraph.
-                var content = paragraph.text();             
+                var content = paragraph.text();
                 paragraph.after('<textarea rows="1">'+content+'</textarea>');
                 var textarea = paragraph.next();
                 textarea.val(content);
@@ -145,6 +145,15 @@ editorSvc.factory('Editor', function(Translator) {
             for(var i=0; i<lines.length; i++) {
                 res += '<p data-index="'+i+'" contenteditable="true">' + _.escape(lines[i].text) + '</p>';
             }
+            return res;
+        },
+        
+        // Get all content of <p> elements as an string.
+        getContent: function(selector) {
+            var res = [];
+            $(selector).children('p').each(function(index, element) {
+                res.push($(element).text());
+            });
             return res;
         }
     };

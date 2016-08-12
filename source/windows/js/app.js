@@ -11,10 +11,13 @@ var myApp = angular.module('myApp', ['menuSvc', 'editorSvc', 'translatorSvc', 'b
 
 // Define controller.
 myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'blockUI', 'toastr', function ($scope, Menu, Editor, Translator, blockUI, toastr) {
-    // Initialize file's flags.
+    
+    // ----- Files ----- //
+    
+    // Initialize file's variables.
     $scope.sourceLoaded = false;
     $scope.destinationLoaded = false;
-  
+    
     // Load a file on either the source or the destination pane.
     $scope.loadFile = function(target, fileData) {
         if(target == 'source') {
@@ -27,7 +30,20 @@ myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'b
             Editor.initialize('destination', '#destination-file', '#source-file', fileData);
         }
     }
-  
+    
+    // Copy the source's content into the destionation.
+    $scope.copySource = function() {
+        var lines = Editor.getContent('#source-file');
+        var fileData = [];
+        for(var i=0; i<lines.length; i++) {
+            fileData.push({
+                'index': (i>0? (fileData[i-1].index + lines[i-1].length) : 0),
+                'text': lines[i]
+            })
+        }
+        $scope.loadFile('destination', fileData);
+    };
+    
     // Event handler for when a file is read.
     $scope.onFileRead = function(event, result) {   
         // Verify if the operation was successful.
@@ -43,9 +59,9 @@ myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'b
         blockUI.stop();
 
         // Update UI.
-        $scope.$apply();      
+        $scope.$apply();
     }
-
+    
     // Function for open a file selector.
     $scope.openFile = function(target) {
         blockUI.start();
@@ -65,6 +81,8 @@ myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'b
     var cachedDestination = ipcRenderer.sendSync('cached-file', 'destination');
     if(cachedDestination != null) { $scope.loadFile('destination', cachedDestination); }
 
+    
+    // ----- Spell checking and translations ----- //
     
     // Function invoked when a language is selected.
     $scope.languageSelected = function(type, newValue) {

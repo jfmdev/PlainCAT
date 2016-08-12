@@ -47,6 +47,10 @@
             <br><br><br><br><br>
             <p>You have not selected the destination file</p>
             <p><button ng-click="openFile('destination')">Select file</button></p>
+            <div ng-show="sourceLoaded">
+                <p>Or</p>
+                <p><button ng-click="copySource()">Copy source</button></p>
+            </div>
           </div>
         
           <div id="destination-file" class=""></div>
