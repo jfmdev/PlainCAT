@@ -1,7 +1,9 @@
 // Service for initialize the application's menu.
-myApp.factory('Translator', function() {
-    // Initialize variables.
+myApp.factory('Settings', function() {
+    // Load dependencies.
     var ipcRenderer = require('electron').ipcRenderer;
+    
+    // Initialize variables.
     var languages = {
         'destination': null,
         'source': null
@@ -38,6 +40,14 @@ myApp.factory('Translator', function() {
                     return type == 'source'? 'en-US' : 'es-ES'; 
                 }
             }
+        },
+        
+        setApiKey: function(name, value) {
+            return ipcRenderer.sendSync('settings-set', {'name': ("api."+name), 'value': value });
+        },
+        
+        getApiKey: function(name) {
+            return ipcRenderer.sendSync('settings-get', 'api.' + name);
         }
     };
 

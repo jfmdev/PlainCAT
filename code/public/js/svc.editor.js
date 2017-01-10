@@ -1,6 +1,6 @@
 
 // Service for initialize the application's menu.
-myApp.factory('Editor', function(Translator, $rootScope) {
+myApp.factory('Editor', ['$rootScope', 'Settings', 'Translator', function($rootScope, Settings, Translator) {
     // Define factory.
     var factory = {
         // Initialize an editor.
@@ -82,22 +82,6 @@ myApp.factory('Editor', function(Translator, $rootScope) {
                     // Remove text area.
                     textarea.remove();
                 });
-                
-                // Search for an automatic translation.
-                var APIkey = "somekey"; // TODO: use a key selected by the user.
-                var lang = Translator.getLanguageCode('source') + "-" + Translator.getLanguageCode('destination');
-                $("#footer > div").html('<div class="loading">Translating...</div>');
-                $.ajax({
-                    dataType: "json",
-                    url: "https://translate.yandex.net/api/v1.5/tr.json/translate",
-                    data: {'key': APIkey, 'lang': lang, 'text': content},
-                    success: function(data) {
-                        $("#footer > div").text(data.text);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        $("#footer > div").html('<div class="error">Translation could not be obtained (' + textStatus + " - " + errorThrown + ')</div>');
-                    }
-                });
             };
         },
         
@@ -157,4 +141,4 @@ myApp.factory('Editor', function(Translator, $rootScope) {
 
     // Return factory.
     return factory;
-});
+}]);

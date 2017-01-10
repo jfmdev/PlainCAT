@@ -9,11 +9,11 @@
     <link rel="stylesheet" type="text/css" href="../bower_components/angular-toastr/dist/angular-toastr.min.css">
     <link rel="stylesheet" type="text/css" href="css/app.css">
   </head>
-  <body ng-app="myApp" ng-controller="mainController">
+  <body ng-app="myApp">
   
     <div id="divider"></div>
   
-    <div id="header">
+    <div id="header" ng-controller="headerController">
         <div class="row">
             <div class="col-xs-6">
                 <select ng-options="language as language.name for language in mainLanguages" ng-model="sourceLang" ng-change="languageSelected('source', sourceLang)"></select>
@@ -24,11 +24,13 @@
         </div>
     </div> 
     
-    <div id="footer">
-        <div></div>
+    <div id="footer" ng-controller="footerController">
+        <div>{{ translation }}</div>
+        <div class="loading" ng-show="loading">Translating...</div>
+        <div class="error" ng-show="error">Translation could not be obtained ({{ error }})</div>
     </div>
 
-    <div class="container-fluid" id="body">
+    <div class="container-fluid" id="body" ng-controller="mainController">
       <div class="row">
         <!-- Source file -->
         <div class="col-xs-6">
@@ -71,10 +73,13 @@
     
     <!-- Include app files -->
     <script src="js/app.js"></script>
-    <script src="js/menu.js"></script>
-    <script src="js/editor.js"></script>
-    <script src="js/translator.js"></script>
-    <script src="js/spellchecker.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/svc.menu.js"></script>
+    <script src="js/svc.settings.js"></script>
+    <script src="js/svc.editor.js"></script>
+    <script src="js/svc.translator.js"></script>
+    <script src="js/svc.spellchecker.js"></script>
+    <script src="js/ctrl.header.js"></script>
+    <script src="js/ctrl.main.js"></script>
+    <script src="js/ctrl.footer.js"></script>
   </body>
 </html>

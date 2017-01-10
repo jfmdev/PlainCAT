@@ -1,5 +1,5 @@
 // Service for initialize the Electron's spellchecker.
-myApp.factory('Spellchecker', function($rootScope, Translator) {
+myApp.factory('Spellchecker', ['$rootScope', 'Settings', function($rootScope, Settings) {
     // Initialize variables.
     var webFrame = require('electron').webFrame;
     var ipcRenderer = require('electron').ipcRenderer;
@@ -15,11 +15,11 @@ myApp.factory('Spellchecker', function($rootScope, Translator) {
  
     // When a paragraph is focused, update the language used by the spell checker.
     $rootScope.$on('paragraph-focused', function(event, data) {
-        var locale = Translator.getLocale(data.type);
+        var locale = Settings.getLocale(data.type);
         spell_language = locale;
     });
     
     // Return an empty object (since the service works only with events).
     return {};
-});
+}]);
 
