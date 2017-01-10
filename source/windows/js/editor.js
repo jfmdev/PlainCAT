@@ -88,7 +88,7 @@ editorSvc.factory('Editor', function(Translator) {
                 
                 // Search for an automatic translation.
                 var APIkey = "somekey"; // TODO: use a key selected by the user.
-                var lang = Translator.getLanguage('source') + "-" + Translator.getLanguage('destination');
+                var lang = Translator.getLanguageCode('source') + "-" + Translator.getLanguageCode('destination');
                 $("#footer > div").html('<div class="loading">Translating...</div>');
                 $.ajax({
                     dataType: "json",

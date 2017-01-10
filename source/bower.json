@@ -1,9 +1,9 @@
 {
   "name": "PlainCAT",
-  "description": "A minimal Electron application",
+  "description": "A simple Computer Assisted Translation tool for translate plain text files",
   "main": "main.js",
   "authors": [
-    "JFMDev"
+    "JFMDev <jfmdev@inboxalias.com>"
   ],
   "license": "GPLv3",
   "keywords": [

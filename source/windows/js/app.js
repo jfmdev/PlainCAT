@@ -1,9 +1,6 @@
 
 // Load dependencies.
 var ipcRenderer = require('electron').ipcRenderer
-
-
-// Get web frame.
 var webFrame = require('electron').webFrame;
 
 // Declare application.
@@ -92,18 +89,21 @@ myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'b
     
     // Initialize list of available languages (TODO: This list should be configurable by the user, i.e. not harcoded).
     $scope.mainLanguages = [
-        {name: 'Dutch', lang_code: 'nl', dictionary: 'nl-NL'},
-        {name: 'English (US)', lang_code: 'en', dictionary: 'en-US'},
-        {name: 'English (UK)', lang_code: 'en', dictionary: 'en-GB'},
-        {name: 'French', lang_code: 'fr', dictionary: 'fr-FR'},
-        {name: 'German', lang_code: 'de', dictionary: 'de-DE'},
-        {name: 'Spanish (Spain)', lang_code: 'es', dictionary: 'es-ES'},
-        {name: 'Spanish (Mexico)', lang_code: 'es', dictionary: 'es-MX'},
+        {name: 'Dutch', lang_code: 'nl', locale: 'nl-NL'},
+        {name: 'English (US)', lang_code: 'en', locale: 'en-US'},
+        {name: 'English (UK)', lang_code: 'en', locale: 'en-GB'},
+        {name: 'French', lang_code: 'fr', locale: 'fr-FR'},
+        {name: 'German', lang_code: 'de', locale: 'de-DE'},
+        {name: 'Spanish (Spain)', lang_code: 'es', locale: 'es-ES'},
+        {name: 'Spanish (Mexico)', lang_code: 'es', locale: 'es-MX'},
     ];
     
-    // Initialize translation languages (TODO: should initialize with last selected values).
-    $scope.sourceLang = _.find($scope.mainLanguages, function(item) {return item.dictionary == 'en-US'});
+    // Initialize translation languages.
+    var sourceLocale = Translator.getLocale('source'); 
+    $scope.sourceLang = _.find($scope.mainLanguages, function(item) {return item.locale == sourceLocale});
     Translator.setLanguage('source', $scope.sourceLang);
-    $scope.destinationLang = _.find($scope.mainLanguages, function(item) {return item.dictionary == 'es-ES'}); 
+    
+    var destinationLocale = Translator.getLocale('destination');
+    $scope.destinationLang = _.find($scope.mainLanguages, function(item) {return item.locale == destinationLocale}); 
     Translator.setLanguage('destination', $scope.destinationLang);
 }]);

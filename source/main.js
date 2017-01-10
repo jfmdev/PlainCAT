@@ -60,6 +60,25 @@ app.on('activate', function () {
 });
 
 
+// ----- Storage ----- //
+
+// Init storage.
+const Storage = require('node-storage');
+var settingsStore = new Storage('settings.json');
+
+// Get a settings item.
+ipcMain.on('settings-get', function(event, arg) {
+  var item = settingsStore.get(arg);
+  event.returnValue = item || false;
+});
+
+// Set a settings item.
+ipcMain.on('settings-set', function(event, arg) {
+  settingsStore.put(arg.name, arg.value);
+  event.returnValue = true;
+});
+
+
 // ----- File management ----- // 
 
 // Initialize files.
@@ -81,6 +100,7 @@ ipcMain.on('open-file', function(event, target) {
               
                 // Save file's path and data.
                 openedFiles[target] = {'path': files[0], 'data': docLines};
+                settingsStore.put('file.'+target, files[0]);
               
                 // Return data.
                 event.sender.send('file-read', {'error': null, 'data': docLines, 'target': target});
@@ -124,7 +144,7 @@ function getDocLines(text) {
             
             if(start != end) {
                 result.push({'index': start, 'text': text.substring(start, end)});
-            }              
+            }
         }
     }
     
@@ -163,5 +183,4 @@ ipcMain.on('dictionary.check-word', function(event, lang, word) {
   }
   event.returnValue = res;
 });
-
 

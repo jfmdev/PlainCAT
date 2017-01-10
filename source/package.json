@@ -19,7 +19,7 @@
     "plain",
     "text"
   ],
-  "author": "JFMDev",
+  "author": "JFMDev <jfmdev@inboxalias.com>",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/jfmdev/plaincat/issues"
@@ -29,6 +29,7 @@
     "electron-prebuilt": "^0.36.0"
   },
   "dependencies": {
+    "node-storage": "0.0.7",
     "simple-spellchecker": "^0.9.0"
   }
 }
