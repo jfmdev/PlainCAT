@@ -18,6 +18,8 @@ myApp.controller('footerController', ['$scope', 'Translator', function ($scope, 
             $scope.error = error;
             $scope.translation = result.length? result[0] : result;
             $scope.$apply();
+            
+            // TODO: emit an event indicating that a new translation is available?
         });
     });
 }]);

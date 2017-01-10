@@ -37,7 +37,7 @@ myApp.factory('Editor', ['$rootScope', 'Settings', 'Translator', function($rootS
                 paragraph.hide();
 
                 // Trigger event indicating that a paragraph was focused.
-                $rootScope.$broadcast('paragraph-focused', {'type': type, 'content': content})
+                $rootScope.$broadcast('paragraph-focused', {'type': type, 'content': content, 'index': paragraph.index()})
                 
                 // Make height of the textarea to match the content.
                 autosize(textarea);

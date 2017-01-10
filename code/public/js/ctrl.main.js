@@ -54,13 +54,14 @@ myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'S
     }
     
     // Function for open a file selector.
+    // TODO: Do it somewhere else?
     $scope.openFile = function(target) {
         blockUI.start();
         ipcRenderer.send('open-file', target); 
     };
     
-    // TODO: Do it using events.
     // Initialize menu, defining methods for open files.
+    // TODO: Do it somewhere else and using events?
     Menu.init({
         openSource: function(item, focusedWindow) { $scope.openFile('source'); $scope.$apply(); },
         openDestination: function(item, focusedWindow) { $scope.openFile('destination'); $scope.$apply(); }

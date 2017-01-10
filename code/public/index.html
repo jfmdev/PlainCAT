@@ -25,9 +25,11 @@
     </div> 
     
     <div id="footer" ng-controller="footerController">
-        <div>{{ translation }}</div>
-        <div class="loading" ng-show="loading">Translating...</div>
-        <div class="error" ng-show="error">Translation could not be obtained ({{ error }})</div>
+        <div>
+            <p ng-hide="loading">{{ translation }}</p>
+            <p class="loading" ng-show="loading">Translating...</p>
+            <p class="error" ng-show="error">Translation could not be obtained ({{ error }})</p>
+        </div>
     </div>
 
     <div class="container-fluid" id="body" ng-controller="mainController">

@@ -39,11 +39,11 @@
     height: 80px;
 }
 
-#footer div.loading {
+#footer p.loading {
     color: gray;
 }
 
-#footer div.error {
+#footer p.error {
     color: darkred;
 }
 
