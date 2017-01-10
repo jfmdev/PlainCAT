@@ -3,7 +3,7 @@
 var editorSvc = angular.module('editorSvc', ['translatorSvc']);
 
 // Service for initialize the application's menu.
-editorSvc.factory('Editor', function(Translator) {
+editorSvc.factory('Editor', function(Translator, $rootScope) {
     // Define factory.
     var factory = {
         // Initialize an editor.
@@ -27,9 +27,6 @@ editorSvc.factory('Editor', function(Translator) {
             return function(event) {
                 var paragraph = $(this);
 
-                // Update spellchecker.
-                Translator.updateSpellchecker(type);
-                
                 // Highlight twin paragraph.
                 var twinParagraph = twinContainer.children().eq(paragraph.index());
                 twinParagraph.addClass('editing');
@@ -42,14 +39,17 @@ editorSvc.factory('Editor', function(Translator) {
                 textarea.focus();
                 paragraph.hide();
 
-                // In order to trigger the spellchecker for all words (an not only on active words) move the caret around the text.
+                // Trigger event indicating that a paragraph was focused.
+                $rootScope.$broadcast('paragraph-focused', {'type': type, 'content': content})
+                
+                // Make height of the textarea to match the content.
+                autosize(textarea);
+
+                // Trigger the spellchecker for all words (an not only on active words) by moving the caret around the text.
                 for(var i=0; i<content.length; i++) {
                     textarea.selectRange(i,i+1);
                 }
                 textarea.selectRange(content.length, content.length);
-                
-                // Make height of the textarea to match the content.
-                autosize(textarea);
                 
                 // Assign behaviour for the blur event.
                 textarea.blur(function(event) {
@@ -161,25 +161,3 @@ editorSvc.factory('Editor', function(Translator) {
     // Return factory.
     return factory;
 });
-
-// jQuery extension for set the cursor position in a text area.
-// Source: http://stackoverflow.com/questions/499126/jquery-set-cursor-position-in-text-area
-$.fn.selectRange = function(start, end) {
-    if(end === undefined) {
-        end = start;
-    }
-    return this.each(function() {
-        if('selectionStart' in this) {
-            this.selectionStart = start;
-            this.selectionEnd = end;
-        } else if(this.setSelectionRange) {
-            this.setSelectionRange(start, end);
-        } else if(this.createTextRange) {
-            var range = this.createTextRange();
-            range.collapse(true);
-            range.moveEnd('character', end);
-            range.moveStart('character', start);
-            range.select();
-        }
-    });
-};

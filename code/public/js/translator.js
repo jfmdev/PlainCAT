@@ -9,15 +9,6 @@ translatorSvc.factory('Translator', function() {
         'destination': null,
         'source': null
     }
-    
-    // Initialize spell checker.
-    var spell_language = 'en-US';
-    webFrame.setSpellCheckProvider("en-US", false, {
-        spellCheck: function(text) {
-            var res = ipcRenderer.sendSync('dictionary.check-word', spell_language, text);
-            return res != null? res : true;
-        }
-    });
  
     // Define service.
     var service = {
@@ -49,13 +40,6 @@ translatorSvc.factory('Translator', function() {
                 } else { 
                     return type == 'source'? 'en-US' : 'es-ES'; 
                 }
-            }
-        },
-        
-        // Update the spellchecker language.
-        updateSpellchecker: function(type) {
-            if(languages[type]) {
-                spell_language = languages[type].locale;
             }
         }
     };

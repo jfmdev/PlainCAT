@@ -4,10 +4,10 @@ var ipcRenderer = require('electron').ipcRenderer
 var webFrame = require('electron').webFrame;
 
 // Declare application.
-var myApp = angular.module('myApp', ['menuSvc', 'editorSvc', 'translatorSvc', 'blockUI', 'ngAnimate', 'toastr']);
+var myApp = angular.module('myApp', ['menuSvc', 'editorSvc', 'translatorSvc', 'spellcheckerSvc', 'blockUI', 'ngAnimate', 'toastr']);
 
 // Define controller.
-myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'blockUI', 'toastr', function ($scope, Menu, Editor, Translator, blockUI, toastr) {
+myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'Spellchecker', 'blockUI', 'toastr', function ($scope, Menu, Editor, Translator, Spellchecker, blockUI, toastr) {
     
     // ----- Files ----- //
     
