@@ -1,2 +1,3 @@
-node_modules
-bower_components
+code/node_modules
+code/bower_components
+code/settings.json
