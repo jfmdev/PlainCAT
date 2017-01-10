@@ -1,10 +1,7 @@
-
-// Declare module.
-var translatorSvc = angular.module('translatorSvc', []);
-
 // Service for initialize the application's menu.
-translatorSvc.factory('Translator', function() {
+myApp.factory('Translator', function() {
     // Initialize variables.
+    var ipcRenderer = require('electron').ipcRenderer;
     var languages = {
         'destination': null,
         'source': null

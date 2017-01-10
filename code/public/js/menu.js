@@ -161,15 +161,12 @@ if (process.platform == 'darwin') {
   );
 };
 
-// Load dependencies.
-var remote = require('electron').remote;
-var Menu = remote.Menu;
-
-// Declare module.
-var menuSvc = angular.module('menuSvc', []);
-
 // Service for initialize the application's menu.
-menuSvc.factory('Menu', function() {
+myApp.factory('Menu', function() {
+    // Load dependencies.
+    var remote = require('electron').remote;
+    var Menu = remote.Menu;
+
     // Add 'File' section to default template.
     var openSourceItem = {
         label: 'Open source',
@@ -201,7 +198,7 @@ menuSvc.factory('Menu', function() {
           
             // Build and set menu.
             var menu = Menu.buildFromTemplate(template);
-            Menu.setApplicationMenu(menu);            
+            Menu.setApplicationMenu(menu);
         }
     };
 

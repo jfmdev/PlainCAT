@@ -1,9 +1,6 @@
 
-// Declare module.
-var editorSvc = angular.module('editorSvc', ['translatorSvc']);
-
 // Service for initialize the application's menu.
-editorSvc.factory('Editor', function(Translator, $rootScope) {
+myApp.factory('Editor', function(Translator, $rootScope) {
     // Define factory.
     var factory = {
         // Initialize an editor.
