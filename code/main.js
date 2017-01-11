@@ -183,4 +183,3 @@ ipcMain.on('dictionary.check-word', function(event, lang, word) {
   }
   event.returnValue = res;
 });
-

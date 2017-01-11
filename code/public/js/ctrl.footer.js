@@ -11,15 +11,22 @@ myApp.controller('footerController', ['$scope', 'Translator', function ($scope, 
         $scope.loading = true;
         $scope.$apply();
 
+        // TODO: Verify which provider is currently selected.
         // Translate text.
         Translator.yandex(data.content, function(error, result) {
             // Update variables and UI.
             $scope.loading = false;
             $scope.error = error;
-            $scope.translation = result.length? result[0] : result;
+            $scope.translation = result;
             $scope.$apply();
             
             // TODO: emit an event indicating that a new translation is available?
+        });
+        Translator.translt(data.content, function(error, result) {
+            console.log("translt", result, error);
+        });
+        Translator.microsoft(data.content, function(error, result) {
+            console.log("microsoft", result, error);
         });
     });
 }]);
