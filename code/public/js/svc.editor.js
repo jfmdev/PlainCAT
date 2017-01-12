@@ -1,6 +1,6 @@
 
 // Service for initialize the application's menu.
-myApp.factory('Editor', ['$rootScope', 'Settings', 'Translator', function($rootScope, Settings, Translator) {
+myApp.factory('Editor', ['$rootScope', 'Translator', function($rootScope, Translator) {
     // Define factory.
     var factory = {
         // Initialize an editor.

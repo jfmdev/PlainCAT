@@ -19,7 +19,7 @@
                 <select ng-options="language as language.name for language in mainLanguages" ng-model="sourceLang" ng-change="languageSelected('source', sourceLang)"></select>
             </div>
             <div class="col-xs-6">
-                <select ng-options="language as language.name for language in mainLanguages" ng-model="destinationLang" ng-change="languageSelected('destination', destinationLang)"></select>
+                <select ng-options="language as language.name for language in mainLanguages" ng-model="destLang" ng-change="languageSelected('dest', destLang)"></select>
             </div>
         </div>
     </div> 
@@ -76,10 +76,10 @@
     <!-- Include app files -->
     <script src="js/app.js"></script>
     <script src="js/svc.menu.js"></script>
-    <script src="js/svc.settings.js"></script>
-    <script src="js/svc.editor.js"></script>
+    <script src="js/svc.languages.js"></script>
     <script src="js/svc.translator.js"></script>
     <script src="js/svc.spellchecker.js"></script>
+    <script src="js/svc.editor.js"></script>
     <script src="js/ctrl.header.js"></script>
     <script src="js/ctrl.main.js"></script>
     <script src="js/ctrl.footer.js"></script>

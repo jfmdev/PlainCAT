@@ -1,5 +1,8 @@
 // Service for initialize the application's menu.
-myApp.factory('Translator', ['Settings', function (Settings) {  
+myApp.factory('Translator', ['Languages', function (Languages) {
+    // Load dependencies.
+    var ipcRenderer = require('electron').ipcRenderer;
+    
     // Define service.
     var service = {};
     
@@ -9,7 +12,7 @@ myApp.factory('Translator', ['Settings', function (Settings) {
     // Define private methods.
     service._getMicrosoftToken = function(done) {
         // Get suscription key.
-        var suscriptionKey = Settings.getApiKey('microsoft');
+        var suscriptionKey = service.getApiKey('microsoft');
         
         // Verify that the key was defined.
         if(suscriptionKey) {
@@ -31,11 +34,21 @@ myApp.factory('Translator', ['Settings', function (Settings) {
         }
     };
     
+    // Method for set an API key.
+    service.setApiKey = function(name, value) {
+        return ipcRenderer.sendSync('settings-set', {'name': ("api."+name), 'value': value });
+    };
+    
+    // Method for get an API key.
+    service.getApiKey = function(name) {
+        return ipcRenderer.sendSync('settings-get', 'api.' + name);
+    };
+    
     // Yandex translation (requires API key).
     service.yandex = function(content, callback) {
         // Initialize variable.
-        var apiKey = Settings.getApiKey('yandex');
-        var lang = Settings.getLanguageCode('source') + "-" + Settings.getLanguageCode('destination');
+        var apiKey = service.getApiKey('yandex');
+        var lang = Languages.lang.source.code + "-" + Languages.lang.dest.code;
         
         // Validate parameters.
         if(content && apiKey && callback) {
@@ -64,9 +77,9 @@ myApp.factory('Translator', ['Settings', function (Settings) {
         // Validate parameters.
         if(content && callback) {
             // Initialize variables.
-            var fromLang = Settings.getLanguageCode('source');
-            var toLang = Settings.getLanguageCode('destination');
-          
+            var fromLang = Languages.lang.source.code;
+            var toLang = Languages.lang.dest.code;
+        
             // Consume API.
             $.ajax({
                 dataType: "json",
@@ -110,8 +123,8 @@ myApp.factory('Translator', ['Settings', function (Settings) {
             // Verify if token is defined.
             if(service._microsoftToken) {
                 // Initialize variables.
-                var fromLang = Settings.getLanguageCode('source');
-                var toLang = Settings.getLanguageCode('destination');
+                var fromLang = Languages.lang.source.code;
+                var toLang = Languages.lang.dest.code;
                 var authToken = "Bearer " + service._microsoftToken;
                 var restUrl = "http://api.microsofttranslator.com/v2/Http.svc/Translate?appid=" + encodeURI(authToken) + "&text=" + encodeURI(content) + "&from=" + fromLang + "&to=" + toLang + "&contentType=text%2Fplain&category=general";
                 

@@ -1,5 +1,5 @@
 // Define controller.
-myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'Settings', 'Spellchecker', 'blockUI', 'toastr', function ($scope, Menu, Editor, Translator, Settings, Spellchecker, blockUI, toastr) {
+myApp.controller('mainController', ['$scope', 'Menu', 'Editor', 'Translator', 'Spellchecker', 'blockUI', 'toastr', function ($scope, Menu, Editor, Translator, Spellchecker, blockUI, toastr) {
     // Initialize variables.
     var ipcRenderer = require('electron').ipcRenderer;
     

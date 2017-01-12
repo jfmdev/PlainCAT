@@ -115,11 +115,6 @@ ipcMain.on('open-file', function(event, target) {
     }
 });
 
-// Verify if a file already opened can be read.
-ipcMain.on('cached-file', function(event, target) {
-   event.returnValue = openedFiles[target] != null? openedFiles[target].data : null;
-});
-
 // Parse a file, separating his lines.
 function getDocLines(text) {
     // Initialization.
@@ -152,6 +147,11 @@ function getDocLines(text) {
     return result;
 }
 
+// Verify if a file already opened can be read.
+ipcMain.on('cached-file', function(event, target) {
+   event.returnValue = openedFiles[target] != null? openedFiles[target].data : null;
+});
+
 
 // ----- Spell check ----- //
 
@@ -182,4 +182,37 @@ ipcMain.on('dictionary.check-word', function(event, lang, word) {
     res = Dictionaries[lang].spellCheck(word);
   }
   event.returnValue = res;
+});
+
+
+// --- Supported languages --- //
+
+// Get the list of supported languages.
+ipcMain.on('get-languages', function(event) {
+    // Read languages file.
+    var fileContent = fs.readFileSync('./misc/languages.json');
+    var langData = JSON.parse(fileContent);
+    var res = langData.list;
+
+    // Verify support of automatic translation.
+    for(var provider in langData.translation) {
+        for(var i=0; i<res.length; i++) {
+            res[i][provider] = langData.translation[provider].indexOf( res[i].code ) >= 0;
+        }
+    }
+    
+    // Verify support for spellcheck.
+    for(var i=0; i<res.length; i++) {
+        res[i].spellcheck = langData.spellchecker[res[i].code]? langData.spellchecker[res[i].code] : false;
+    }
+    
+    // Sort by name (instead of by code).
+    res.sort(function(a, b) { return a.name < b.name? -1 : 1; });
+    
+    // TODO: Verify which languages are disabled.
+    
+    // TODO: Verify the preferred spell checkers.
+    
+    // Return result.
+    event.returnValue = res;
 });

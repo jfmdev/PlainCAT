@@ -13,7 +13,7 @@ myApp.controller('footerController', ['$scope', 'Translator', function ($scope, 
 
         // TODO: Verify which provider is currently selected.
         // Translate text.
-        Translator.yandex(data.content, function(error, result) {
+        Translator.translt(data.content, function(error, result) {
             // Update variables and UI.
             $scope.loading = false;
             $scope.error = error;
@@ -22,11 +22,11 @@ myApp.controller('footerController', ['$scope', 'Translator', function ($scope, 
             
             // TODO: emit an event indicating that a new translation is available?
         });
-        Translator.translt(data.content, function(error, result) {
-            console.log("translt", result, error);
-        });
-        Translator.microsoft(data.content, function(error, result) {
-            console.log("microsoft", result, error);
-        });
+        // Translator.yandex(data.content, function(error, result) {
+            // console.log("yandex", result, error);
+        // });
+        // Translator.microsoft(data.content, function(error, result) {
+            // console.log("microsoft", result, error);
+        // });
     });
 }]);
