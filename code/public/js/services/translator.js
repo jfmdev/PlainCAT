@@ -33,23 +33,23 @@ myApp.factory('Translator', ['Languages', function (Languages) {
             if(done) done(false)
         }
     };
-    
+
     // Method for set an API key.
     service.setApiKey = function(name, value) {
         return ipcRenderer.sendSync('settings-set', {'name': ("api."+name), 'value': value });
     };
-    
+
     // Method for get an API key.
     service.getApiKey = function(name) {
         return ipcRenderer.sendSync('settings-get', 'api.' + name);
     };
-    
+
     // Yandex translation (requires API key).
     service.yandex = function(content, callback) {
         // Initialize variable.
         var apiKey = service.getApiKey('yandex');
         var lang = Languages.lang.source.code + "-" + Languages.lang.dest.code;
-        
+console.log("--------- yandex", apiKey);
         // Validate parameters.
         if(content && apiKey && callback) {
             $.ajax({
@@ -71,7 +71,7 @@ myApp.factory('Translator', ['Languages', function (Languages) {
             if(callback) callback('', null);
         }
     };
-    
+
     // Translt translation.
     service.translt = function(content, callback) {
         // Validate parameters.
@@ -79,7 +79,7 @@ myApp.factory('Translator', ['Languages', function (Languages) {
             // Initialize variables.
             var fromLang = Languages.lang.source.code;
             var toLang = Languages.lang.dest.code;
-        
+
             // Consume API.
             $.ajax({
                 dataType: "json",
@@ -103,7 +103,7 @@ myApp.factory('Translator', ['Languages', function (Languages) {
             if(callback) callback('', null);
         }
     };
-    
+
     // Microsoft translation (requires subscription key).
     service.microsoft = function(content, callback, tokenRequested) {
         // Validate parameters.
@@ -119,7 +119,7 @@ myApp.factory('Translator', ['Languages', function (Languages) {
                     if(callback) callback('', null);
                 }
             };
-          
+
             // Verify if token is defined.
             if(service._microsoftToken) {
                 // Initialize variables.
@@ -127,7 +127,7 @@ myApp.factory('Translator', ['Languages', function (Languages) {
                 var toLang = Languages.lang.dest.code;
                 var authToken = "Bearer " + service._microsoftToken;
                 var restUrl = "http://api.microsofttranslator.com/v2/Http.svc/Translate?appid=" + encodeURI(authToken) + "&text=" + encodeURI(content) + "&from=" + fromLang + "&to=" + toLang + "&contentType=text%2Fplain&category=general";
-                
+
                 // Consume API.
                 $.ajax({
                     type: "GET",
@@ -158,4 +158,3 @@ myApp.factory('Translator', ['Languages', function (Languages) {
     // Return service.
     return service;
 }]);
-
