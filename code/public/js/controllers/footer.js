@@ -12,12 +12,18 @@ myApp.controller('footerController', ['$scope', 'Translator', function ($scope, 
         $scope.$apply();
 
         // Translate text.
-        Translator.translate(data.content, function(error, result) {
-            // Update variables and UI.
-            $scope.loading = false;
-            $scope.error = error;
+        Translator.translate(data.content).then(function(result) {
+            // Set translation.
+            $scope.error = null;
             $scope.translation = result;
+        }).catch(function(result) {
+            // Set error.
+            $scope.error = error;
+            $scope.translation = null;
+        }).finally(function() {
+            // Update flag and refresh UI.
+            $scope.loading = false;
             $scope.$apply();
-        });
+        });;
     });
 }]);

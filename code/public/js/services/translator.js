@@ -14,16 +14,16 @@ myApp.factory('Translator', [
             ];
         };
 
-        service.translate = function(content, callback) {
+        service.translate = function(content) {
             // Initialize variables.
             var fromLang = 'en'; // TODO: read from project settings.
             var toLang = 'en'; // TODO: read from project settings.
             var engine = 'yandex'; // TODO: read from project settings.
 
             // Call translator.
-            if(engine === 'yandex') { YandexTranslator.translate(fromLang, toLang, content, callback); }
-            else if(engine === 'microsoft') { MicrosoftTranslator.translate(fromLang, toLang, content, callback); }
-            else { callback("Unsupported engine", null); }
+            if(engine === 'yandex') { return YandexTranslator.translate(fromLang, toLang, content); }
+            else if(engine === 'microsoft') { return MicrosoftTranslator.translate(fromLang, toLang, content); }
+            else { throw new Error("Unsupported engine"); }
         };
 
         // Return service.
