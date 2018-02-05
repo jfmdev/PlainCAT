@@ -3,12 +3,53 @@ myApp.factory('Translator', [
     'AppSettings', 'ProjectSettings', 'YandexTranslator', 'MicrosoftTranslator', 
     function (AppSettings, ProjectSettings, YandexTranslator, MicrosoftTranslator) {
         var service = {};
+        var ipcRenderer = require('electron').ipcRenderer;
 
         service.getTranslatorsList = function() {
-            return [
-                { code: 'yandex', name: "Yandex", available: (AppSettings.getApiKey('yandex') != null) },
-                { code: 'microsoft', name: "Microsoft", available: (AppSettings.getApiKey('microsoft') != null) },
+            // Define list.
+            var list = [
+                { code: 'yandex', name: "Yandex" },
+                { code: 'microsoft', name: "Microsoft" },
             ];
+
+            // Check availability.
+            for(var i=0; i<list.length; i++) {
+                list[i].available = AppSettings.getApiKey(list[i].code) != null;
+            }
+
+            return list;
+        };
+
+        service.getCachedTranslation = function(fromLang, toLang, engine, content) {
+            return new Promise(function(resolve, reject) {
+                ipcRenderer.once('cached-translation.got', function(sender, translation) {
+                    if(translation) {
+                        resolve(translation);
+                    } else {
+                        reject();
+                    }
+                });
+                ipcRenderer.send('cached-translation.get', fromLang, toLang, engine, content); 
+            });
+        };
+
+        service.getRemoteTranslation = function(fromLang, toLang, engine, content) {
+            var promise;
+
+            // Use engine's translator.
+            if(engine === 'yandex') { 
+                promise = YandexTranslator.translate(fromLang, toLang, content); 
+            } else if(engine === 'microsoft') { 
+                promise = MicrosoftTranslator.translate(fromLang, toLang, content); 
+            } else { 
+                promise = Promise.reject("Unsupported engine"); 
+            }
+
+            return promise.then(function(translation) {
+                // Update cache before returning result.
+                ipcRenderer.send('cached-translation.set', fromLang, toLang, engine, content, translation);
+                return Promise.resolve(translation);
+            });
         };
 
         service.translate = function(content) {
@@ -17,12 +58,10 @@ myApp.factory('Translator', [
             var toLang = ProjectSettings.toLangCode;
             var engine = ProjectSettings.translationEngine;
 
-            // TODO: Implement cache for prevent doing the same translation (i.e. same langs, text and engine) twice.
-
-            // Call translator.
-            if(engine === 'yandex') { return YandexTranslator.translate(fromLang, toLang, content); }
-            else if(engine === 'microsoft') { return MicrosoftTranslator.translate(fromLang, toLang, content); }
-            else { throw new Error("Unsupported engine"); }
+            // Check for cached translation and, if fails, get remote translation.
+            return service.getCachedTranslation(fromLang, toLang, engine, content).catch(function() {
+                return service.getRemoteTranslation(fromLang, toLang, engine, content);
+            });
         };
 
         return service;

@@ -1,7 +1,6 @@
 // Service for initialize the application's menu.
 myApp.factory('Languages', ['ProjectSettings', function (ProjectSettings) {
     var service = {};
-
     var ipcRenderer = require('electron').ipcRenderer;
 
     // Initialize list of languages.

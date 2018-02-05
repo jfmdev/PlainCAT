@@ -200,19 +200,52 @@ ipcMain.on('get-languages', function(event) {
             res[i][provider] = langData.translation[provider].indexOf( res[i].code ) >= 0;
         }
     }
-    
+
     // Verify support for spellcheck.
     for(var i=0; i<res.length; i++) {
         res[i].spellcheck = langData.spellchecker[res[i].code]? langData.spellchecker[res[i].code] : false;
     }
-    
+
     // Sort by name (instead of by code).
     res.sort(function(a, b) { return a.name < b.name? -1 : 1; });
-    
+
     // TODO: Verify which languages are disabled.
-    
+
     // TODO: Verify the preferred spell checkers.
-    
+
     // Return result.
     event.returnValue = res;
+});
+
+
+// ----- Translation cache ----- //
+
+const NodeCache = require("node-cache");
+const translationCache = new NodeCache({ stdTTL: 120, checkperiod: 140 });
+
+const crypto = require('crypto');
+function sha1(data) {
+     var generator = crypto.createHash('sha1');
+     generator.update(data);
+     return generator.digest('hex'); 
+}
+
+// Get a value from the translation cache.
+ipcMain.on('cached-translation.get', function(event, fromLang, toLang, engine, content) {
+    let translationKey = sha1(fromLang + '-' + toLang + '-' + engine + '-' + content);
+    translationCache.get(translationKey, function(err, value){
+        if(!err && value) {
+            event.sender.send('cached-translation.got', value);
+        } else {
+            event.sender.send('cached-translation.got', null);
+        }
+    });
+});
+
+// Insert a value into the translation cache.
+ipcMain.on('cached-translation.set', function(event, fromLang, toLang, engine, content, translation) {
+    let translationKey = sha1(fromLang + '-' + toLang + '-' + engine + '-' + content);
+    translationCache.set(translationKey, translation, function(err, success) {
+        // Do nothing.
+    });
 });
