@@ -100,7 +100,7 @@ ipcMain.on('open-file', function(event, target) {
               
                 // Save file's path and data.
                 openedFiles[target] = {'path': files[0], 'data': docLines};
-                settingsStore.put('file.'+target, files[0]);
+                settingsStore.put('app.file_'+target, files[0]);
               
                 // Return data.
                 event.sender.send('file-read', {'error': null, 'data': docLines, 'target': target});

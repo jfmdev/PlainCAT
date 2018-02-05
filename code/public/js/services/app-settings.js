@@ -1,21 +1,24 @@
 // Service for manage the application's settings.
 myApp.factory('AppSettings', [function () {
-    var service = {};
-
     var ipcRenderer = require('electron').ipcRenderer;
+    var service = Object.assign({
+        api_yandex: null,
+        api_microsoft: null,
+        file_source: null,
+        file_destination: null,
+    }, ipcRenderer.sendSync('settings-get', 'app') || {});
 
     service.setSetting = function(name, value) {
-        return ipcRenderer.sendSync('settings-set', {'name': (name), 'value': value });
-    };
-    service.getSetting = function(name) {
-        return ipcRenderer.sendSync('settings-get', name);
+        service[name] = value;
+        return ipcRenderer.sendSync('settings-set', {'name': ('app.' + name), 'value': value });
     };
 
     service.setApiKey = function(name, value) {
-        return service.setSetting('api.' + name, value);
+        return service.setSetting('api_' + name, value);
     };
+
     service.getApiKey = function(name) {
-        return service.getSetting('api.' + name);
+        return service['api_' + name];
     };
 
     return service;

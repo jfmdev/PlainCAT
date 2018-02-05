@@ -1,20 +1,22 @@
 // Service for manage the project's settings.
 // > NOTE: For now, project's settings will be stored on the settings.json file, along with the app's settings,
 // > and will be shared among all projects, but eventually there will be one settings file per project.
-myApp.factory('ProjectSettings', ['AppSettings', function (AppSettings) {
+myApp.factory('ProjectSettings', [function () {
+    var ipcRenderer = require('electron').ipcRenderer;
     var service = Object.assign({
         fromLangCode: 'en',
         toLangCode: 'es',
         translationEngine: 'yandex',
-    }, AppSettings.getSetting('project') || {});
+    }, ipcRenderer.sendSync('settings-get', 'project') || {});
 
     service.setSetting = function(key, value) {
         service[key] = value;
-        AppSettings.setSetting('project.' + key, value);
+        ipcRenderer.sendSync('settings-set', {'name': ('project.' + key), 'value': value });
     };
 
     service.setLanguage = function(type, langCode) {
-        service.setSetting((type === 'source' || type === 'from')? 'fromLangCode' : 'toLangCode', langCode);
+        var langKey = (type === 'source' || type === 'from')? 'fromLangCode' : 'toLangCode';
+        service.setSetting(langKey, langCode);
     };
 
     service.setEngine = function(engineCode) {
