@@ -32,8 +32,10 @@ myApp.factory('Languages', ['ProjectSettings', function (ProjectSettings) {
     };
 
     // TODO: Method for enable/disable a language.
+    // Should update on service.list and on AppSettings.
 
     // TODO: Method for select a preferred locale.
+    // Should update on service.list and on AppSettings.
 
     // Get last selected languages and load dictionaries.
     service.lang = {};

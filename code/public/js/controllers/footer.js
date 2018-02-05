@@ -26,4 +26,25 @@ myApp.controller('footerController', ['$scope', 'Translator', function ($scope, 
             $scope.$apply();
         });;
     });
+
+    // TODO: should listen for changes on 
+    // - ProjectSettings.translationEngine
+    // And disable translation and hide bar if disabled 
+    // (and show a tiny message: Automatic translation disabled, or something like that).
+    // $scope.enable = true;
+
+    // TODO: should listen for changes on 
+    // - ProjectSettings.fromLangCode
+    // - ProjectSettings.toLangCode
+    // - ProjectSettings.translationEngine
+    // And, if incompatible, disable the translation and hide the translation bar
+    // (and show a tiny message: These languages are not supported by Yandex/Microsoft, or something like that)
+    // $scope.incompatibleLanguages = false;
+
+    // TODO: should listen for changes on 
+    // - ProjectSettings.translationEngine
+    // - AppSettings.api
+    // And, if not configured, disable the translation and hide the translation bar
+    // (and show a tiny message: You need to set up your Yandex/Microsoft API Key for automatic translations, or something like that)
+    // $scope.incompatibleLanguages = false;
 }]);

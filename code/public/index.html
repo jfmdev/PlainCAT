@@ -10,9 +10,9 @@
     <link rel="stylesheet" type="text/css" href="css/app.css">
   </head>
   <body ng-app="myApp">
-  
+ 
     <div id="divider"></div>
-  
+
     <div id="header" ng-controller="headerController">
         <div class="row">
             <div class="col-xs-6">
@@ -23,7 +23,7 @@
             </div>
         </div>
     </div> 
-    
+
     <div id="footer" ng-controller="footerController">
         <div>
             <p ng-hide="loading">{{ translation }}</p>
@@ -41,7 +41,7 @@
             <p>You have not selected the source file</p>
             <p><button ng-click="openFile('source')">Select file</button></p>
           </div>
-        
+
           <div id="source-file"></div>
         </div>
 
@@ -56,12 +56,12 @@
                 <p><button ng-click="copySource()">Copy source</button></p>
             </div>
           </div>
-        
+
           <div id="destination-file" class=""></div>
         </div>
       </div>
     </div>
-    
+
     <!-- Include libraries -->
     <script src="../bower_components/angular/angular.min.js"></script>
     <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
@@ -73,7 +73,7 @@
     <script src="../bower_components/bluebird/js/browser/bluebird.min.js"></script>
     <script src="lib/autosize.js"></script>
     <script src="lib/jquery.selectRange.js"></script>
-    
+
     <!-- Include app files -->
     <script src="js/app.js"></script>
     <script src="js/services/app-settings.js"></script>

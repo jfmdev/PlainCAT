@@ -149,7 +149,7 @@ function getDocLines(text) {
 
 // Verify if a file already opened can be read.
 ipcMain.on('cached-file', function(event, target) {
-   event.returnValue = openedFiles[target] != null? openedFiles[target].data : null;
+    event.returnValue = openedFiles[target] != null? openedFiles[target].data : null;
 });
 
 
@@ -177,11 +177,11 @@ ipcMain.on('dictionary.load', function(event, lang) {
 
 // Check a word in a loaded dictionary.
 ipcMain.on('dictionary.check-word', function(event, lang, word) {
-  var res = null;
-  if(lang != null && Dictionaries[lang] != null && word != null) {
-    res = Dictionaries[lang].spellCheck(word);
-  }
-  event.returnValue = res;
+    var res = null;
+    if(lang != null && Dictionaries[lang] != null && word != null) {
+        res = Dictionaries[lang].spellCheck(word);
+    }
+    event.returnValue = res;
 });
 
 
@@ -210,8 +210,10 @@ ipcMain.on('get-languages', function(event) {
     res.sort(function(a, b) { return a.name < b.name? -1 : 1; });
 
     // TODO: Verify which languages are disabled.
+    // Should read that from AppSettings.
 
     // TODO: Verify the preferred spell checkers.
+    // Should read that from AppSettings.
 
     // Return result.
     event.returnValue = res;
