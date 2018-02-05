@@ -34,11 +34,11 @@ myApp.factory('Languages', [function () {
         ipcRenderer.sendSync('settings-set', {'name': ("lang."+type), 'value': language.code })
     };
 
-    // TODO: Method for enable/disable a language.
+    // TODO: Method for enable/disable a language -> should be on app settings
     
-    // TODO: Method for select a preferred locale.
+    // TODO: Method for select a preferred locale -> should be on app settings
     
-    // Get last selected languages and load dictionaries.
+    // Get last selected languages and load dictionaries -> should be on project settings.
     service.lang = {};
     for(var i=0; i<2; i++) {
         // Get language.
