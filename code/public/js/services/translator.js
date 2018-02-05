@@ -2,10 +2,7 @@
 myApp.factory('Translator', [
     'AppSettings', 'ProjectSettings', 'YandexTranslator', 'MicrosoftTranslator', 
     function (AppSettings, ProjectSettings, YandexTranslator, MicrosoftTranslator) {
-        // Define service.
         var service = {};
-
-        // Define methods
 
         service.getTranslatorsList = function() {
             return [
@@ -16,9 +13,11 @@ myApp.factory('Translator', [
 
         service.translate = function(content) {
             // Initialize variables.
-            var fromLang = 'en'; // TODO: read from project settings.
-            var toLang = 'en'; // TODO: read from project settings.
-            var engine = 'yandex'; // TODO: read from project settings.
+            var fromLang = ProjectSettings.fromLangCode;
+            var toLang = ProjectSettings.toLangCode;
+            var engine = ProjectSettings.translationEngine;
+
+            // TODO: Implement cache for prevent doing the same translation (i.e. same langs, text and engine) twice.
 
             // Call translator.
             if(engine === 'yandex') { return YandexTranslator.translate(fromLang, toLang, content); }
@@ -26,7 +25,6 @@ myApp.factory('Translator', [
             else { throw new Error("Unsupported engine"); }
         };
 
-        // Return service.
         return service;
     }
 ]);

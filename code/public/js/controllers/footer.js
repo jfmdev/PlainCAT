@@ -16,7 +16,7 @@ myApp.controller('footerController', ['$scope', 'Translator', function ($scope, 
             // Set translation.
             $scope.error = null;
             $scope.translation = result;
-        }).catch(function(result) {
+        }).catch(function(error) {
             // Set error.
             $scope.error = error;
             $scope.translation = null;

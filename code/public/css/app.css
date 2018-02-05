@@ -20,6 +20,7 @@
     background-color: lightgray;
     padding: 3px;
     z-index: 50;
+    height: 26px;
 }
 
 #footer {
@@ -48,7 +49,10 @@
 }
 
 #body {
-    padding-bottom: 80px; /* match with #footer height */
+    margin-top: 26px; /* match with #header height */
+    margin-bottom: 80px; /* match with #footer height */
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .highlight ,
@@ -66,7 +70,7 @@ textarea {
     background-color: #dfd;
 }
 
-p {
+#body p {
     cursor: pointer;
     border-radius: 5px;
 }
