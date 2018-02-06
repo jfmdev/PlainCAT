@@ -8,11 +8,15 @@ myApp.controller('mainController', [
         Menu.init({
             openSource: function(item, focusedWindow) { 
                 FileManager.openFile('source'); 
-                $scope.$apply(); 
             },
             openTarget: function(item, focusedWindow) { 
                 FileManager.openFile('target'); 
-                $scope.$apply(); 
+            },
+            closeSource: function(item, focusedWindow) { 
+                FileManager.closeFile('source'); 
+            },
+            closeTarget: function(item, focusedWindow) { 
+                FileManager.closeFile('target'); 
             },
         });
 

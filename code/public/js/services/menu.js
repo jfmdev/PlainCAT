@@ -172,20 +172,29 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
     var openSourceItem = {
         label: 'Open source',
         accelerator: 'CmdOrCtrl+O',
-        click: function(item, focusedWindow) {
-          console.log("'Open Source' item clicked");
-        }
+        click: function(item, focusedWindow) {}
     };
     var openTargetItem = {
         label: 'Open target',
         accelerator: 'CmdOrCtrl+T',
-        click: function(item, focusedWindow) {
-            console.log("'Open Target' item clicked");
-        }
+        click: function(item, focusedWindow) {}
+    };
+    var closeSourceItem = {
+        label: 'Close source',
+        click: function(item, focusedWindow) {}
+    };
+    var closeTargetItem = {
+        label: 'Close target',
+        click: function(item, focusedWindow) {}
     };
     template.unshift({
         label: 'File', 
-        submenu: [openSourceItem, openTargetItem] 
+        submenu: [
+            openSourceItem, 
+            openTargetItem, 
+            closeSourceItem, 
+            closeTargetItem,
+        ] 
     });
 
     // Add 'Settings' section to default template.
@@ -214,7 +223,9 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
             // Set listeners for file's subitems.
             if(settings && settings.openSource) openSourceItem.click = settings.openSource;
             if(settings && settings.openTarget) openTargetItem.click = settings.openTarget;
-          
+            if(settings && settings.closeSource) closeSourceItem.click = settings.closeSource;
+            if(settings && settings.closeTarget) closeTargetItem.click = settings.closeTarget;
+
             // Build and set menu.
             var menu = Menu.buildFromTemplate(template);
             Menu.setApplicationMenu(menu);

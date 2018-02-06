@@ -1,11 +1,9 @@
 // Define controller.
 myApp.controller('bodyController', [
-    '$scope', 'Shared', 'Menu', 'Editor', 'toastr', 
-    function ($scope, Shared, Menu, Editor, toastr) {
+    '$scope', 'toastr', 'Shared', 'Menu', 'Editor', 'FileManager', 
+    function ($scope, toastr, Shared, Menu, Editor, FileManager) {
         // Initialize variables.
         $scope.files = Shared.files;
-
-        // ----- Files ----- //
 
         // Update editors when the content is updated.
         $scope.$watch('files.source', function() {
@@ -14,6 +12,9 @@ myApp.controller('bodyController', [
         $scope.$watch('files.target', function() {
             Editor.initialize('target', '#target-file', '#source-file', $scope.files.target.content || []);
         });
+
+        // Open a file picker.
+        $scope.openFile = FileManager.openFile;
 
         // Copy the source's content into the target.
         $scope.copySource = function() {
