@@ -106,66 +106,67 @@ var default_template = [
   // },
 ];
 
-if (process.platform == 'darwin') {
-  var name = require('electron').remote.app.getName();
-  template.unshift({
-    label: name,
-    submenu: [
-      {
-        label: 'About ' + name,
-        role: 'about'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Services',
-        role: 'services',
-        submenu: []
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Hide ' + name,
-        accelerator: 'Command+H',
-        role: 'hide'
-      },
-      {
-        label: 'Hide Others',
-        accelerator: 'Command+Alt+H',
-        role: 'hideothers'
-      },
-      {
-        label: 'Show All',
-        role: 'unhide'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        label: 'Quit',
-        accelerator: 'Command+Q',
-        click: function() { app.quit(); }
-      },
-    ]
-  });
-  template[3].submenu.push(
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Bring All to Front',
-      role: 'front'
-    }
-  );
-};
+// if (process.platform == 'darwin') {
+  // var name = require('electron').remote.app.getName();
+  // template.unshift({
+    // label: name,
+    // submenu: [
+      // {
+        // label: 'About ' + name,
+        // role: 'about'
+      // },
+      // {
+        // type: 'separator'
+      // },
+      // {
+        // label: 'Services',
+        // role: 'services',
+        // submenu: []
+      // },
+      // {
+        // type: 'separator'
+      // },
+      // {
+        // label: 'Hide ' + name,
+        // accelerator: 'Command+H',
+        // role: 'hide'
+      // },
+      // {
+        // label: 'Hide Others',
+        // accelerator: 'Command+Alt+H',
+        // role: 'hideothers'
+      // },
+      // {
+        // label: 'Show All',
+        // role: 'unhide'
+      // },
+      // {
+        // type: 'separator'
+      // },
+      // {
+        // label: 'Quit',
+        // accelerator: 'Command+Q',
+        // click: function() { app.quit(); }
+      // },
+    // ]
+  // });
+  // template[3].submenu.push(
+    // {
+      // type: 'separator'
+    // },
+    // {
+      // label: 'Bring All to Front',
+      // role: 'front'
+    // }
+  // );
+// };
 
 // Service for initialize the application's menu.
-myApp.factory('Menu', function() {
+myApp.factory('Menu', ['$uibModal', function($uibModal) {
     // Load dependencies.
     var remote = require('electron').remote;
     var Menu = remote.Menu;
+    var template = [].concat(default_template);
 
     // Add 'File' section to default template.
     var openSourceItem = {
@@ -182,17 +183,35 @@ myApp.factory('Menu', function() {
             console.log("'Open Destination' item clicked");
         }
     };
-    var template = [
-      {
+    template.unshift({
         label: 'File', 
         submenu: [openSourceItem, openDestinationItem] 
-      }
-    ].concat(default_template);
-      
+    });
+
+    // Add 'Settings' section to default template.
+    var languagesItem = {
+        label: 'Languages',
+        click: function(item, focusedWindow) {
+            $uibModal.open({
+                templateUrl: 'views/settings.languages.html'
+            });
+        }
+    };
+    var aboutItem = {
+        label: 'About',
+        click: function(item, focusedWindow) {
+            $uibModal.open({ templateUrl: 'views/about.html' });
+        }
+    };
+    template.push({
+        label: 'Settings', 
+        submenu: [languagesItem, aboutItem] 
+    });
+
     // Define factory.
     var factory = {
         init: function(settings) {
-            // Set listeners for opening files.
+            // Set listeners for file's subitems.
             if(settings && settings.openSource) openSourceItem.click = settings.openSource;
             if(settings && settings.openDestination) openDestinationItem.click = settings.openDestination;
           
@@ -204,5 +223,5 @@ myApp.factory('Menu', function() {
 
     // Return factory.
     return factory;
-});
+}]);
 
