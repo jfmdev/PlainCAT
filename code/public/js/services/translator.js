@@ -1,7 +1,7 @@
 // Service for initialize the application's menu.
 myApp.factory('Translator', [
-    'AppSettings', 'ProjectSettings', 'YandexTranslator', 'MicrosoftTranslator', 
-    function (AppSettings, ProjectSettings, YandexTranslator, MicrosoftTranslator) {
+    'Shared', 'YandexTranslator', 'MicrosoftTranslator', 
+    function (Shared, YandexTranslator, MicrosoftTranslator) {
         var service = {};
         var ipcRenderer = require('electron').ipcRenderer;
 
@@ -14,7 +14,7 @@ myApp.factory('Translator', [
 
             // Check availability.
             for(var i=0; i<list.length; i++) {
-                list[i].available = AppSettings.getApiKey(list[i].code) != null;
+                list[i].available = Shared.getApiKey(list[i].code) != null;
             }
 
             return list;
@@ -54,9 +54,9 @@ myApp.factory('Translator', [
 
         service.translate = function(content) {
             // Initialize variables.
-            var fromLang = ProjectSettings.fromLangCode;
-            var toLang = ProjectSettings.toLangCode;
-            var engine = ProjectSettings.translationEngine;
+            var fromLang = Shared.project.fromLangCode;
+            var toLang = Shared.project.toLangCode;
+            var engine = Shared.project.translationEngine;
 
             // Check for cached translation and, if fails, get remote translation.
             return service.getCachedTranslation(fromLang, toLang, engine, content).catch(function() {

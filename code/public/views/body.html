@@ -1,8 +1,8 @@
-<div class="container-fluid" id="body" ng-controller="mainController">
+<div id="body" ng-controller="bodyController" class="container-fluid">
   <div class="row">
     <!-- Source file -->
     <div class="col-xs-6">
-      <div class="text-center" ng-hide="sourceLoaded">
+      <div class="text-center" ng-hide="files.source.content !== null">
         <br><br><br><br><br>
         <p>You have not selected the source file</p>
         <p><button ng-click="openFile('source')">Select file</button></p>
@@ -11,19 +11,19 @@
       <div id="source-file"></div>
     </div>
 
-    <!-- Destination file -->
+    <!-- Target file -->
     <div class="col-xs-6">
-      <div class="text-center" ng-hide="destinationLoaded">
+      <div class="text-center" ng-hide="files.target.content !== null">
         <br><br><br><br><br>
-        <p>You have not selected the destination file</p>
-        <p><button ng-click="openFile('destination')">Select file</button></p>
-        <div ng-show="sourceLoaded">
+        <p>You have not selected the target file</p>
+        <p><button ng-click="openFile('target')">Select file</button></p>
+        <div ng-show="files.source.content !== null">
             <p>Or</p>
             <p><button ng-click="copySource()">Copy source</button></p>
         </div>
       </div>
 
-      <div id="destination-file" class=""></div>
+      <div id="target-file" class=""></div>
     </div>
   </div>
 </div>

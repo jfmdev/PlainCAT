@@ -1,5 +1,5 @@
 // Service for initialize the application's menu.
-myApp.factory('Languages', ['ProjectSettings', function (ProjectSettings) {
+myApp.factory('Languages', ['Shared', function (Shared) {
     var service = {};
     var ipcRenderer = require('electron').ipcRenderer;
 
@@ -24,25 +24,25 @@ myApp.factory('Languages', ['ProjectSettings', function (ProjectSettings) {
         }
     };
 
-    // Method for set a language (as either source or destination).
+    // Method for set a language (as either source or target).
     service.setLang = function(type, language) {
         service.lang[type] = language;
         service.loadDictionary(language);
-        ProjectSettings.setLanguage(type, language.code);
+        Shared.setLanguage(type, language.code);
     };
 
     // TODO: Method for enable/disable a language.
-    // Should update on service.list and on AppSettings.
+    // Should update on service.list and on Shared.settings.
 
     // TODO: Method for select a preferred locale.
-    // Should update on service.list and on AppSettings.
+    // Should update on service.list and on Shared.settings.
 
     // Get last selected languages and load dictionaries.
     service.lang = {};
     for(var i=0; i<2; i++) {
         // Get language.
         var type = (i === 0)? 'source' : 'dest';
-        var langCode = (i === 0)? ProjectSettings.fromLangCode : ProjectSettings.toLangCode;
+        var langCode = (i === 0)? Shared.project.fromLangCode : Shared.project.toLangCode;
         service.lang[type] = _.findWhere(service.list, {"code": langCode});
 
         // Load dictionary.

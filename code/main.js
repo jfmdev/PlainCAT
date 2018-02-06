@@ -4,6 +4,7 @@
 const electron = require('electron');
 const ipcMain = electron.ipcMain;
 const dialog = electron.dialog;
+const path = require('path');
 const fs = require('fs');
 
 
@@ -91,14 +92,19 @@ function readOpenedFile(event, filePath, target) {
         // Verify if the file was read.
         if (!err) {
             // Parse file's data.
-            var docLines = getDocLines(data);
+            let docLines = getDocLines(data);
 
             // Save file's path and data.
             openedFiles[target] = {'path': filePath, 'data': docLines};
             settingsStore.put('app.file_'+target, filePath);
 
             // Return data.
-            event.sender.send('file-read', {'error': null, 'data': docLines, 'target': target});
+            let fileReadData = {
+                path: filePath,
+                name: path.basename(filePath),
+                lines: docLines,
+            };
+            event.sender.send('file-read', {'error': null, 'data': fileReadData, 'target': target});
         } else {
             // Return error.
             event.sender.send('file-read', {'error': {'code': "UNEXPECTED_ERROR", 'message': err}, 'data': null});

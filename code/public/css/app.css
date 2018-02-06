@@ -57,7 +57,7 @@
 
 .highlight ,
 #source-file p:hover,
-#destination-file p:hover {
+#target-file p:hover {
     background-color: #dff;
 }
 

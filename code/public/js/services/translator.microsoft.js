@@ -1,5 +1,5 @@
 // Service for translate text using Microsoft Translator.
-myApp.factory('MicrosoftTranslator', ['AppSettings', function (AppSettings) {
+myApp.factory('MicrosoftTranslator', ['Shared', function (Shared) {
     // Define service.
     var service = {};
 
@@ -9,7 +9,7 @@ myApp.factory('MicrosoftTranslator', ['AppSettings', function (AppSettings) {
     // Define private methods.
     service._getMicrosoftToken = function(callback) {
         // Get suscription key.
-        var suscriptionKey = service.getApiKey('microsoft');
+        var suscriptionKey = Shared.getApiKey('microsoft');
 
         // Verify that the key was defined.
         if(suscriptionKey) {

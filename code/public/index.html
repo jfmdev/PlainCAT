@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="../bower_components/angular-toastr/dist/angular-toastr.min.css">
     <link rel="stylesheet" type="text/css" href="css/app.css">
   </head>
-  <body ng-app="myApp">
+  <body ng-app="myApp" ng-controller="mainController">
  
     <div id="divider"></div>
 
@@ -34,8 +34,7 @@
 
     <!-- Include app files -->
     <script src="js/app.js"></script>
-    <script src="js/services/app-settings.js"></script>
-    <script src="js/services/project-settings.js"></script>
+    <script src="js/services/shared.js"></script>
     <script src="js/services/languages.js"></script>
     <script src="js/services/translator.yandex.js"></script>
     <script src="js/services/translator.microsoft.js"></script>
@@ -44,6 +43,7 @@
     <script src="js/services/spellchecker.js"></script>
     <script src="js/services/editor.js"></script>
     <script src="js/controllers/header.js"></script>
+    <script src="js/controllers/body.js"></script>
     <script src="js/controllers/main.js"></script>
     <script src="js/controllers/footer.js"></script>
   </body>

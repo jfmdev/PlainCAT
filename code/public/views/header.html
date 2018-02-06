@@ -1,9 +1,12 @@
 <div id="header" ng-controller="headerController">
     <div class="row">
         <div class="col-xs-6">
+            <strong ng-show="files.source.name">{{ removeExtension(files.source.name) }}</strong>
             <select ng-options="language as language.name for language in mainLanguages" ng-model="sourceLang" ng-change="languageSelected('source', sourceLang)"></select>
         </div>
         <div class="col-xs-6">
+            <strong ng-show="files.target.name">{{ removeExtension(files.target.name) }}</strong>
+            <em ng-show="!files.target.name && files.target.content">(Unnamed)</em>
             <select ng-options="language as language.name for language in mainLanguages" ng-model="destLang" ng-change="languageSelected('dest', destLang)"></select>
         </div>
     </div>

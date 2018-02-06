@@ -176,16 +176,16 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
           console.log("'Open Source' item clicked");
         }
     };
-    var openDestinationItem = {
-        label: 'Open destination',
-        accelerator: 'CmdOrCtrl+D',
+    var openTargetItem = {
+        label: 'Open target',
+        accelerator: 'CmdOrCtrl+T',
         click: function(item, focusedWindow) {
-            console.log("'Open Destination' item clicked");
+            console.log("'Open Target' item clicked");
         }
     };
     template.unshift({
         label: 'File', 
-        submenu: [openSourceItem, openDestinationItem] 
+        submenu: [openSourceItem, openTargetItem] 
     });
 
     // Add 'Settings' section to default template.
@@ -213,7 +213,7 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
         init: function(settings) {
             // Set listeners for file's subitems.
             if(settings && settings.openSource) openSourceItem.click = settings.openSource;
-            if(settings && settings.openDestination) openDestinationItem.click = settings.openDestination;
+            if(settings && settings.openTarget) openTargetItem.click = settings.openTarget;
           
             // Build and set menu.
             var menu = Menu.buildFromTemplate(template);

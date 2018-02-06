@@ -1,12 +1,21 @@
 // Define controller.
-myApp.controller('headerController', ['$scope', 'Languages', function ($scope, Languages) {
-    // Initialize variables.
-    $scope.mainLanguages = Languages.list;
-    $scope.sourceLang = Languages.lang.source;
-    $scope.destLang = Languages.lang.dest;
+myApp.controller('headerController', [
+    '$scope', 'Shared', 'Languages', 
+    function ($scope, Shared, Languages) {
+        // Initialize variables.
+        $scope.mainLanguages = Languages.list;
+        $scope.sourceLang = Languages.lang.source;
+        $scope.destLang = Languages.lang.dest;
+        $scope.files = Shared.files;
 
-    // Update language in settings when changing a combo box.
-    $scope.languageSelected = function(type, newValue) {
-        Languages.setLang(type, newValue);
-    };
-}]);
+        // Update language in settings when changing a combo box.
+        $scope.languageSelected = function(type, newValue) {
+            Languages.setLang(type, newValue);
+        };
+
+        // Remove extension from file name.
+        $scope.removeExtension = function(fileName) {
+            return (fileName || '').replace(/\.[^/.]+$/, "");
+        };
+    }
+]);

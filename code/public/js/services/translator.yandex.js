@@ -1,5 +1,5 @@
 // Service for translate text using Yandex Translator.
-myApp.factory('YandexTranslator', ['AppSettings', function (AppSettings) {
+myApp.factory('YandexTranslator', ['Shared', function (Shared) {
     // Define service.
     var service = {};
 
@@ -7,7 +7,7 @@ myApp.factory('YandexTranslator', ['AppSettings', function (AppSettings) {
     service.translate = function(fromLang, toLang, content) {
         return new Promise(function(resolve, reject) {
             // Initialize variables.
-            var apiKey = AppSettings.getApiKey('yandex');
+            var apiKey = Shared.getApiKey('yandex');
             var lang = fromLang + "-" + toLang;
 
             // Validate parameters.
