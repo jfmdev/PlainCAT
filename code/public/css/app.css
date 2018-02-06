@@ -74,3 +74,7 @@ textarea {
     cursor: pointer;
     border-radius: 5px;
 }
+
+div.modal-content {
+    padding: 0 10px;
+}
