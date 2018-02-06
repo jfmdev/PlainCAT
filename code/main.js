@@ -84,6 +84,28 @@ ipcMain.on('settings-set', function(event, arg) {
 // Initialize files.
 var openedFiles = {};
 
+// Read a file and send the corresponding events.
+function readOpenedFile(event, filePath, target) {
+    // Read file.
+    fs.readFile(filePath, 'utf8', function (err, data) {
+        // Verify if the file was read.
+        if (!err) {
+            // Parse file's data.
+            var docLines = getDocLines(data);
+
+            // Save file's path and data.
+            openedFiles[target] = {'path': filePath, 'data': docLines};
+            settingsStore.put('app.file_'+target, filePath);
+
+            // Return data.
+            event.sender.send('file-read', {'error': null, 'data': docLines, 'target': target});
+        } else {
+            // Return error.
+            event.sender.send('file-read', {'error': {'code': "UNEXPECTED_ERROR", 'message': err}, 'data': null});
+        }
+    });
+};
+
 // Event for open and read a text file.
 ipcMain.on('open-file', function(event, target) {
     // Read file.
@@ -91,24 +113,7 @@ ipcMain.on('open-file', function(event, target) {
     
     // Verify if the file was selected.
     if(files != null && files.length > 0) {
-        // Read file.
-        fs.readFile(files[0], 'utf8', function (err, data) {   
-            // Verify if the file was read.
-            if (!err) {
-                // Parse file's data.
-                var docLines = getDocLines(data);
-
-                // Save file's path and data.
-                openedFiles[target] = {'path': files[0], 'data': docLines};
-                settingsStore.put('app.file_'+target, files[0]);
-
-                // Return data.
-                event.sender.send('file-read', {'error': null, 'data': docLines, 'target': target});
-            } else {
-                // Return error.
-                event.sender.send('file-read', {'error': {'code': "UNEXPECTED_ERROR", 'message': err}, 'data': null});
-            }
-        });
+        readOpenedFile(event, files[0], target);
     } else {
         // Return error.
         event.sender.send('file-read', {'error': {'code': "NO_FILE_SELECTED", 'message': "No file was selected"}, 'data': null});
@@ -148,8 +153,9 @@ function getDocLines(text) {
 }
 
 // Verify if a file already opened can be read.
-ipcMain.on('cached-file', function(event, target) {
-    event.returnValue = openedFiles[target] != null? openedFiles[target].data : null;
+ipcMain.on('last-file', function(event, target) {
+    var filePath = settingsStore.get('app.file_' + target);
+    if(filePath) { readOpenedFile(event, filePath, target); }
 });
 
 

@@ -77,10 +77,8 @@ myApp.controller('mainController', [
         });
         ipcRenderer.on('file-read', $scope.onFileRead);
 
-        // Verify if they are files already loaded.
-        var cachedSource = ipcRenderer.sendSync('cached-file', 'source');
-        if(cachedSource != null) { $scope.loadFile('source', cachedSource); }
-        var cachedDestination = ipcRenderer.sendSync('cached-file', 'destination');
-        if(cachedDestination != null) { $scope.loadFile('destination', cachedDestination); }
+        // Load (if availables) the last opened files.
+        ipcRenderer.send('last-file', 'source');
+        ipcRenderer.send('last-file', 'destination');
     }
 ]);
