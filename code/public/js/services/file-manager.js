@@ -38,6 +38,13 @@ myApp.factory('FileManager', [
             }
         }
 
+        // --- Listeners --- /
+
+        // When a paragraph is edited, update the dirty flag.
+        $rootScope.$on('paragraph-edited', function(event, data) {
+            Shared.files[data.type].dirty = true;
+        });
+
         // --- Public methods --- //
 
         // Function for open a file selector.

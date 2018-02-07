@@ -5,9 +5,9 @@
     width: 4px; 
     height: 100%; 
     position: fixed; 
-    background-color: lightgray;
-    border-left: 1px solid gray;
-    border-right: 1px solid gray;
+    background-color: #ddf;
+    border-left: 1px solid #66c;
+    border-right: 1px solid #66c;
     z-index: 40px;
 }
 
@@ -16,8 +16,8 @@
     top: 0;
     width: 100%;
     position: fixed;
-    border-bottom: 1px solid gray;
-    background-color: lightgray;
+    border-bottom: 1px solid #66c;
+    background-color: #ddf;
     padding: 3px;
     z-index: 50;
     height: 46px;
@@ -25,7 +25,7 @@
 
 #header .file-name {
     font-size: 10pt;
-    font-family: "Lucida Console", Monaco, monospace;  
+    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
 #header .file-options {
@@ -50,14 +50,14 @@
     bottom: 0;
     width: 100%;
     position: fixed;
-    border-top: 1px solid gray;
+    border-top: 1px solid #66c;
     background-color: white;
     overflow-y: auto;
     z-index: 50;
 }
 
 #footer > div {
-    border-top: 4px solid lightgray;
+    border-top: 4px solid #ddf;
     padding: 3px;
     height: 80px;
 }
