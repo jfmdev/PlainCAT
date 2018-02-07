@@ -1,6 +1,6 @@
 
 // Service for initialize the application's menu.
-myApp.factory('Editor', ['$rootScope', 'Translator', function($rootScope, Translator) {
+myApp.factory('Editor', ['$rootScope', function($rootScope) {
     // Define factory.
     var factory = {
         // Initialize an editor.
@@ -88,6 +88,11 @@ myApp.factory('Editor', ['$rootScope', 'Translator', function($rootScope, Transl
         // Behaviour for the mouse enter event on a paragraph.
         onMouseEnter: function(container, twinContainer) {
             return function(event) {
+                // Remove highlight from all other paragrah (sometimes mouse leave event don't triggers).
+                container.find('p').removeClass('highlight');
+                twinContainer.find('p').removeClass('highlight');
+
+                // Highlight twin paragraph.
                 var paragraph = $(this);
                 var index = paragraph.parent().children('p').index(paragraph);
                 var twinParagraph = twinContainer.children('p').eq(index);
