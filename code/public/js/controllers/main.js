@@ -3,6 +3,7 @@ myApp.controller('mainController', [
     '$scope', 'Shared', 'Menu', 'FileManager',
     function ($scope, Shared, Menu, FileManager) {
         var ipcRenderer = require('electron').ipcRenderer;
+        var remote = require('electron').remote
 
         // Initialize menu, defining methods for manipulate files.
         Menu.init({
@@ -17,6 +18,10 @@ myApp.controller('mainController', [
             },
             closeTarget: function(item, focusedWindow) { 
                 FileManager.closeFile('target'); 
+            },
+            exit: function(item, focusedWindow) { 
+                var window = remote.getCurrentWindow();
+                window.close();
             },
         });
 

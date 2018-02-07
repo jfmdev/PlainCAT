@@ -106,61 +106,6 @@ var default_template = [
   // },
 ];
 
-// if (process.platform == 'darwin') {
-  // var name = require('electron').remote.app.getName();
-  // template.unshift({
-    // label: name,
-    // submenu: [
-      // {
-        // label: 'About ' + name,
-        // role: 'about'
-      // },
-      // {
-        // type: 'separator'
-      // },
-      // {
-        // label: 'Services',
-        // role: 'services',
-        // submenu: []
-      // },
-      // {
-        // type: 'separator'
-      // },
-      // {
-        // label: 'Hide ' + name,
-        // accelerator: 'Command+H',
-        // role: 'hide'
-      // },
-      // {
-        // label: 'Hide Others',
-        // accelerator: 'Command+Alt+H',
-        // role: 'hideothers'
-      // },
-      // {
-        // label: 'Show All',
-        // role: 'unhide'
-      // },
-      // {
-        // type: 'separator'
-      // },
-      // {
-        // label: 'Quit',
-        // accelerator: 'Command+Q',
-        // click: function() { app.quit(); }
-      // },
-    // ]
-  // });
-  // template[3].submenu.push(
-    // {
-      // type: 'separator'
-    // },
-    // {
-      // label: 'Bring All to Front',
-      // role: 'front'
-    // }
-  // );
-// };
-
 // Service for initialize the application's menu.
 myApp.factory('Menu', ['$uibModal', function($uibModal) {
     // Load dependencies.
@@ -170,30 +115,63 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
 
     // Add 'File' section to default template.
     var openSourceItem = {
-        label: 'Open source',
-        accelerator: 'CmdOrCtrl+O',
+        label: 'Open',
         click: function(item, focusedWindow) {}
     };
     var openTargetItem = {
-        label: 'Open target',
-        accelerator: 'CmdOrCtrl+T',
+        label: 'Open',
+        click: function(item, focusedWindow) {}
+    };
+    var saveSourceItem = {
+        label: 'Save',
+        click: function(item, focusedWindow) {}
+    };
+    var saveTargetItem = {
+        label: 'Save',
+        click: function(item, focusedWindow) {}
+    };
+    var saveAsSourceItem = {
+        label: 'Save As...',
+        click: function(item, focusedWindow) {}
+    };
+    var saveAsTargetItem = {
+        label: 'Save As...',
         click: function(item, focusedWindow) {}
     };
     var closeSourceItem = {
-        label: 'Close source',
+        label: 'Close',
         click: function(item, focusedWindow) {}
     };
     var closeTargetItem = {
-        label: 'Close target',
+        label: 'Close',
+        click: function(item, focusedWindow) {}
+    };
+    var exitItem = {
+        label: 'Exit',
         click: function(item, focusedWindow) {}
     };
     template.unshift({
         label: 'File', 
         submenu: [
-            openSourceItem, 
-            openTargetItem, 
-            closeSourceItem, 
-            closeTargetItem,
+            {
+              label: 'Source',
+              submenu: [
+                  openSourceItem, 
+                  saveSourceItem,
+                  saveAsSourceItem,
+                  closeSourceItem, 
+              ]
+            },
+            {
+              label: 'Target',
+              submenu: [
+                  openTargetItem, 
+                  saveTargetItem,
+                  saveAsTargetItem,
+                  closeTargetItem,
+              ]
+            },
+            exitItem,
         ] 
     });
 
@@ -221,10 +199,15 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
     var factory = {
         init: function(settings) {
             // Set listeners for file's subitems.
-            if(settings && settings.openSource) openSourceItem.click = settings.openSource;
-            if(settings && settings.openTarget) openTargetItem.click = settings.openTarget;
-            if(settings && settings.closeSource) closeSourceItem.click = settings.closeSource;
-            if(settings && settings.closeTarget) closeTargetItem.click = settings.closeTarget;
+            if(settings.openSource) openSourceItem.click = settings.openSource;
+            if(settings.openTarget) openTargetItem.click = settings.openTarget;
+            if(settings.saveSource) saveSourceItem.click = settings.saveSource;
+            if(settings.saveTarget) saveTargetItem.click = settings.saveTarget;
+            if(settings.saveAsSource) saveAsSourceItem.click = settings.saveAsSource;
+            if(settings.saveAsTarget) saveAsTargetItem.click = settings.saveAsTarget;
+            if(settings.closeSource) closeSourceItem.click = settings.closeSource;
+            if(settings.closeTarget) closeTargetItem.click = settings.closeTarget;
+            if(settings.exit) exitItem.click = settings.exit;
 
             // Build and set menu.
             var menu = Menu.buildFromTemplate(template);
