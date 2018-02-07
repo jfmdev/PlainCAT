@@ -1,8 +1,10 @@
 
 // Declare application.
 var myApp = angular.module('myApp', [
-    'blockUI', 
-    'ngAnimate', 
-    'toastr',
+    'ngAnimate',
+    'ngSanitize',
     'ui.bootstrap',
+    'blockUI',
+    'toastr',
+    'cp.ngConfirm',
 ]);

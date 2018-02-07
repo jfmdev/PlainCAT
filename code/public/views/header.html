@@ -3,7 +3,7 @@
         <div class="col-xs-6">
             <div class="file-name">
                 <span ng-show="files.source.name">
-                    {{ removeExtension(files.source.name) }}<span ng-show="files.source.dirty">*<span>
+                    {{ removeExtension(files.source.name) }}<span ng-show="files.source.dirty">*</span>
                 </span>
                 <em ng-show="!files.source.name">(No file selected)</em>
                 <a ng-show="files.source.name" ng-click="closeFile('source')" class="close-btn">
@@ -17,7 +17,7 @@
         <div class="col-xs-6">
             <div class="file-name">
                 <span ng-show="files.target.name">
-                    {{ removeExtension(files.target.name) }}<span ng-show="files.target.dirty">*<span>
+                    {{ removeExtension(files.target.name) }}<span ng-show="files.target.dirty">*</span>
                 </span>
                 <em ng-show="!files.target.name">({{ files.target.content? 'Unnamed': 'No file selected' }})</em>
                 <a ng-show="files.target.name" ng-click="closeFile('target')" class="close-btn">

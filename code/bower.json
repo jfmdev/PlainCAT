@@ -17,12 +17,14 @@
   "private": true,
   "dependencies": {
     "bootstrap": "~3.3.6",
-    "angular": "~1.5.0",
+    "angular": "~1.6.9",
     "angular-block-ui": "~0.2.2",
     "angular-toastr": "~1.7.0",
-    "angular-animate": "~1.5.0",
+    "angular-animate": "~1.6.9",
     "underscore": "^1.8.3",
     "bluebird": "^3.5.1",
-    "angular-bootstrap": "^2.5.0"
+    "angular-bootstrap": "^2.5.0",
+    "angular-sanitize": "^1.6.9",
+    "ng-confirm": "angular-confirm#^1.1.0"
   }
 }

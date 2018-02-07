@@ -1,7 +1,7 @@
 // Define controller.
 myApp.controller('mainController', [
-    '$scope', 'Shared', 'Menu', 'FileManager',
-    function ($scope, Shared, Menu, FileManager) {
+    '$scope', '$ngConfirm', 'Shared', 'Menu', 'FileManager',
+    function ($scope, $ngConfirm, Shared, Menu, FileManager) {
         var ipcRenderer = require('electron').ipcRenderer;
         var remote = require('electron').remote
 
@@ -21,7 +21,35 @@ myApp.controller('mainController', [
             },
             exit: function(item, focusedWindow) { 
                 var window = remote.getCurrentWindow();
-                window.close();
+                
+                // Ask confirmation if they are unsaved files.
+                if(Shared.files.source.dirty || Shared.files.target.dirty) {
+                    $ngConfirm({
+                        title: 'You have unsaved changes',
+                        content: 'Are you sure you want to exit without saving your changes?',
+                        columnClass: 'col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6',
+                        buttons: {
+                            yes: {
+                                text: 'Yes, exit anyway',
+                                btnClass: 'btn-orange',
+                                action: function(scope, button){
+                                    // Close app.
+                                    window.close();
+                                }
+                            },
+                            no: {
+                                text: 'No, I want to save first',
+                                btnClass: 'btn-blue',
+                                action: function(scope, button){
+                                    // Do nothing and close modal.
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    // Close app.
+                    window.close();
+                }
             },
         });
 
