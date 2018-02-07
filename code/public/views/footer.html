@@ -1,7 +1,26 @@
 <div id="footer" ng-controller="footerController">
     <div>
-        <p ng-hide="loading">{{ translation }}</p>
-        <p class="loading" ng-show="loading">Translating...</p>
-        <p class="error" ng-show="error">Translation could not be obtained ({{ error }})</p>
+        <p class="loading" ng-show="loading">
+            Translating...
+        </p>
+
+        <div ng-hide="loading">
+            <p ng-hide="error">
+                {{ translation }}
+            </p>
+            <p ng-hide="error" class="powered-by">
+                <a ng-show="poweredBy === 'yandex'" href="http://translate.yandex.com/" target="_blank">
+                    Powered by Yandex.Translate
+                </a>
+                <a ng-show="poweredBy === 'microsoft'" href="https://translator.microsoft.com/" target="_blank">
+                    Powered by Microsoft Translator
+                </a>
+            </p>
+
+            <p ng-show="error" class="error">
+                Translation could not be obtained
+                ({{ error }})
+            </p>
+        </div>
     </div>
 </div>

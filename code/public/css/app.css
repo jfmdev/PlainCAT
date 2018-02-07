@@ -40,12 +40,31 @@
     height: 80px;
 }
 
-#footer p.loading {
+#footer .loading {
     color: gray;
 }
 
-#footer p.error {
+#footer .error {
     color: darkred;
+}
+
+#footer .powered-by {
+    color: darkblue;
+    font-size: 8pt;
+    font-family: "Lucida Console", Monaco, monospace;
+    text-align: right;
+}
+
+#footer .powered-by > a {
+    color: darkblue;
+    background-color: #eef;
+    border: 1px solid darkblue;
+    border-radius: 2px;
+    padding: 3px 4px;
+}
+
+#footer .powered-by > a:hover {
+    text-decoration: none;
 }
 
 #body {
