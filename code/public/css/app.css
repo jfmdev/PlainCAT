@@ -20,7 +20,29 @@
     background-color: lightgray;
     padding: 3px;
     z-index: 50;
-    height: 26px;
+    height: 46px;
+}
+
+#header .file-name {
+    font-size: 10pt;
+    font-family: "Lucida Console", Monaco, monospace;  
+}
+
+#header .file-options {
+    font-size: 10pt;
+    margin-top: 2px;
+}
+
+#header a.close-btn {
+    margin-top: 4px;
+    float: right;
+    color: #800;
+}
+
+#header a.close-btn:hover {
+    color: #c00;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 #footer {
@@ -68,24 +90,25 @@
 }
 
 #body {
-    margin-top: 26px; /* match with #header height */
+    margin-top: 46px; /* match with #header height */
     margin-bottom: 80px; /* match with #footer height */
     padding-top: 4px;
     padding-bottom: 4px;
 }
 
-.highlight ,
 #source-file p:hover,
-#target-file p:hover {
+#target-file p:hover,
+#source-file .highlight,
+#target-file .highlight {
     background-color: #dff;
 }
 
-textarea {
+#body textarea {
     width: 100%;
     resize: none;
 }
 
-.editing {
+#body .editing {
     background-color: #dfd;
 }
 

@@ -1,13 +1,28 @@
 <div id="header" ng-controller="headerController">
     <div class="row">
         <div class="col-xs-6">
-            <strong ng-show="files.source.name">{{ removeExtension(files.source.name) }}</strong>
-            <select ng-options="language as language.name for language in mainLanguages" ng-model="sourceLang" ng-change="languageSelected('source', sourceLang)"></select>
+            <div class="file-name">
+                <span ng-show="files.source.name">{{ removeExtension(files.source.name) }}</span>
+                <em ng-show="!files.source.name">(No file selected)</em>
+                <a ng-show="files.source.name" ng-click="closeFile('source')" class="close-btn">
+                    <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="file-options">
+                <select ng-options="language as language.name for language in mainLanguages" ng-model="sourceLang" ng-change="languageSelected('source', sourceLang)"></select>
+            </div>
         </div>
         <div class="col-xs-6">
-            <strong ng-show="files.target.name">{{ removeExtension(files.target.name) }}</strong>
-            <em ng-show="!files.target.name && files.target.content">(Unnamed)</em>
-            <select ng-options="language as language.name for language in mainLanguages" ng-model="destLang" ng-change="languageSelected('dest', destLang)"></select>
+            <div class="file-name">
+                <span ng-show="files.target.name">{{ removeExtension(files.target.name) }}</span>
+                <em ng-show="!files.target.name">({{ files.target.content? 'Unnamed': 'No file selected' }})</em>
+                <a ng-show="files.target.name" ng-click="closeFile('target')" class="close-btn">
+                    <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="file-options">
+                <select ng-options="language as language.name for language in mainLanguages" ng-model="destLang" ng-change="languageSelected('dest', destLang)"></select>
+            </div>
         </div>
     </div>
 </div> 
