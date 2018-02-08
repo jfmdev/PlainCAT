@@ -18,7 +18,7 @@ myApp.controller('bodyController', [
 
         // Copy the source's content into the target.
         $scope.copySource = function() {
-            var lines = Editor.getContent('#source-file');
+            var lines = Editor.getContentAsArray('#source-file');
             var content = [];
             for(var i=0; i<lines.length; i++) {
                 content.push({
@@ -33,6 +33,7 @@ myApp.controller('bodyController', [
                 name: null,
                 path: null,
                 content: content,
+                encoding: $scope.files.source.encoding,
             };
         };
     }

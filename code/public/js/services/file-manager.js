@@ -1,7 +1,7 @@
 // Service for manage files.
 myApp.factory('FileManager', [
-    '$rootScope', '$ngConfirm', 'toastr', 'Shared', 
-    function($rootScope, $ngConfirm, toastr, Shared) {
+    '$rootScope', '$ngConfirm', 'toastr', 'Shared', 'Editor', 
+    function($rootScope, $ngConfirm, toastr, Shared, Editor) {
         var service = {};
         var ipcRenderer = require('electron').ipcRenderer;
 
@@ -14,6 +14,7 @@ myApp.factory('FileManager', [
                 name: fileData.name,
                 path: fileData.path,
                 content: fileData.lines,
+                encoding: fileData.encoding,
             };
 
             // Update UI if need.
@@ -38,6 +39,17 @@ myApp.factory('FileManager', [
             }
         }
 
+        // Event handler for when a file is read.
+        service._onFileSaved = function(event, result) {
+            // Verify if the operation was successful.
+            if(!result.err) {
+                Shared.files[result.type].dirty = false;
+                toastr.success('The file was saved');
+            } else {
+                toastr.error(result.err + '', "File not saved");
+            }
+        }
+
         // --- Listeners --- /
 
         // When a paragraph is edited, update the dirty flag.
@@ -57,6 +69,29 @@ myApp.factory('FileManager', [
             ipcRenderer.send('open-file', type); 
         };
         ipcRenderer.on('file-read', service._onFileRead);
+
+        // Function for save a file.
+        service.saveFile = function(type) {
+            // Check if the file is defined.
+            if(Shared.files[type].path) {
+                // Get content.
+                // TODO: Ideally should replace new paragraphs in original file.
+                var paragraphSeparator =  ipcRenderer.sendSync('get-platform') !== 'win32'? '\n' : '\r\n';
+                var content = Editor.getContentAsArray('#' + type + '-file').join(paragraphSeparator);
+
+                // Save file.
+                ipcRenderer.send('save-file', type, Shared.files[type].path, content, Shared.files[type].encoding);               
+            } else {
+                // Ask user to enter a file name first.
+                service.saveFileAs(type);
+            }
+        };
+        ipcRenderer.on('file-saved', service._onFileSaved);
+
+        // Function for save a file with a new name.
+        service.saveFileAs = function(type) {
+            // TODO
+        };
 
         // Function for close a file.
         service.closeFile = function(type, dontConfirm) {

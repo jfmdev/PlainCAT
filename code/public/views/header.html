@@ -6,12 +6,25 @@
                     {{ removeExtension(files.source.name) }}<span ng-show="files.source.dirty">*</span>
                 </span>
                 <em ng-show="!files.source.name">(No file selected)</em>
-                <a ng-show="files.source.name" ng-click="closeFile('source')" class="close-btn">
+                <a ng-show="files.source.name" ng-click="closeFile('source')" class="btn-close pull-right">
                     <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                 </a>
             </div>
             <div class="file-options">
-                <select ng-options="language as language.name for language in mainLanguages" ng-model="sourceLang" ng-change="languageSelected('source', sourceLang)"></select>
+                <a ng-click="openFile('source')" class="btn-open">
+                    <i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i>
+                </a>
+                <a ng-click="saveFile('source')" class="btn-save" ng-show="files.source.content !== null">
+                    <i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i>
+                </a>
+                <a ng-click="saveFileAs('source')" class="btn-save" ng-show="files.source.content !== null">
+                    <i class="glyphicon glyphicon-floppy-save" aria-hidden="true"></i>
+                </a>
+                <select class="pull-right"
+                    ng-options="language as language.name for language in mainLanguages" 
+                    ng-model="sourceLang" 
+                    ng-change="languageSelected('source', sourceLang)">
+                </select>
             </div>
         </div>
         <div class="col-xs-6">
@@ -20,12 +33,25 @@
                     {{ removeExtension(files.target.name) }}<span ng-show="files.target.dirty">*</span>
                 </span>
                 <em ng-show="!files.target.name">({{ files.target.content? 'Unnamed': 'No file selected' }})</em>
-                <a ng-show="files.target.name" ng-click="closeFile('target')" class="close-btn">
+                <a ng-show="files.target.name" ng-click="closeFile('target')" class="btn-close pull-right">
                     <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                 </a>
             </div>
             <div class="file-options">
-                <select ng-options="language as language.name for language in mainLanguages" ng-model="destLang" ng-change="languageSelected('dest', destLang)"></select>
+                <a ng-click="openFile('target')" class="btn-open">
+                    <i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i>
+                </a>
+                <a ng-click="saveFile('target')" class="btn-save" ng-show="files.target.content !== null">
+                    <i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i>
+                </a>
+                <a ng-click="saveFileAs('target')" class="btn-save" ng-show="files.target.content !== null">
+                    <i class="glyphicon glyphicon-floppy-save" aria-hidden="true"></i>
+                </a>
+                <select class="pull-right" 
+                    ng-options="language as language.name for language in mainLanguages" 
+                    ng-model="destLang" 
+                    ng-change="languageSelected('dest', destLang)">
+                </select>
             </div>
         </div>
     </div>

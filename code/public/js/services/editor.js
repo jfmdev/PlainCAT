@@ -145,8 +145,8 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
             return res;
         },
 
-        // Get all content of <p> elements as an string.
-        getContent: function(selector) {
+        // Get all content of <p> elements as an array of string.
+        getContentAsArray: function(selector) {
             var res = [];
             $(selector).children('p').each(function(index, element) {
                 res.push($(element).text());

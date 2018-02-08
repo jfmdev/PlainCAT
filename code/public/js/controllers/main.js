@@ -13,6 +13,18 @@ myApp.controller('mainController', [
             openTarget: function(item, focusedWindow) { 
                 FileManager.openFile('target'); 
             },
+            saveSource: function(item, focusedWindow) { 
+                FileManager.saveFile('source'); 
+            },
+            saveTarget: function(item, focusedWindow) { 
+                FileManager.saveFile('target'); 
+            },
+            saveSourceAs: function(item, focusedWindow) { 
+                FileManager.saveFileAs('source'); 
+            },
+            saveTargetAs: function(item, focusedWindow) { 
+                FileManager.saveFileAs('target'); 
+            },
             closeSource: function(item, focusedWindow) { 
                 FileManager.closeFile('source'); 
             },

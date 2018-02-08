@@ -52,12 +52,14 @@ myApp.factory('Shared', [function () {
             path: null,
             content: null,
             dirty: false,
+            encoding: 'UTF-8',
         },
         target: {
             name: null,
             path: null,
             content: null,
             dirty: false,
+            encoding: 'UTF-8',
         },
     };
 

@@ -6,6 +6,7 @@ const ipcMain = electron.ipcMain;
 const dialog = electron.dialog;
 const path = require('path');
 const fs = require('fs');
+const jschardet = require('jschardet');
 
 
 // ----- Initialization ----- // 
@@ -85,46 +86,28 @@ ipcMain.on('settings-set', function(event, arg) {
 // Initialize files.
 var openedFiles = {};
 
-// Read a file and send the corresponding events.
-function readOpenedFile(event, filePath, target) {
-    // Read file.
-    fs.readFile(filePath, 'utf8', function (err, data) {
+// Helper function for support reading files with and unknown encoding.
+function readFileWithAnyEncoding(filePath, callback) {
+    // Read file for detect his encoding.
+    fs.readFile(filePath, function (err, rawBuffer) {
         // Verify if the file was read.
         if (!err) {
-            // Parse file's data.
-            let docLines = getDocLines(data);
+            // Detect file encoding.
+            let encoding = (jschardet.detect(rawBuffer).encoding || 'UTF-8').toLowerCase();
 
-            // Save file's path and data.
-            openedFiles[target] = {'path': filePath, 'data': docLines};
-            settingsStore.put('app.file_'+target, filePath);
-
-            // Return data.
-            let fileReadData = {
-                path: filePath,
-                name: path.basename(filePath),
-                lines: docLines,
-            };
-            event.sender.send('file-read', {'error': null, 'data': fileReadData, 'target': target});
+            try{
+                // Read file again with the corresponding encoding.
+                fs.readFile(filePath, encoding, function (err2, data) {
+                    callback(err2, data, encoding);
+                });
+            }catch(exp) {
+                callback(exp + '', '', encoding);
+            }
         } else {
-            // Return error.
-            event.sender.send('file-read', {'error': {'code': "UNEXPECTED_ERROR", 'message': err}, 'data': null});
+            callback(err, '', null);
         }
     });
 };
-
-// Event for open and read a text file.
-ipcMain.on('open-file', function(event, target) {
-    // Read file.
-    var files = dialog.showOpenDialog({ properties: [ 'openFile' ]});
-    
-    // Verify if the file was selected.
-    if(files != null && files.length > 0) {
-        readOpenedFile(event, files[0], target);
-    } else {
-        // Return error.
-        event.sender.send('file-read', {'error': {'code': "NO_FILE_SELECTED", 'message': "No file was selected"}, 'data': null});
-    }
-});
 
 // Parse a file, separating his lines.
 function getDocLines(text) {
@@ -158,10 +141,62 @@ function getDocLines(text) {
     return result;
 }
 
+// Read a file and send the corresponding events.
+function readAndParseFile(event, filePath, target) {
+    // Read file.
+    readFileWithAnyEncoding(filePath, function (err, fileData, encoding) {
+        // Verify if the file was read.
+        if (!err) {
+            // Parse file's data.
+            let docLines = getDocLines(fileData);
+
+            // Save file's path and data.
+            openedFiles[target] = {'path': filePath, 'data': docLines, 'encoding': encoding};
+            settingsStore.put('app.file_'+target, filePath);
+
+            // Return data.
+            let fileReadData = {
+                path: filePath,
+                name: path.basename(filePath),
+                lines: docLines,
+                encoding: encoding,
+            };
+
+            event.sender.send('file-read', {'error': null, 'data': fileReadData, 'target': target});
+        } else {
+            // Return error.
+            event.sender.send('file-read', {'error': {'code': "UNEXPECTED_ERROR", 'message': err}, 'data': null, 'target': target});
+        }
+    });
+};
+
+// Open and read a text file.
+ipcMain.on('open-file', function(event, target) {
+    // Read file.
+    var files = dialog.showOpenDialog({ properties: [ 'openFile' ]});
+    
+    // Verify if the file was selected.
+    if(files != null && files.length > 0) {
+        readAndParseFile(event, files[0], target);
+    } else {
+        // Return error.
+        event.sender.send('file-read', {'error': {'code': "NO_FILE_SELECTED", 'message': "No file was selected"}, 'data': null});
+    }
+});
+
 // Verify if a file already opened can be read.
 ipcMain.on('last-file', function(event, target) {
     var filePath = settingsStore.get('app.file_' + target);
-    if(filePath) { readOpenedFile(event, filePath, target); }
+    if(filePath) { readAndParseFile(event, filePath, target); }
+});
+
+// Open and read a text file.
+ipcMain.on('save-file', function(event, type, filePath, data, encoding) {
+    // Save file.
+    fs.writeFile(filePath, data, encoding || 'UTF-8', function(err) {
+        // Return result.
+        event.sender.send('file-saved', {'type': type, 'err': err});
+    });
 });
 
 
@@ -262,4 +297,11 @@ ipcMain.on('cached-translation.set', function(event, fromLang, toLang, engine, c
     translationCache.set(translationKey, translation, function(err, success) {
         // Do nothing.
     });
+});
+
+// ----- Miscellaneous ----- //
+
+// Get the current platform.
+ipcMain.on('get-platform', function(event) {
+    event.returnValue = process.platform;
 });

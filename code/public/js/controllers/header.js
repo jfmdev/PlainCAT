@@ -11,6 +11,15 @@ myApp.controller('headerController', [
         // Close a file.
         $scope.closeFile = FileManager.closeFile;
 
+        // Open a file.
+        $scope.openFile = FileManager.openFile;
+
+        // Save a file.
+        $scope.saveFile = FileManager.saveFile;
+
+        // Save a file with a new name.
+        $scope.saveFileAs = FileManager.saveFileAs;
+
         // Update language in settings when changing a combo box.
         $scope.languageSelected = function(type, newValue) {
             Languages.setLang(type, newValue);
