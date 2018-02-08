@@ -1,5 +1,7 @@
 // Service for initialize the application's menu.
 myApp.factory('Editor', ['$rootScope', function($rootScope) {
+    var ipcRenderer = require('electron').ipcRenderer;
+
     // Define factory.
     var factory = {
         // Initialize an editor.
@@ -146,13 +148,21 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
         },
 
         // Get all content of <p> elements as an array of string.
-        getContentAsArray: function(selector) {
+        getContentAsArray: function(type) {
             var res = [];
-            $(selector).children('p').each(function(index, element) {
+            $('#' + type + '-file').children('p').each(function(index, element) {
                 res.push($(element).text());
             });
             return res;
-        }
+        },
+
+        // Get all content of <p> elements as a string.
+        getContentAsString: function(type) {
+            // TODO: Ideally should replace new paragraphs in original file.
+            var paragraphSeparator =  ipcRenderer.sendSync('get-platform') !== 'win32'? '\n' : '\r\n';
+            var content = this.getContentAsArray(type).join(paragraphSeparator);
+            return content;
+        },
     };
 
     // Return factory.

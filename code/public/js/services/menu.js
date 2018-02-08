@@ -203,8 +203,8 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
             if(settings.openTarget) openTargetItem.click = settings.openTarget;
             if(settings.saveSource) saveSourceItem.click = settings.saveSource;
             if(settings.saveTarget) saveTargetItem.click = settings.saveTarget;
-            if(settings.saveAsSource) saveAsSourceItem.click = settings.saveAsSource;
-            if(settings.saveAsTarget) saveAsTargetItem.click = settings.saveAsTarget;
+            if(settings.saveSourceAs) saveAsSourceItem.click = settings.saveSourceAs;
+            if(settings.saveTargetAs) saveAsTargetItem.click = settings.saveTargetAs;
             if(settings.closeSource) closeSourceItem.click = settings.closeSource;
             if(settings.closeTarget) closeTargetItem.click = settings.closeTarget;
             if(settings.exit) exitItem.click = settings.exit;

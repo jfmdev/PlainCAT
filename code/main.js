@@ -173,7 +173,7 @@ function readAndParseFile(event, filePath, target) {
 // Open and read a text file.
 ipcMain.on('open-file', function(event, target) {
     // Read file.
-    var files = dialog.showOpenDialog({ properties: [ 'openFile' ]});
+    var files = dialog.showOpenDialog({ properties: ['openFile']});
     
     // Verify if the file was selected.
     if(files != null && files.length > 0) {
@@ -185,18 +185,46 @@ ipcMain.on('open-file', function(event, target) {
 });
 
 // Verify if a file already opened can be read.
-ipcMain.on('last-file', function(event, target) {
-    var filePath = settingsStore.get('app.file_' + target);
-    if(filePath) { readAndParseFile(event, filePath, target); }
+ipcMain.on('last-file', function(event, type) {
+    var filePath = settingsStore.get('app.file_' + type);
+    if(filePath) { readAndParseFile(event, filePath, type); }
 });
 
-// Open and read a text file.
+// Saves a text file.
 ipcMain.on('save-file', function(event, type, filePath, data, encoding) {
     // Save file.
     fs.writeFile(filePath, data, encoding || 'UTF-8', function(err) {
         // Return result.
-        event.sender.send('file-saved', {'type': type, 'err': err});
+        event.sender.send('file-saved', {
+            'type': type, 
+            'err': err,
+            'path': filePath,
+            'name': path.basename(filePath),
+        });
     });
+});
+
+// Ask user to select a path and then saves a text file.
+ipcMain.on('save-file-as', function(event, type, data, encoding) {
+    // Read file.
+    var filePath = dialog.showSaveDialog();
+    
+    // Verify if the file was selected.
+    if(filePath) {
+        // Save file.
+        fs.writeFile(filePath, data, encoding || 'UTF-8', function(err) {
+            // Return result.
+            event.sender.send('file-saved', {
+                'type': type, 
+                'err': err,
+                'path': filePath,
+                'name': path.basename(filePath),
+            });
+        });
+    } else {
+        // Return error.
+        event.sender.send('file-saved', {'type': type, 'err': "No file was selected"});
+    }
 });
 
 

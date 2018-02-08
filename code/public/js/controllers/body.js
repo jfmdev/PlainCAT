@@ -18,7 +18,7 @@ myApp.controller('bodyController', [
 
         // Copy the source's content into the target.
         $scope.copySource = function() {
-            var lines = Editor.getContentAsArray('#source-file');
+            var lines = Editor.getContentAsArray('source');
             var content = [];
             for(var i=0; i<lines.length; i++) {
                 content.push({

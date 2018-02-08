@@ -44,6 +44,8 @@ myApp.factory('FileManager', [
             // Verify if the operation was successful.
             if(!result.err) {
                 Shared.files[result.type].dirty = false;
+                Shared.files[result.type].name = result.name;
+                Shared.files[result.type].path = result.path;
                 toastr.success('The file was saved');
             } else {
                 toastr.error(result.err + '', "File not saved");
@@ -74,12 +76,8 @@ myApp.factory('FileManager', [
         service.saveFile = function(type) {
             // Check if the file is defined.
             if(Shared.files[type].path) {
-                // Get content.
-                // TODO: Ideally should replace new paragraphs in original file.
-                var paragraphSeparator =  ipcRenderer.sendSync('get-platform') !== 'win32'? '\n' : '\r\n';
-                var content = Editor.getContentAsArray('#' + type + '-file').join(paragraphSeparator);
-
                 // Save file.
+                var content = Editor.getContentAsString(type)
                 ipcRenderer.send('save-file', type, Shared.files[type].path, content, Shared.files[type].encoding);               
             } else {
                 // Ask user to enter a file name first.
@@ -90,7 +88,8 @@ myApp.factory('FileManager', [
 
         // Function for save a file with a new name.
         service.saveFileAs = function(type) {
-            // TODO
+            var content = Editor.getContentAsString(type);
+            ipcRenderer.send('save-file-as', type, content, Shared.files[type].encoding);               
         };
 
         // Function for close a file.
