@@ -67,8 +67,35 @@ myApp.factory('FileManager', [
 
         // Function for open a file selector.
         service.openFile = function(type) {
-            // Open file selector dialog.
-            ipcRenderer.send('open-file', type); 
+            // Check if there is a file already opened an if it's dirty.
+            if(Shared.files[type].name && Shared.files[type].dirty) {
+                // Ask confirmation.
+                $ngConfirm({
+                    title: 'The current file has unsaved changes',
+                    content: 'Are you sure you want to open a new file, discarding the changes of the current file?',
+                    columnClass: 'col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6',
+                    buttons: {
+                        yes: {
+                            text: 'Yes, discard changes and open file',
+                            btnClass: 'btn-orange',
+                            action: function(scope, button){
+                                // Open file selector dialog anyway.
+                                ipcRenderer.send('open-file', type); 
+                            }
+                        },
+                        no: {
+                            text: "No, don't open a new file",
+                            btnClass: 'btn-blue',
+                            action: function(scope, button){
+                                // Do nothing and close modal.
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Open file selector dialog.
+                ipcRenderer.send('open-file', type); 
+            }
         };
         ipcRenderer.on('file-read', service._onFileRead);
 
@@ -98,7 +125,7 @@ myApp.factory('FileManager', [
             if(!dontConfirm && Shared.files[type].dirty) {
                 // Ask confirmation.
                 $ngConfirm({
-                    title: 'The file have unsaved changes',
+                    title: 'The file has unsaved changes',
                     content: 'Are you sure you want to close this file without saving his changes?',
                     columnClass: 'col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6',
                     buttons: {
@@ -111,7 +138,7 @@ myApp.factory('FileManager', [
                             }
                         },
                         no: {
-                            text: 'No, I want to save first',
+                            text: "No, don't close it",
                             btnClass: 'btn-blue',
                             action: function(scope, button){
                                 // Do nothing and close modal.
@@ -136,4 +163,3 @@ myApp.factory('FileManager', [
         return service;
     }
 ]);
-
