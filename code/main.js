@@ -62,7 +62,7 @@ app.on('activate', function () {
 });
 
 
-// ----- Storage ----- //
+// --- Storage --- //
 
 // Init storage.
 const Storage = require('node-storage');
@@ -70,18 +70,18 @@ var settingsStore = new Storage('settings.json');
 
 // Get a settings item.
 ipcMain.on('settings-get', function(event, arg) {
-  var item = settingsStore.get(arg);
-  event.returnValue = item || false;
+    var item = settingsStore.get(arg);
+    event.returnValue = item || false;
 });
 
 // Set a settings item.
 ipcMain.on('settings-set', function(event, arg) {
-  settingsStore.put(arg.name, arg.value);
-  event.returnValue = true;
+    settingsStore.put(arg.name, arg.value);
+    event.returnValue = true;
 });
 
 
-// ----- File management ----- // 
+// --- File management --- // 
 
 // Initialize files.
 var openedFiles = {};
@@ -228,7 +228,7 @@ ipcMain.on('save-file-as', function(event, type, data, encoding) {
 });
 
 
-// ----- Spell check ----- //
+// --- Spell check --- //
 
 const SpellChecker = require('simple-spellchecker');
 const DICTIONARIES_FOLDER = "./node_modules/simple-spellchecker/dict";
@@ -295,7 +295,7 @@ ipcMain.on('get-languages', function(event) {
 });
 
 
-// ----- Translation cache ----- //
+// --- Translation cache --- //
 
 const NodeCache = require("node-cache");
 const translationCache = new NodeCache({ stdTTL: 120, checkperiod: 140 });
@@ -327,7 +327,8 @@ ipcMain.on('cached-translation.set', function(event, fromLang, toLang, engine, c
     });
 });
 
-// ----- Miscellaneous ----- //
+
+// --- Miscellaneous --- //
 
 // Get the current platform.
 ipcMain.on('get-platform', function(event) {
