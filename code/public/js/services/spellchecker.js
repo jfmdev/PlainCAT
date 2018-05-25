@@ -19,6 +19,9 @@ myApp.factory('Spellchecker', ['$rootScope', 'Languages', function($rootScope, L
         var language = Languages.lang[data.type];
         var locale = Languages.getLangLocale(language);
         spell_language = locale;
+
+        // Set active language on main process (later it will be used for suggestions on misspelled words).
+        ipcRenderer.sendSync('dictionary.set-active-lang', spell_language);
     });
 
     // Return an empty object (since the service works only with events).

@@ -232,7 +232,8 @@ ipcMain.on('save-file-as', function(event, type, data, encoding) {
 
 const SpellChecker = require('simple-spellchecker');
 const DICTIONARIES_FOLDER = "./node_modules/simple-spellchecker/dict";
-var Dictionaries = {};
+let Dictionaries = {};
+let ActiveLang = 'en';
 
 // Event for load a dictionary.
 ipcMain.on('dictionary.load', function(event, lang) {
@@ -257,6 +258,39 @@ ipcMain.on('dictionary.check-word', function(event, lang, word) {
         res = Dictionaries[lang].spellCheck(word);
     }
     event.returnValue = res;
+});
+
+// Check a word in a loaded dictionary.
+ipcMain.on('dictionary.set-active-lang', function(event, lang) {
+    ActiveLang = lang;
+    event.returnValue = true;
+});
+
+
+// --- Context menu (for copy/paste and for suggest misspelled words) --- //
+
+const electronContextMenu = require('electron-context-menu');
+
+electronContextMenu({
+    prepend: function(params, browserWindow) {
+        let menuItems = [];
+
+        // If it's an editable text and there is a word misspelled, show suggestions.
+        if(params.isEditable && params.misspelledWord && ActiveLang != null && Dictionaries[ActiveLang] != null) {
+            let suggestions = Dictionaries[ActiveLang].getSuggestions(params.misspelledWord, 5, 2);
+            for(let i=0; suggestions && i<suggestions.length; i++) {
+                let word = suggestions[i];
+                menuItems.push({
+                    label: word,
+                    click: function() {
+                        mainWindow.webContents.send('paste-misspelled', word);
+                    },
+                });
+            }
+        }
+
+        return menuItems;
+    }
 });
 
 
@@ -302,9 +336,9 @@ const translationCache = new NodeCache({ stdTTL: 120, checkperiod: 140 });
 
 const crypto = require('crypto');
 function sha1(data) {
-     var generator = crypto.createHash('sha1');
-     generator.update(data);
-     return generator.digest('hex'); 
+    var generator = crypto.createHash('sha1');
+    generator.update(data);
+    return generator.digest('hex'); 
 }
 
 // Get a value from the translation cache.

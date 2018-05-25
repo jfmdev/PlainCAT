@@ -19,13 +19,28 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
               .mouseenter( factory.onMouseEnter(container, twinContainer) )
               .mouseleave( factory.onMouseLeave(container, twinContainer) );
 
-            // Paste machine translation (for target only).
+            // Paste machine translation (only on target).
             if(type === 'target') {
                 $rootScope.$on('paste-translation', function(event, data) {
                     var paragraph = container.children().eq(data.index);
                     paragraph.text(data.text);
                 });
             }
+
+            // Paste word suggestion.
+            ipcRenderer.on('paste-misspelled', function(event, word) {
+                var textarea = container.find('textarea');
+                if(textarea.size() > 0) {
+                    var caretStart = textarea[0].selectionStart;
+                    var caretEnd = textarea[0].selectionEnd;
+                    var text = textarea.val();
+
+                    var newText = text.substring(0, caretStart) + word + text.substring(caretEnd, text.length);
+                    var newCaret = caretStart + word.length;
+                    textarea.val(newText);
+                    textarea.selectRange(newCaret);
+                }
+            });            
         },
 
         // Behaviour for the focus event on a paragraph.
