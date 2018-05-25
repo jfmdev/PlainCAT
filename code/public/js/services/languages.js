@@ -41,7 +41,7 @@ myApp.factory('Languages', ['Shared', function (Shared) {
     service.lang = {};
     for(var i=0; i<2; i++) {
         // Get language.
-        var type = (i === 0)? 'source' : 'dest';
+        var type = (i === 0)? 'source' : 'target';
         var langCode = (i === 0)? Shared.project.fromLangCode : Shared.project.toLangCode;
         service.lang[type] = _.findWhere(service.list, {"code": langCode});
 

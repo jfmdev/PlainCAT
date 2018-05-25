@@ -5,7 +5,7 @@ myApp.controller('headerController', [
         // Initialize variables.
         $scope.mainLanguages = Languages.list;
         $scope.sourceLang = Languages.lang.source;
-        $scope.destLang = Languages.lang.dest;
+        $scope.targetLang = Languages.lang.target;
         $scope.files = Shared.files;
 
         // Close a file.

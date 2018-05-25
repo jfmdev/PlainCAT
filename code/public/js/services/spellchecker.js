@@ -4,7 +4,7 @@ myApp.factory('Spellchecker', ['$rootScope', 'Languages', function($rootScope, L
     var webFrame = require('electron').webFrame;
     var ipcRenderer = require('electron').ipcRenderer;
     var spell_language = 'en-US';
-    
+
     // Initialize spell checker.
     webFrame.setSpellCheckProvider("en-US", false, {
         spellCheck: function(text) {
@@ -20,7 +20,7 @@ myApp.factory('Spellchecker', ['$rootScope', 'Languages', function($rootScope, L
         var locale = Languages.getLangLocale(language);
         spell_language = locale;
     });
-    
+
     // Return an empty object (since the service works only with events).
     return {};
 }]);

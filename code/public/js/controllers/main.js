@@ -1,7 +1,7 @@
 // Define controller.
 myApp.controller('mainController', [
-    '$scope', '$ngConfirm', 'Shared', 'Menu', 'FileManager',
-    function ($scope, $ngConfirm, Shared, Menu, FileManager) {
+    '$scope', '$ngConfirm', 'Shared', 'Menu', 'FileManager', 'Spellchecker',
+    function ($scope, $ngConfirm, Shared, Menu, FileManager, Spellchecker) {
         var ipcRenderer = require('electron').ipcRenderer;
         var remote = require('electron').remote
 

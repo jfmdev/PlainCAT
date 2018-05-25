@@ -52,14 +52,11 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
                     'index': paragraph.index()
                 })
 
+                // Move caret to trigger again the spellchecker (note the language used by the spellchecker is set by the 'paragram-focused' event)
+                textarea.selectRange(content.length, content.length);
+
                 // Make height of the textarea to match the content.
                 autosize(textarea);
-
-                // Trigger the spellchecker for all words (an not only on active words) by moving the caret around the text.
-                for(var i=0; i<content.length; i++) {
-                    textarea.selectRange(i,i+1);
-                }
-                textarea.selectRange(content.length, content.length);
 
                 // Assign behaviour for the blur event.
                 textarea.blur(function(event) {
