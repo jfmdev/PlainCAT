@@ -27,7 +27,7 @@ myApp.controller('bodyController', [
                 })
             }
 
-            // Update target (this will trigger the editor's initialization via the watcher)
+            // Update target (this will trigger the editor's initialization via the watcher).
             $scope.files.target = {
                 dirty: true,
                 name: null,

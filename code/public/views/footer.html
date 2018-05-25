@@ -5,7 +5,8 @@
         </p>
 
         <div ng-hide="loading">
-            <p ng-hide="error">
+            <p ng-hide="error || !translation">
+                <button ng-click="pasteTranslation(translation)" class="btn btn-primary paste-translation">Paste translation</button>
                 {{ translation }}
             </p>
             <p ng-hide="error" class="powered-by">

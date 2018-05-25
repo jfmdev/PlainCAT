@@ -18,6 +18,14 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
               .focus( factory.onFocus(type, container, twinContainer) )
               .mouseenter( factory.onMouseEnter(container, twinContainer) )
               .mouseleave( factory.onMouseLeave(container, twinContainer) );
+
+            // Paste machine translation (for target only).
+            if(type === 'target') {
+                $rootScope.$on('paste-translation', function(event, data) {
+                    var paragraph = container.children().eq(data.index);
+                    paragraph.text(data.text);
+                });
+            }
         },
 
         // Behaviour for the focus event on a paragraph.

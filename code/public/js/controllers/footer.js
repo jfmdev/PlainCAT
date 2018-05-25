@@ -1,9 +1,10 @@
 // Define controller.
 myApp.controller('footerController', [
-    '$scope', 'Shared', 'Translator', 
-    function ($scope, Shared, Translator) {
+    '$scope', '$rootScope', 'Shared', 'Translator', 
+    function ($scope, $rootScope, Shared, Translator) {
         // Initialize variables.
         $scope.translation = null;
+        $scope.sourceIndex = null;
         $scope.error = null;
         $scope.loading = false;
         $scope.poweredBy = null;
@@ -15,6 +16,7 @@ myApp.controller('footerController', [
             $scope.$apply();
 
             // Translate text.
+            $scope.sourceIndex = data.index;
             Translator.translate(data.content).then(function(result) {
                 // Set translation.
                 $scope.error = null;
@@ -30,6 +32,11 @@ myApp.controller('footerController', [
                 $scope.$apply();
             });;
         });
+
+        // Paste the translation into the source paragraph.
+        $scope.pasteTranslation = function(translation) {
+            $rootScope.$emit('paste-translation', { index: $scope.sourceIndex, text: translation });
+        };
 
         // TODO: should listen for changes on 
         // - Shared.project.translationEngine

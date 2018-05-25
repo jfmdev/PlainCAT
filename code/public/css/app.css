@@ -85,6 +85,11 @@
     color: darkred;
 }
 
+#footer .paste-translation {
+    float: right;
+    padding: 3px;
+}
+
 #footer .powered-by {
     color: darkblue;
     font-size: 8pt;
