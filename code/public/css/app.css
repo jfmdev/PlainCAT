@@ -102,6 +102,16 @@ div.modal-content {
 
 /* --- Components --- */
 
+.separator:after {
+    content: ' |';
+    color: #66d;
+    margin-left: 4px;
+    margin-right: 4px;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+}
+
 .translation-result,
 .translation-loading,
 .translation-error {
@@ -111,7 +121,8 @@ div.modal-content {
 }
 
 .translation-loading {
-    color: darkgray;
+    color: #444;
+    margin-top: 5px;
 }
 
 .translation-error {

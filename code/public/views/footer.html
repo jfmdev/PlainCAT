@@ -13,16 +13,21 @@
             ({{ error }})
         </p>
 
-        <div class="row" ng-show="translation && !error">
+        <div class="row">
             <div class="col-sm-6 text-left">
+                <button class="btn btn-info btn-xs" ng-click="openTranslationSettings()">
+                    <i class="glyphicon glyphicon-cog" aria-hidden="true"></i>
+                    Translation settings
+                </button>
+            </div>
+            <div class="col-sm-6 text-right" ng-show="translation && !error">
                 <a ng-show="poweredBy === 'yandex'" href="http://translate.yandex.com/" target="_blank">
                     <small>Powered by Yandex.Translate</small>
                 </a>
                 <a ng-show="poweredBy === 'microsoft'" href="https://translator.microsoft.com/" target="_blank">
                     <small>Powered by Microsoft Translator</small>
                 </a>
-            </div>
-            <div class="col-sm-6 text-right">
+                <i class="separator"></i>
                 <button class="btn btn-primary btn-xs" ng-click="pasteTranslation(translation)">
                     <i class="glyphicon glyphicon-paste" aria-hidden="true"></i>
                     Paste translation

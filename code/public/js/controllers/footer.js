@@ -38,6 +38,10 @@ myApp.controller('footerController', [
             $rootScope.$emit('paste-translation', { index: $scope.sourceIndex, text: translation });
         };
 
+        $scope.openTranslationSettings = function() {
+            alert('Feature not implemented');
+        };
+
         // TODO: should listen for changes on 
         // - Shared.project.translationEngine
         // And disable translation and hide bar if disabled 
