@@ -1,27 +1,25 @@
-<div id="footer" ng-controller="footerController">
-    <div>
-        <p class="loading" ng-show="loading">
-            Translating...
+<div ng-controller="footerController">
+    <p class="loading" ng-show="loading">
+        Translating...
+    </p>
+
+    <div ng-hide="loading">
+        <p ng-hide="error || !translation">
+            <button ng-click="pasteTranslation(translation)" class="btn btn-primary paste-translation">Paste translation</button>
+            {{ translation }}
+        </p>
+        <p ng-hide="error" class="powered-by">
+            <a ng-show="poweredBy === 'yandex'" href="http://translate.yandex.com/" target="_blank">
+                Powered by Yandex.Translate
+            </a>
+            <a ng-show="poweredBy === 'microsoft'" href="https://translator.microsoft.com/" target="_blank">
+                Powered by Microsoft Translator
+            </a>
         </p>
 
-        <div ng-hide="loading">
-            <p ng-hide="error || !translation">
-                <button ng-click="pasteTranslation(translation)" class="btn btn-primary paste-translation">Paste translation</button>
-                {{ translation }}
-            </p>
-            <p ng-hide="error" class="powered-by">
-                <a ng-show="poweredBy === 'yandex'" href="http://translate.yandex.com/" target="_blank">
-                    Powered by Yandex.Translate
-                </a>
-                <a ng-show="poweredBy === 'microsoft'" href="https://translator.microsoft.com/" target="_blank">
-                    Powered by Microsoft Translator
-                </a>
-            </p>
-
-            <p ng-show="error" class="error">
-                Translation could not be obtained
-                ({{ error }})
-            </p>
-        </div>
+        <p ng-show="error" class="error">
+            Translation could not be obtained
+            ({{ error }})
+        </p>
     </div>
 </div>
