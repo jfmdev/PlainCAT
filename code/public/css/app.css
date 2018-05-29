@@ -3,7 +3,7 @@
 html,
 body {
     height: 100%;
-    margin: 0
+    margin: 0;
 }
 
 .main-container {
@@ -89,38 +89,6 @@ main p {
     border-radius: 5px;
 }
 
-footer .loading {
-    color: gray;
-}
-
-footer .error {
-    color: darkred;
-}
-
-footer .paste-translation {
-    float: right;
-    padding: 3px;
-}
-
-footer .powered-by {
-    color: darkblue;
-    font-size: 8pt;
-    font-family: "Lucida Console", Monaco, monospace;
-    text-align: right;
-}
-
-footer .powered-by > a {
-    color: darkblue;
-    background-color: #eef;
-    border: 1px solid darkblue;
-    border-radius: 2px;
-    padding: 3px 4px;
-}
-
-footer .powered-by > a:hover {
-    text-decoration: none;
-}
-
 #source-file p:hover,
 #target-file p:hover,
 #source-file .highlight,
@@ -133,6 +101,22 @@ div.modal-content {
 }
 
 /* --- Components --- */
+
+.translation-result,
+.translation-loading,
+.translation-error {
+    font-size: 10pt;
+    margin-bottom: 5px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+.translation-loading {
+    color: darkgray;
+}
+
+.translation-error {
+    color: darkred;
+}
 
 .nice-scroll::-webkit-scrollbar {
     width: 10px;

@@ -1,25 +1,33 @@
-<div ng-controller="footerController" class="nice-scroll">
-    <p class="loading" ng-show="loading">
-        Translating...
+<div ng-controller="footerController" class="container-fluid nice-scroll">
+    <p  class="translation-loading" ng-show="loading">
+        Translating text...
     </p>
 
     <div ng-hide="loading">
-        <p ng-hide="error || !translation">
-            <button ng-click="pasteTranslation(translation)" class="btn btn-primary paste-translation">Paste translation</button>
+        <p class="translation-result" ng-show="translation && !error">
             {{ translation }}
         </p>
-        <p ng-hide="error" class="powered-by">
-            <a ng-show="poweredBy === 'yandex'" href="http://translate.yandex.com/" target="_blank">
-                Powered by Yandex.Translate
-            </a>
-            <a ng-show="poweredBy === 'microsoft'" href="https://translator.microsoft.com/" target="_blank">
-                Powered by Microsoft Translator
-            </a>
-        </p>
 
-        <p ng-show="error" class="error">
+        <p class="translation-error" ng-show="error">
             Translation could not be obtained
             ({{ error }})
         </p>
+
+        <div class="row" ng-show="translation && !error">
+            <div class="col-sm-6 text-left">
+                <a ng-show="poweredBy === 'yandex'" href="http://translate.yandex.com/" target="_blank">
+                    <small>Powered by Yandex.Translate</small>
+                </a>
+                <a ng-show="poweredBy === 'microsoft'" href="https://translator.microsoft.com/" target="_blank">
+                    <small>Powered by Microsoft Translator</small>
+                </a>
+            </div>
+            <div class="col-sm-6 text-right">
+                <button class="btn btn-primary btn-xs" ng-click="pasteTranslation(translation)">
+                    <i class="glyphicon glyphicon-paste" aria-hidden="true"></i>
+                    Paste translation
+                </button>
+            </div>
+        </div>
     </div>
 </div>
