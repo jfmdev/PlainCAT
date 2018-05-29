@@ -160,6 +160,27 @@ myApp.factory('FileManager', [
             }
         };
 
+        // Copy the source's content into the target.
+        service.copySource = function() {
+            var lines = Editor.getContentAsArray('source');
+            var content = [];
+            for(var i=0; i<lines.length; i++) {
+                content.push({
+                    'index': (i>0? (content[i-1].index + lines[i-1].length) : 0),
+                    'text': lines[i]
+                })
+            }
+
+            // Update target (this will trigger the editor's initialization via the watcher).
+            Shared.files.target = {
+                dirty: true,
+                name: null,
+                path: null,
+                content: content,
+                encoding: Shared.files.source.encoding,
+            };
+        };
+
         return service;
     }
 ]);

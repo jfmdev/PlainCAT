@@ -20,6 +20,9 @@ myApp.controller('headerController', [
         // Save a file with a new name.
         $scope.saveFileAs = FileManager.saveFileAs;
 
+        // Copy the source's content into the target.
+        $scope.copySource = FileManager.copySource;
+
         // Update language in settings when changing a combo box.
         $scope.languageSelected = function(type, newValue) {
             Languages.setLang(type, newValue);

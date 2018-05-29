@@ -1,4 +1,4 @@
-/* --- Main layout --- */
+/* --- Layout --- */
 
 html,
 body {
@@ -38,43 +38,6 @@ footer > div {
 
 /* --- Classes --- */
 
-header .file-name {
-    font-size: 10pt;
-    font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-}
-
-header .file-options {
-    font-size: 10pt;
-    margin-top: 2px;
-}
-
-header a.btn-close,
-header a.btn-open,
-header a.btn-save,
-header a.btn-save-as {
-    margin-top: 2px;
-    margin-left: 2px;
-    margin-right: 2px;
-}
-
-header a.btn-close:hover,
-header a.btn-open:hover,
-header a.btn-save:hover,
-header a.btn-save-as:hover {
-    text-decoration: none;
-    cursor: pointer;
-}
-
-header a.btn-close { color: #800; }
-header a.btn-open { color: #880;}
-header a.btn-save { color: #008; }
-header a.btn-save-as { color: #808; }
-
-header a.btn-close:hover { color: #c00; }
-header a.btn-open:hover { color: #cc0; }
-header a.btn-save:hover { color: #00c; }
-header a.btn-save-as:hover { color: #c0c; }
-
 main textarea {
     width: 100%;
     resize: none;
@@ -96,11 +59,24 @@ main p {
     background-color: #dff;
 }
 
-div.modal-content {
-    padding: 0 10px;
+
+.file-name {
+    font-size: 14px;
+    font-family: Verdana, Geneva, sans-serif;
 }
 
-/* --- Components --- */
+.file-name > em {
+    color: #555;
+    font-size: 14px;
+    font-style: normal;
+    line-height: 22px;
+}
+
+.select-language {
+    font-size: 13px;
+    font-family: Verdana, Geneva, sans-serif;
+    margin-top: 3px;
+}
 
 .separator:after {
     content: ' |';
@@ -115,7 +91,7 @@ div.modal-content {
 .translation-result,
 .translation-loading,
 .translation-error {
-    font-size: 10pt;
+    font-size: 13px;
     margin-bottom: 5px;
     font-family: Verdana, Geneva, sans-serif;
 }
@@ -149,4 +125,10 @@ div.modal-content {
 .nice-scroll::-webkit-scrollbar-track {
     background: #ddf;
     border-radius: 20px;
+}
+
+/* --- Miscellaneous --- */
+
+div.modal-content {
+    padding: 0 10px;
 }
