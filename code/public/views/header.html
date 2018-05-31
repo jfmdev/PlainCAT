@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-sm-6">
             <div class="row">
-                <div class="col-sm-6 text-left">
+                <div class="col-sm-7 text-left">
                     <span class="file-name">
                         <span ng-show="files.source.name">
                             {{ removeExtension(files.source.name) }}<span ng-show="files.source.dirty">*</span>
@@ -10,7 +10,7 @@
                         <em ng-show="!files.source.name">(No file selected)</em>
                     </span>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-5 text-right">
                     <a ng-click="closeFile('source')" class="btn btn-danger btn-xs" ng-show="files.source.name">
                         <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                         Close
@@ -19,7 +19,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-6 text-left">
+                <div class="col-sm-7 text-left">
                     <a class="btn btn-info btn-xs" ng-click="openFile('source')">
                         <i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i>
                         Open
@@ -33,7 +33,7 @@
                         Save as
                     </a>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-5 text-right">
                     <select class="select-language"
                         ng-model="sourceLang"
                         ng-options="language as language.name for language in mainLanguages"
@@ -45,7 +45,7 @@
 
         <div class="col-sm-6">
             <div class="row">
-                <div class="col-sm-6 text-left">
+                <div class="col-sm-7 text-left">
                     <span class="file-name">
                         <span ng-show="files.target.name">
                             {{ removeExtension(files.target.name) }}<span ng-show="files.target.dirty">*</span>
@@ -53,7 +53,7 @@
                         <em ng-show="!files.target.name">{{ files.target.content? 'Unnamed*': 'No file selected' }}</em>
                     </span>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-5 text-right">
                     <a class="btn btn-danger btn-xs" ng-click="closeFile('target')" ng-show="files.target.name">
                         <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
                         Close
@@ -62,7 +62,7 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-6 text-left">
+                <div class="col-sm-7 text-left">
                     <a class="btn btn-info btn-xs" ng-click="openFile('target')">
                         <i class="glyphicon glyphicon-folder-open" aria-hidden="true"></i>
                         Open
@@ -80,7 +80,7 @@
                         Copy source
                     </a>
                 </div>
-                <div class="col-sm-6 text-right">
+                <div class="col-sm-5 text-right">
                     <select class="select-language" 
                         ng-options="language as language.name for language in mainLanguages" 
                         ng-model="targetLang" 

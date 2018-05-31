@@ -14,20 +14,20 @@ body {
 
 header {
     flex: 0 1 auto;
-    border-bottom: 1px solid #66c;
-    background-color: #ddf;
+    background-color: #073642;
     padding: 3px;
 }
 
 main {
     flex: 1 1 auto;
     overflow-y: auto;
+    margin-bottom: 3px;
+    margin-top: 3px;
 }
 
 footer {
     flex: 0 1 30px;
-    border-top: 1px solid #66c;
-    background-color: #ddf;
+    background-color: #073642;
 }
 
 footer > div {
@@ -36,7 +36,59 @@ footer > div {
     overflow-y: auto;
 }
 
-/* --- Classes --- */
+/* --- Header and footer --- */
+
+.file-name {
+    color: white;
+    font-size: 14px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+.file-name > em {
+    color: #bbb;
+    font-size: 14px;
+    font-style: normal;
+    line-height: 22px;
+}
+
+.select-language {
+    font-size: 13px;
+    font-family: Verdana, Geneva, sans-serif;
+    margin-top: 3px;
+}
+
+.separator:after {
+    content: ' |';
+    color: #994;
+    margin-left: 4px;
+    margin-right: 4px;
+    font-weight: normal;
+    font-style: normal;
+    text-decoration: none;
+}
+
+.translation-result,
+.translation-loading,
+.translation-error {
+    font-size: 13px;
+    margin-bottom: 5px;
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+.translation-result {
+    color: white;
+}
+
+.translation-loading {
+    color: #bbb;
+    margin-top: 5px;
+}
+
+.translation-error {
+    color: #f77;
+}
+
+/* --- Body --- */
 
 main textarea {
     width: 100%;
@@ -57,52 +109,6 @@ main p {
 #source-file .highlight,
 #target-file .highlight {
     background-color: #dff;
-}
-
-
-.file-name {
-    font-size: 14px;
-    font-family: Verdana, Geneva, sans-serif;
-}
-
-.file-name > em {
-    color: #555;
-    font-size: 14px;
-    font-style: normal;
-    line-height: 22px;
-}
-
-.select-language {
-    font-size: 13px;
-    font-family: Verdana, Geneva, sans-serif;
-    margin-top: 3px;
-}
-
-.separator:after {
-    content: ' |';
-    color: #66d;
-    margin-left: 4px;
-    margin-right: 4px;
-    font-weight: normal;
-    font-style: normal;
-    text-decoration: none;
-}
-
-.translation-result,
-.translation-loading,
-.translation-error {
-    font-size: 13px;
-    margin-bottom: 5px;
-    font-family: Verdana, Geneva, sans-serif;
-}
-
-.translation-loading {
-    color: #444;
-    margin-top: 5px;
-}
-
-.translation-error {
-    color: darkred;
 }
 
 .nice-scroll::-webkit-scrollbar {
