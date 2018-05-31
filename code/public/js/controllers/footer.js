@@ -1,7 +1,7 @@
 // Define controller.
 myApp.controller('footerController', [
-    '$scope', '$rootScope', 'Shared', 'Translator', 
-    function ($scope, $rootScope, Shared, Translator) {
+    '$scope', '$rootScope', 'Shared', 'Translator', '$uibModal', 
+    function ($scope, $rootScope, Shared, Translator, $uibModal) {
         // Initialize variables.
         $scope.translation = null;
         $scope.sourceIndex = null;
@@ -39,7 +39,14 @@ myApp.controller('footerController', [
         };
 
         $scope.openTranslationSettings = function() {
-            alert('Feature not implemented');
+            var modalInstance = $uibModal.open({
+                templateUrl: 'views/settings.html',
+                controller: 'settingsController',
+                size: 'lg',
+                resolve: {
+                    tab: function () { return 'language'; }
+                }
+            });
         };
 
         // TODO: should listen for changes on 

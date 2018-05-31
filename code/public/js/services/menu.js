@@ -176,23 +176,48 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
     });
 
     // Add 'Settings' section to default template.
-    var languagesItem = {
-        label: 'Languages',
+    var generalItem = {
+        label: 'General',
         click: function(item, focusedWindow) {
             $uibModal.open({
-                templateUrl: 'views/settings.languages.html'
+                templateUrl: 'views/settings.html',
+                controller: 'settingsController',
+                size: 'lg',
+                resolve: {
+                    tab: function () { return 'general'; }
+                }
+            });
+        }
+    };
+    var languageItem = {
+        label: 'Translation',
+        click: function(item, focusedWindow) {
+            $uibModal.open({
+                templateUrl: 'views/settings.html',
+                controller: 'settingsController',
+                size: 'lg',
+                resolve: {
+                    tab: function () { return 'translation'; }
+                }
             });
         }
     };
     var aboutItem = {
         label: 'About',
         click: function(item, focusedWindow) {
-            $uibModal.open({ templateUrl: 'views/about.html' });
+            $uibModal.open({
+                templateUrl: 'views/settings.html',
+                controller: 'settingsController',
+                size: 'lg',
+                resolve: {
+                    tab: function () { return 'about'; }
+                }
+            });
         }
     };
     template.push({
         label: 'Settings', 
-        submenu: [languagesItem, aboutItem] 
+        submenu: [generalItem, languageItem, aboutItem] 
     });
 
     // Define factory.

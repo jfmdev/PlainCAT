@@ -133,7 +133,11 @@ main p {
     border-radius: 20px;
 }
 
-/* --- Miscellaneous --- */
+/* --- Modal --- */
+
+div.modal-body h2 {
+    margin-top: 5px;
+}
 
 div.modal-content {
     padding: 0 10px;
