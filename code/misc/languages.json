@@ -106,11 +106,11 @@
     ],
 
     "spellchecker": {
-        "de": [{"locale": "de-DE"}], 
+        "de": [{"locale": "de-DE", "place": "Germany" }], 
         "en": [{"locale": "en-US", "place": "United States"}, {"locale": "en-GB", "place": "United Kingdom"}],
         "es": [{"locale": "es-ES", "place": "Spain"}, {"locale": "es-MX", "place": "Mexico"}], 
-        "fr": [{"locale": "fr-FR"}], 
-        "nl": [{"locale": "nl-NL"}] 
+        "fr": [{"locale": "fr-FR", "place": "France"}], 
+        "nl": [{"locale": "nl-NL", "place": "Netherlands"}] 
     },
 
     "translation": {

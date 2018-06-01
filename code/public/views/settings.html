@@ -3,9 +3,41 @@
 
     <uib-tabset active="activeTab">
       <uib-tab index="0" heading="General settings">
-          <br><br>
-          <em>Section under construction...</em>
-          <br><br><br>
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th>Language</th>
+                      <th class="text-center">Spellchecker</th>
+                      <th class="text-center">Yandex</th>
+                      <th class="text-center">Microsoft</th>
+                      <th class="text-center">Active</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr ng-repeat="lang in languages">
+                      <td>{{ lang.name }}</td>
+                      <td class="text-center">
+                          <i class="glyphicon glyphicon-remove text-muted" aria-hidden="true" ng-if="!lang.spellcheck"></i>
+                          <select class="form-control" ng-if="lang.spellcheck">
+                              <option ng-repeat="option in lang.spellcheck" value="option.locale">
+                                  {{ option.place }}
+                              </option>
+                          </select>
+                      </td>
+                      <td class="text-center">
+                          <i class="glyphicon glyphicon-ok text-success" aria-hidden="true" ng-if="lang.yandex"></i>
+                          <i class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ng-if="!lang.yandex"></i>
+                      </td>
+                      <td class="text-center">
+                          <i class="glyphicon glyphicon-ok text-success" aria-hidden="true" ng-if="lang.microsoft"></i>
+                          <i class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ng-if="!lang.microsoft"></i>
+                      </td>
+                      <td class="text-center">
+                          <input type="checkbox" />
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
       </uib-tab>
 
       <uib-tab index="1" heading="Translation settings">
@@ -24,10 +56,14 @@
 <div class="modal-footer">
     <div class="row">
         <div class="col-sm-6 text-left">
-            <button class="btn btn-danger" type="button" ng-click="cancel()">Close</button>
+            <button class="btn btn-danger" type="button" ng-click="cancel()">
+                Close
+            </button>
         </div>
         <div class="col-sm-6 text-right">
-            <button class="btn btn-primary" type="button" ng-click="save()">Save</button>
+            <button class="btn btn-primary" type="button" ng-click="save()" ng-if="activeTab !== 2">
+                Save
+            </button>
         </div>
     </div>
 </div>
