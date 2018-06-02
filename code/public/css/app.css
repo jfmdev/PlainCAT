@@ -142,3 +142,18 @@ div.modal-body h2 {
 div.modal-content {
     padding: 0 10px;
 }
+
+div.modal-content .nav-tabs {
+    margin-bottom: 8px;
+}
+
+/* --- Misc --- */
+
+table > thead > tr > th.cell-middle,
+table > tbody > tr > td.cell-middle {
+    vertical-align: middle;
+}
+
+.clickable {
+    cursor: pointer;
+}

@@ -177,14 +177,14 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
 
     // Add 'Settings' section to default template.
     var generalItem = {
-        label: 'General',
+        label: 'Spellchecker',
         click: function(item, focusedWindow) {
             $uibModal.open({
                 templateUrl: 'views/settings.html',
                 controller: 'settingsController',
                 size: 'lg',
                 resolve: {
-                    tab: function () { return 'general'; }
+                    tab: function () { return 'spellchecker'; }
                 }
             });
         }

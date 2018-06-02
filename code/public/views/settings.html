@@ -2,20 +2,23 @@
     <h2>Settings</h2>
 
     <uib-tabset active="activeTab">
-      <uib-tab index="0" heading="General settings">
+      <uib-tab index="0" heading="Spellchecker settings">
           <table class="table">
               <thead>
                   <tr>
+                      <th class="text-center">Active</th>
                       <th>Language</th>
                       <th class="text-center">Spellchecker</th>
                       <th class="text-center">Yandex</th>
                       <th class="text-center">Microsoft</th>
-                      <th class="text-center">Active</th>
                   </tr>
               </thead>
               <tbody>
                   <tr ng-repeat="lang in languages">
-                      <td>{{ lang.name }}</td>
+                      <td class="text-center cell-middle">
+                          <input type="checkbox" name="test" class="clickable" />
+                      </td>
+                      <td class="cell-middle">{{ lang.name }}</td>
                       <td class="text-center">
                           <i class="glyphicon glyphicon-remove text-muted" aria-hidden="true" ng-if="!lang.spellcheck"></i>
                           <select class="form-control" ng-if="lang.spellcheck">
@@ -24,16 +27,13 @@
                               </option>
                           </select>
                       </td>
-                      <td class="text-center">
+                      <td class="text-center cell-middle">
                           <i class="glyphicon glyphicon-ok text-success" aria-hidden="true" ng-if="lang.yandex"></i>
                           <i class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ng-if="!lang.yandex"></i>
                       </td>
-                      <td class="text-center">
+                      <td class="text-center cell-middle">
                           <i class="glyphicon glyphicon-ok text-success" aria-hidden="true" ng-if="lang.microsoft"></i>
                           <i class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ng-if="!lang.microsoft"></i>
-                      </td>
-                      <td class="text-center">
-                          <input type="checkbox" />
                       </td>
                   </tr>
               </tbody>
@@ -41,15 +41,47 @@
       </uib-tab>
 
       <uib-tab index="1" heading="Translation settings">
-          <br><br>
-          <em>Section under construction...</em>
-          <br><br><br>
+          <table class="table">
+              <thead>
+                  <tr>
+                      <th class="text-center">Active</th>
+                      <th>Engine</th>
+                      <th>API Token</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <td class="text-center">
+                          <div class="checkbox">
+                              <input type="radio" name="engine" class="clickable" />
+                          </div>
+                      </td>
+                      <td class="cell-middle">Yandex</td>
+                      <td>
+                          <input type="text" class="form-control" />
+                      </td>
+                  </tr>
+                  <tr>
+                      <td class="text-center">
+                          <div class="checkbox">
+                              <input type="radio" name="engine" class="clickable" />
+                          </div>
+                      </td>
+                      <td class="cell-middle">Microsoft</td>
+                      <td>
+                          <input type="text" class="form-control" />
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+
+          <!-- TODO: Show warning if the engine selected don't supports the current languages -->
       </uib-tab>
 
       <uib-tab index ="2" heading="About">
-          <br><br>
-          <em>Section under construction...</em>
-          <br><br><br>
+          <br>
+          <p><strong>PlainCAT</strong> is a simple Computer Assisted Translation tool for translate plain text files</p>
+          <!-- TODO: Extend explanation and describe features and limitations -->
       </uib-tab>
 </div>
 
