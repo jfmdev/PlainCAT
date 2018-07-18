@@ -2,6 +2,44 @@
 myApp.factory('Editor', ['$rootScope', function($rootScope) {
     var ipcRenderer = require('electron').ipcRenderer;
 
+    // Save containers (for use them when listening events).
+    var mainContainers = {};
+
+    // Paste machine translation (on target).
+    $rootScope.$on('paste-translation', function(event, data) {
+        var container = mainContainers['target'];
+        if(container) {
+            var paragraph = container.children().eq(data.index);
+            paragraph.text(data.text);
+
+            // Trigger event indicating the paragrah was edited.
+            $rootScope.$broadcast('paragraph-edited', {
+                'type': 'target', 
+                'index': paragraph.index()
+            });
+        }
+    });
+
+    // Paste word suggestion.
+    ipcRenderer.on('paste-misspelled', function(event, word) {
+        // Search container currently having a textarea.
+        for (var type in mainContainers) {
+          var container = mainContainers[type];
+          var textarea = container.find('textarea');
+
+          if(textarea.size() > 0) {
+              var caretStart = textarea[0].selectionStart;
+              var caretEnd = textarea[0].selectionEnd;
+              var text = textarea.val();
+
+              var newText = text.substring(0, caretStart) + word + text.substring(caretEnd, text.length);
+              var newCaret = caretStart + word.length;
+              textarea.val(newText);
+              textarea.selectRange(newCaret);
+          }
+        }
+    });
+
     // Define factory.
     var factory = {
         // Initialize an editor.
@@ -9,6 +47,7 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
             // Initialize variables.
             var container = $(selector);
             var twinContainer = $(twinSelector);
+            mainContainers[type] = container;
 
             // Load document.
             container.html(factory.formatText(docLines));
@@ -18,35 +57,6 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
               .focus( factory.onFocus(type, container, twinContainer) )
               .mouseenter( factory.onMouseEnter(container, twinContainer) )
               .mouseleave( factory.onMouseLeave(container, twinContainer) );
-
-            // Paste machine translation (only on target).
-            if(type === 'target') {
-                $rootScope.$on('paste-translation', function(event, data) {
-                    var paragraph = container.children().eq(data.index);
-                    paragraph.text(data.text);
-
-                    // Trigger event indicating the paragrah was edited.
-                    $rootScope.$broadcast('paragraph-edited', {
-                        'type': type, 
-                        'index': paragraph.index()
-                    });
-                });
-            }
-
-            // Paste word suggestion.
-            ipcRenderer.on('paste-misspelled', function(event, word) {
-                var textarea = container.find('textarea');
-                if(textarea.size() > 0) {
-                    var caretStart = textarea[0].selectionStart;
-                    var caretEnd = textarea[0].selectionEnd;
-                    var text = textarea.val();
-
-                    var newText = text.substring(0, caretStart) + word + text.substring(caretEnd, text.length);
-                    var newCaret = caretStart + word.length;
-                    textarea.val(newText);
-                    textarea.selectRange(newCaret);
-                }
-            });            
         },
 
         // Behaviour for the focus event on a paragraph.
