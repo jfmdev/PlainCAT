@@ -24,6 +24,12 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
                 $rootScope.$on('paste-translation', function(event, data) {
                     var paragraph = container.children().eq(data.index);
                     paragraph.text(data.text);
+
+                    // Trigger event indicating the paragrah was edited.
+                    $rootScope.$broadcast('paragraph-edited', {
+                        'type': type, 
+                        'index': paragraph.index()
+                    });
                 });
             }
 
@@ -83,7 +89,7 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
                         $rootScope.$broadcast('paragraph-edited', {
                             'type': type, 
                             'index': paragraph.index()
-                        })
+                        });
                     }
 
                     // If the content is empty, then remove the paragraph, otherwise, update it.
