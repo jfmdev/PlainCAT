@@ -95,6 +95,11 @@ function readFileWithAnyEncoding(filePath, callback) {
             // Detect file encoding.
             let encoding = (jschardet.detect(rawBuffer).encoding || 'UTF-8').toLowerCase();
 
+            // Replace Windows-1252 by ASCII (jschardet don't use the same naming convention that node.js).
+            if(encoding === 'windows-1252') {
+              encoding = 'ascii';
+            }
+
             try{
                 // Read file again with the corresponding encoding.
                 fs.readFile(filePath, encoding, function (err2, data) {

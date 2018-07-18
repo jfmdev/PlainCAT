@@ -33,7 +33,7 @@ myApp.factory('FileManager', [
                     if(result.error.code === 'NO_FILE_SELECTED') {
                         toastr.info('No file was selected');
                     } else {
-                        toastr.error(result.error.message || "File couldn't be read", 'Error');
+                        toastr.error(result.error.message || "File couldn't be read", 'Error opening file');
                     }
                 }
             }
@@ -104,7 +104,7 @@ myApp.factory('FileManager', [
             // Check if the file is defined.
             if(Shared.files[type].path) {
                 // Save file.
-                var content = Editor.getContentAsString(type)
+                var content = Editor.getContentAsString(type);
                 ipcRenderer.send('save-file', type, Shared.files[type].path, content, Shared.files[type].encoding);               
             } else {
                 // Ask user to enter a file name first.
