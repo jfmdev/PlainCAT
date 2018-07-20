@@ -14,7 +14,8 @@ myApp.factory('Translator', [
 
             // Check availability.
             for(var i=0; i<list.length; i++) {
-                list[i].available = Shared.getApiKey(list[i].code) != null;
+                var apiData = Shared.getApiData(list[i].code)
+                list[i].available = apiData && apiData.token && apiData.enabled;
             }
 
             return list;

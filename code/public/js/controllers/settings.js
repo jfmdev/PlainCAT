@@ -8,13 +8,18 @@ myApp.controller('settingsController', [
         if(tab === 'translation') { $scope.activeTab = 1; }
         if(tab === 'about') { $scope.activeTab = 2; }
 
-        // Get list of languages.
+        // Translation settings.
+        $scope.yandex = Shared.settings.api_yandex;
+        $scope.microsoft = Shared.settings.api_microsoft;
+
+        $scope.updateTranslation = function(engine) {
+            Shared.setApiData(engine, $scope[engine]);
+        };
+        
+        // Language settings.
         $scope.languages = Languages.list;
 
-        // Save and cancel buttons.
-        $scope.save = function () {
-            alert('Feature not implemented');
-        };
+        // Cancel button.
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };

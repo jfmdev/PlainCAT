@@ -53,29 +53,52 @@
                   <tr>
                       <td class="text-center">
                           <div class="checkbox">
-                              <input type="radio" name="engine" class="clickable" />
+                              <input type="checkbox"
+                                  class="clickable"
+                                  name="yandex_enabled"
+                                  ng-model="yandex.enabled"
+                                  ng-disabled="!yandex.token"
+                                  ng-change="updateTranslation('yandex')"
+                              />
                           </div>
                       </td>
                       <td class="cell-middle">Yandex</td>
                       <td>
-                          <input type="text" class="form-control" />
+                          <input type="text"
+                              class="form-control"
+                              name="yandex_token"
+                              ng-model="yandex.token"
+                              ng-blur="updateTranslation('yandex')"
+                          />
                       </td>
                   </tr>
                   <tr>
                       <td class="text-center">
                           <div class="checkbox">
-                              <input type="radio" name="engine" class="clickable" />
+                              <input type="checkbox"
+                                  class="clickable"
+                                  name="microsoft_enabled"
+                                  ng-model="microsoft.enabled"
+                                  ng-disabled="!microsoft.token"
+                                  ng-change="updateTranslation('microsoft')"
+                              />
                           </div>
                       </td>
                       <td class="cell-middle">Microsoft</td>
                       <td>
-                          <input type="text" class="form-control" />
+                          <input type="text"
+                              class="form-control"
+                              name="microsoft_token"
+                              ng-model="microsoft.token"
+                              ng-blur="updateTranslation('microsoft')"
+                          />
                       </td>
                   </tr>
               </tbody>
           </table>
 
           <!-- TODO: Show warning if the engine selected don't supports the current languages -->
+          <!-- TODO: Put links explaining how to get the tokens -->
       </uib-tab>
 
       <uib-tab index ="2" heading="About">
@@ -87,14 +110,9 @@
 
 <div class="modal-footer">
     <div class="row">
-        <div class="col-sm-6 text-left">
+        <div class="col-sm-12 text-right">
             <button class="btn btn-danger" type="button" ng-click="cancel()">
                 Close
-            </button>
-        </div>
-        <div class="col-sm-6 text-right">
-            <button class="btn btn-primary" type="button" ng-click="save()" ng-if="activeTab !== 2">
-                Save
             </button>
         </div>
     </div>

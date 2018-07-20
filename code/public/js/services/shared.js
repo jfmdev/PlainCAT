@@ -5,10 +5,10 @@ myApp.factory('Shared', [function () {
 
     // App's settings.
     service.settings = Object.assign({
-        api_yandex: null,
-        api_microsoft: null,
         file_source: null,
         file_target: null,
+        api_yandex: { enabled: false, token: null },
+        api_microsoft: { enabled: false, token: null },
     }, ipcRenderer.sendSync('settings-get', 'app') || {});
 
     service.setSettingValue = function(name, value) {
@@ -16,11 +16,11 @@ myApp.factory('Shared', [function () {
         return ipcRenderer.sendSync('settings-set', {'name': ('app.' + name), 'value': value });
     };
 
-    service.setApiKey = function(name, value) {
+    service.setApiData = function(name, value) {
         return service.setSettingValue('api_' + name, value);
     };
 
-    service.getApiKey = function(name) {
+    service.getApiData = function(name) {
         return service.settings['api_' + name];
     };
 
