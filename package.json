@@ -19,7 +19,7 @@
     "plain",
     "text"
   ],
-  "author": "JFMDev <jfmdev@inboxalias.com>",
+  "author": "JFMDev <jfmdev@outlook.com>",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/jfmdev/plaincat/issues"
@@ -29,10 +29,21 @@
     "electron": "^2.0.2"
   },
   "dependencies": {
+    "angular": "^1.6.10",
+    "angular-animate": "^1.6.10",
+    "angular-block-ui": "^0.2.2",
+    "angular-confirm1": "^1.1.0",
+    "angular-sanitize": "^1.6.10",
+    "angular-toastr": "^1.7.0",
+    "angular-ui-bootstrap": "^2.5.6",
+    "bluebird": "^3.5.1",
+    "bootstrap": "^3.3.7",
     "electron-context-menu": "^0.9.1",
+    "jquery": "^2.2.4",
     "jschardet": "^1.6.0",
     "node-cache": "^4.1.1",
     "node-storage": "0.0.7",
-    "simple-spellchecker": "^0.9.5"
+    "simple-spellchecker": "^0.9.5",
+    "underscore": "^1.8.3"
   }
 }
