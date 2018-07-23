@@ -9,6 +9,7 @@ myApp.factory('Shared', [function () {
         file_target: null,
         api_yandex: { enabled: false, token: null },
         api_microsoft: { enabled: false, token: null },
+        languages: { disabled: [], locales: {} },
     }, ipcRenderer.sendSync('settings-get', 'app') || {});
 
     service.setSettingValue = function(name, value) {

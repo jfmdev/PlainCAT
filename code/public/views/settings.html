@@ -16,15 +16,21 @@
               <tbody>
                   <tr ng-repeat="lang in languages">
                       <td class="text-center cell-middle">
-                          <input type="checkbox" name="test" class="clickable" />
+                          <input type="checkbox"
+                              class="clickable"
+                              ng-checked="langSettings.disabled.indexOf(lang.code) < 0"
+                              ng-click="toggleLanguage(lang)"
+                          />
                       </td>
                       <td class="cell-middle">{{ lang.name }}</td>
                       <td class="text-center">
                           <i class="glyphicon glyphicon-remove text-muted" aria-hidden="true" ng-if="!lang.spellcheck"></i>
-                          <select class="form-control" ng-if="lang.spellcheck">
-                              <option ng-repeat="option in lang.spellcheck" value="option.locale">
-                                  {{ option.place }}
-                              </option>
+                          <select class="form-control"
+                              ng-if="lang.spellcheck"
+                              ng-model="langSettings.locales[lang.code]"
+                              ng-options="option.locale as option.place for option in lang.spellcheck"
+                              ng-change="localeUpdated(lang)"
+                          >
                           </select>
                       </td>
                       <td class="text-center cell-middle">
