@@ -60,9 +60,13 @@ myApp.factory('Translator', [
             var engine = Shared.project.translationEngine;
 
             // Check for cached translation and, if fails, get remote translation.
-            return service.getCachedTranslation(fromLang, toLang, engine, content).catch(function() {
-                return service.getRemoteTranslation(fromLang, toLang, engine, content);
-            });
+            if(engine && fromLang && toLang) {
+                return service.getCachedTranslation(fromLang, toLang, engine, content).catch(function() {
+                    return service.getRemoteTranslation(fromLang, toLang, engine, content);
+                });
+            } else {
+                return Promise.resolve('');
+            }
         };
 
         return service;

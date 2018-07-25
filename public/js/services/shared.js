@@ -7,8 +7,8 @@ myApp.factory('Shared', [function () {
     service.settings = Object.assign({
         file_source: null,
         file_target: null,
-        api_yandex: { enabled: false, token: null },
-        api_microsoft: { enabled: false, token: null },
+        api_yandex: { enabled: true, token: null },
+        api_microsoft: { enabled: true, token: null },
         languages: { disabled: [], locales: {} },
     }, ipcRenderer.sendSync('settings-get', 'app') || {});
 

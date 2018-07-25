@@ -1,13 +1,17 @@
 // Define controller.
 myApp.controller('footerController', [
-    '$scope', '$rootScope', 'Shared', 'Translator', '$uibModal', 
-    function ($scope, $rootScope, Shared, Translator, $uibModal) {
+    '$scope', '$rootScope', 'Shared', 'Translator', 'Languages', '$uibModal', 
+    function ($scope, $rootScope, Shared, Translator, Languages, $uibModal) {
         // Initialize variables.
         $scope.translation = null;
         $scope.sourceIndex = null;
         $scope.error = null;
         $scope.loading = false;
-        $scope.poweredBy = null;
+
+        $scope.settings = Shared.settings;
+        $scope.project = Shared.project;
+        $scope.enabledEngines = [];
+        $scope.availableEngines = [];
 
         // When a paragraph is focused, update the automatic translation.
         $scope.$on('paragraph-focused', function(event, data) {
@@ -27,7 +31,6 @@ myApp.controller('footerController', [
                 $scope.translation = null;
             }).finally(function() {
                 // Update flag and refresh UI.
-                $scope.poweredBy = $scope.error? null : Shared.project.translationEngine;
                 $scope.loading = false;
                 $scope.$apply();
             });;
@@ -38,6 +41,7 @@ myApp.controller('footerController', [
             $rootScope.$emit('paste-translation', { index: $scope.sourceIndex, text: translation });
         };
 
+        // Open Settings dialog on the Translation tab.
         $scope.openTranslationSettings = function() {
             var modalInstance = $uibModal.open({
                 templateUrl: 'views/settings.html',
@@ -49,25 +53,43 @@ myApp.controller('footerController', [
             });
         };
 
-        // TODO: should listen for changes on 
-        // - Shared.project.translationEngine
-        // And disable translation and hide bar if disabled 
-        // (and show a tiny message: Automatic translation disabled, or something like that).
-        // $scope.enable = true;
+        // Update the translation engine.
+        $scope.updateEngine = function(engine) {
+            Shared.setEngine(engine);
+        };
+        
+        // Keep updated the list of enabled engines.
+        $scope.$watchGroup([
+            'settings.api_yandex.enabled', 'settings.api_yandex.token',
+            'settings.api_microsoft.enabled', 'settings.api_microsoft.token',
+        ], function() {
+            var engines = [];
+            if($scope.settings.api_yandex.enabled && $scope.settings.api_yandex.token) { engines.push('yandex'); }
+            if($scope.settings.api_microsoft.enabled && $scope.settings.api_microsoft.token) { engines.push('microsoft'); }
+            $scope.enabledEngines = engines;
+        });
 
-        // TODO: should listen for changes on 
-        // - Shared.project.fromLangCode
-        // - Shared.project.toLangCode
-        // - Shared.project.translationEngine
-        // And, if incompatible, disable the translation and hide the translation bar
-        // (and show a tiny message: These languages are not supported by Yandex/Microsoft, or something like that)
-        // $scope.incompatibleLanguages = false;
+        // Keep updated the list of available engines (for current languages).
+        $scope.$watchGroup(['enabledEngines', 'project.fromLangCode', 'project.toLangCode'], function() {
+            var engines = [];
+            var fromLang = _.find(Languages.list, function(lang) { return lang.code == Shared.project.fromLangCode; });
+            var toLang = _.find(Languages.list, function(lang) { return lang.code == Shared.project.toLangCode; });
+            for(var i=0; i<$scope.enabledEngines.length; i++) {
+                var engine = $scope.enabledEngines[i];
+                if(fromLang && fromLang[engine] && toLang && toLang[engine]) {
+                    engines.push(engine);
+                }
+            }
+            $scope.availableEngines = engines;
 
-        // TODO: should listen for changes on 
-        // - Shared.project.translationEngine
-        // - Shared.settings.app_....
-        // And, if not configured, disable the translation and hide the translation bar
-        // (and show a tiny message: You need to set up your Yandex/Microsoft API Key for automatic translations, or something like that)
-        // $scope.incompatibleLanguages = false;
+            // Update current engine.
+            if(engines.length > 0) {
+                if(!$scope.project.translationEngine || !_.find(engines, function(engine) { return engine === $scope.project.translationEngine; })) {
+                    $scope.project.translationEngine = engines[0];
+                }
+            } else {
+                $scope.project.translationEngine = null;
+            }
+        });
     }
 ]);
