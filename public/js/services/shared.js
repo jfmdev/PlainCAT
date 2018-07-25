@@ -1,5 +1,5 @@
 // Service for manage the application's settings.
-myApp.factory('Shared', [function () {
+myApp.factory('Shared', ['$rootScope', function ($rootScope) {
     var service = {};
     var ipcRenderer = require('electron').ipcRenderer;
 
@@ -12,8 +12,13 @@ myApp.factory('Shared', [function () {
         languages: { disabled: [], locales: {} },
     }, ipcRenderer.sendSync('settings-get', 'app') || {});
 
+    service.isLanguageEnabled = function(langCode) {
+        return service.settings.languages.disabled.indexOf(langCode) < 0;
+    };
+
     service.setSettingValue = function(name, value) {
         service.settings[name] = value;
+        $rootScope.$emit('settings-updated', { 'name': name });
         return ipcRenderer.sendSync('settings-set', {'name': ('app.' + name), 'value': value });
     };
 

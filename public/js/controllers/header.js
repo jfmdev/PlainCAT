@@ -1,12 +1,24 @@
 // Define controller.
 myApp.controller('headerController', [
-    '$scope', 'Shared', 'Languages', 'FileManager',
-    function ($scope, Shared, Languages, FileManager) {
+    '$scope', '$rootScope', 'Shared', 'Languages', 'FileManager',
+    function ($scope, $rootScope, Shared, Languages, FileManager) {
         // Initialize variables.
-        $scope.mainLanguages = Languages.list;
-        $scope.sourceLang = Languages.lang.source;
-        $scope.targetLang = Languages.lang.target;
+        $scope.mainLanguages = [];
+        $scope.lang = Languages.lang;
         $scope.files = Shared.files;
+
+        // Update list of enabled languages.
+        var updateLanguageList = function() {
+            var langs = [];
+            for(var i=0; i<Languages.list.length; i++) {
+                var lang = Languages.list[i];
+                if(Shared.isLanguageEnabled(lang.code)) {
+                    langs.push(lang);
+                }
+            }
+            $scope.mainLanguages = langs;
+        };
+        updateLanguageList();
 
         // Close a file.
         $scope.closeFile = FileManager.closeFile;
@@ -32,5 +44,16 @@ myApp.controller('headerController', [
         $scope.removeExtension = function(fileName) {
             return (fileName || '').replace(/\.[^/.]+$/, "");
         };
+        
+        // List for changes on settings for update available list.
+        var unregisterListener = $rootScope.$on('settings-updated', function(evt, data) {
+            if(data.name === 'languages') {
+                updateLanguageList();
+            }
+        });
+
+        $scope.$on('$destroy', function() {
+            unregisterListener();
+        });
     }
 ]);
