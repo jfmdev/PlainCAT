@@ -4,7 +4,7 @@ myApp.factory('Languages', ['Shared', function (Shared) {
     var ipcRenderer = require('electron').ipcRenderer;
 
     // Initialize list of languages.
-    service.list = ipcRenderer.sendSync('get-languages');
+    service.list = Shared.languages;
 
     // Method for get the prefered locale of a language.
     service.getLangLocale = function(language) {
@@ -31,18 +31,12 @@ myApp.factory('Languages', ['Shared', function (Shared) {
         Shared.setLanguage(type, language.code);
     };
 
-    // TODO: Method for enable/disable a language.
-    // Should update on service.list and on Shared.settings.
-
-    // TODO: Method for select a preferred locale.
-    // Should update on service.list and on Shared.settings.
-
     // Get last selected languages and load dictionaries.
     service.lang = {};
     for(var i=0; i<2; i++) {
         // Get language.
         var type = (i === 0)? 'source' : 'target';
-        var langCode = (i === 0)? Shared.project.fromLangCode : Shared.project.toLangCode;
+        var langCode = (i === 0)? Shared.store.get('fromLang') : Shared.store.get('toLang');
         service.lang[type] = _.findWhere(service.list, {"code": langCode});
 
         // Load dictionary.

@@ -21,8 +21,8 @@
                 </button>
                 
                 <select ng-if="availableEngines.length > 0"
-                    ng-model="project.translationEngine"
-                    ng-change="updateEngine(project.translationEngine)"
+                    ng-model="translationEngine"
+                    ng-change="updateEngine(translationEngine)"
                     ng-options="engine for engine in availableEngines"
                 ></select>
                 
@@ -35,10 +35,10 @@
             </div>
 
             <div class="col-sm-6 text-right" ng-show="translation && !error">
-                <a ng-show="project.translationEngine === 'yandex'" href="http://translate.yandex.com/" target="_blank">
+                <a ng-show="translationEngine === 'yandex'" href="http://translate.yandex.com/" target="_blank">
                     <small>Powered by Yandex.Translate</small>
                 </a>
-                <a ng-show="project.translationEngine === 'microsoft'" href="https://translator.microsoft.com/" target="_blank">
+                <a ng-show="translationEngine === 'microsoft'" href="https://translator.microsoft.com/" target="_blank">
                     <small>Powered by Microsoft Translator</small>
                 </a>
                 <i class="separator"></i>

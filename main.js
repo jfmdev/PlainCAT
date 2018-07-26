@@ -157,7 +157,7 @@ function readAndParseFile(event, filePath, target) {
 
             // Save file's path and data.
             openedFiles[target] = {'path': filePath, 'data': docLines, 'encoding': encoding};
-            settingsStore.put('app.file_'+target, filePath);
+            settingsStore.put('app.' + target + 'File', filePath);
 
             // Return data.
             let fileReadData = {
@@ -191,7 +191,7 @@ ipcMain.on('open-file', function(event, target) {
 
 // Verify if a file already opened can be read.
 ipcMain.on('last-file', function(event, type) {
-    var filePath = settingsStore.get('app.file_' + type);
+    var filePath = settingsStore.get('app.' + type + 'File');
     if(filePath) { readAndParseFile(event, filePath, type); }
 });
 

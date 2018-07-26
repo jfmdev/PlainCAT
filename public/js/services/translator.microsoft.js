@@ -9,7 +9,7 @@ myApp.factory('MicrosoftTranslator', ['Shared', function (Shared) {
     // Define private methods.
     service._getMicrosoftToken = function(callback) {
         // Get suscription key.
-        var apiData = Shared.getApiData('microsoft');
+        var apiData = Shared.store.get('microsoft');
         var suscriptionKey = apiData ? apiData.token : null;
 
         // Verify that the key was defined.

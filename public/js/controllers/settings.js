@@ -1,7 +1,7 @@
 // Define controller.
 myApp.controller('settingsController', [
-    '$scope', '$rootScope', 'Shared', 'Languages', 'Translator', '$uibModalInstance', 'tab',
-    function ($scope, $rootScope, Shared, Languages, Translator, $uibModalInstance, tab) {
+    '$scope', '$rootScope', 'Shared', 'Translator', '$uibModalInstance', 'tab',
+    function ($scope, $rootScope, Shared, Translator, $uibModalInstance, tab) {
         // Initialize active tab.
         $scope.activeTab = 0;
         if(tab === 'spellchecker') { $scope.activeTab = 0; }
@@ -9,16 +9,18 @@ myApp.controller('settingsController', [
         if(tab === 'about') { $scope.activeTab = 2; }
 
         // Translation settings.
-        $scope.yandex = Shared.settings.api_yandex;
-        $scope.microsoft = Shared.settings.api_microsoft;
+        Shared.linkStore($scope, $scope, 'yandex', 'yandex');
+        Shared.linkStore($scope, $scope, 'microsoft', 'microsoft');
 
         $scope.updateTranslation = function(engine) {
-            Shared.setApiData(engine, $scope[engine]);
+            Shared.store.set(engine, $scope[engine]);
         };
         
         // Language settings.
-        $scope.languages = Languages.list;
-        $scope.langSettings = Shared.settings.languages;
+        $scope.languages = Shared.languages;
+        $scope.langSettings = {};
+        Shared.linkStore($scope, $scope.langSettings, 'disabledLanguages', 'disabled');
+        Shared.linkStore($scope, $scope.langSettings, 'languageLocales', 'locales');
 
         $scope.toggleLanguage = function(lang) {
             if($scope.langSettings.disabled.indexOf(lang.code) >= 0) {
@@ -26,11 +28,11 @@ myApp.controller('settingsController', [
             } else {
                 $scope.langSettings.disabled.push(lang.code);
             }
-            Shared.setSettingValue('languages', $scope.langSettings);
+            Shared.store.set('disabledLanguages', $scope.langSettings.disabled);
         };
 
         $scope.localeUpdated = function(lang) {
-            Shared.setSettingValue('languages', $scope.langSettings);
+            Shared.store.set('languageLocales', $scope.langSettings.locales);
         };
 
         for(var i=0; i<$scope.languages.length; i++) {

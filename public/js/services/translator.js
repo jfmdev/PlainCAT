@@ -14,7 +14,7 @@ myApp.factory('Translator', [
 
             // Check availability.
             for(var i=0; i<list.length; i++) {
-                var apiData = Shared.getApiData(list[i].code)
+                var apiData = Shared.store.get(list[i].code)
                 list[i].available = apiData && apiData.token && apiData.enabled;
             }
 
@@ -55,9 +55,9 @@ myApp.factory('Translator', [
 
         service.translate = function(content) {
             // Initialize variables.
-            var fromLang = Shared.project.fromLangCode;
-            var toLang = Shared.project.toLangCode;
-            var engine = Shared.project.translationEngine;
+            var fromLang = Shared.store.get('fromLang');
+            var toLang = Shared.store.get('toLang');
+            var engine = Shared.store.get('selectedEngine');
 
             // Check for cached translation and, if fails, get remote translation.
             if(engine && fromLang && toLang) {

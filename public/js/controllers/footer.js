@@ -1,17 +1,16 @@
 // Define controller.
 myApp.controller('footerController', [
-    '$scope', '$rootScope', 'Shared', 'Translator', 'Languages', '$uibModal', 
-    function ($scope, $rootScope, Shared, Translator, Languages, $uibModal) {
+    '$scope', '$rootScope', 'Shared', 'Translator', '$uibModal', 
+    function ($scope, $rootScope, Shared, Translator, $uibModal) {
         // Initialize variables.
         $scope.translation = null;
         $scope.sourceIndex = null;
         $scope.error = null;
         $scope.loading = false;
 
-        $scope.settings = Shared.settings;
-        $scope.project = Shared.project;
-        $scope.enabledEngines = [];
-        $scope.availableEngines = [];
+        Shared.linkStore($scope, $scope, 'selectedEngine', 'translationEngine');
+        Shared.linkStore($scope, $scope, 'enabledEngines', 'enabledEngines');
+        Shared.linkStore($scope, $scope, 'usefulEngines', 'availableEngines');
 
         // When a paragraph is focused, update the automatic translation.
         $scope.$on('paragraph-focused', function(event, data) {
@@ -55,40 +54,17 @@ myApp.controller('footerController', [
 
         // Update the translation engine.
         $scope.updateEngine = function(engine) {
-            Shared.setEngine(engine);
+            Shared.store.set('selectedEngine', engine);
         };
-        
-        // Keep updated the list of enabled engines.
-        $scope.$watchGroup([
-            'settings.api_yandex.enabled', 'settings.api_yandex.token',
-            'settings.api_microsoft.enabled', 'settings.api_microsoft.token',
-        ], function() {
-            var engines = [];
-            if($scope.settings.api_yandex.enabled && $scope.settings.api_yandex.token) { engines.push('yandex'); }
-            if($scope.settings.api_microsoft.enabled && $scope.settings.api_microsoft.token) { engines.push('microsoft'); }
-            $scope.enabledEngines = engines;
-        });
 
-        // Keep updated the list of available engines (for current languages).
-        $scope.$watchGroup(['enabledEngines', 'project.fromLangCode', 'project.toLangCode'], function() {
-            var engines = [];
-            var fromLang = _.find(Languages.list, function(lang) { return lang.code == Shared.project.fromLangCode; });
-            var toLang = _.find(Languages.list, function(lang) { return lang.code == Shared.project.toLangCode; });
-            for(var i=0; i<$scope.enabledEngines.length; i++) {
-                var engine = $scope.enabledEngines[i];
-                if(fromLang && fromLang[engine] && toLang && toLang[engine]) {
-                    engines.push(engine);
-                }
-            }
-            $scope.availableEngines = engines;
-
-            // Update current engine.
+        // Set default values to engine if the list is updated.
+        var unwatchEngines = Shared.store.watch('usefulEngines', function(key, engines) {
             if(engines.length > 0) {
-                if(!$scope.project.translationEngine || !_.find(engines, function(engine) { return engine === $scope.project.translationEngine; })) {
-                    $scope.project.translationEngine = engines[0];
+                if(!$scope.translationEngine || !_.find(engines, function(engine) { return engine === $scope.translationEngine; })) {
+                    $scope.updateEngine(engines[0]);
                 }
             } else {
-                $scope.project.translationEngine = null;
+                $scope.updateEngine(null);
             }
         });
     }

@@ -1,57 +1,120 @@
 // Service for manage the application's settings.
-myApp.factory('Shared', ['$rootScope', function ($rootScope) {
+myApp.factory('Shared', [function () {
     var service = {};
     var ipcRenderer = require('electron').ipcRenderer;
 
-    // App's settings.
-    service.settings = Object.assign({
-        file_source: null,
-        file_target: null,
-        api_yandex: { enabled: true, token: null },
-        api_microsoft: { enabled: true, token: null },
-        languages: { disabled: [], locales: {} },
+    // Get list of languages.
+    service.languages = ipcRenderer.sendSync('get-languages');
+
+    // Initialize setting values.
+    var settingValues = Object.assign({
+        fromLang: 'en',
+        toLang: 'es',
+        selectedEngine: 'yandex',
+
+        sourceFile: null,
+        targetFile: null,
+
+        yandex: { enabled: true, token: null },
+        microsoft: { enabled: true, token: null },
+
+        disabledLanguages: [],
+        languageLocales: {},
     }, ipcRenderer.sendSync('settings-get', 'app') || {});
 
-    service.isLanguageEnabled = function(langCode) {
-        return service.settings.languages.disabled.indexOf(langCode) < 0;
+    // Initialize store.
+    service.store = new SimpleObserver(settingValues);
+
+    // Define methods for generate special values.
+    var getEnabledLanguages = function() {
+        var langs = [];
+
+        for(var i=0; i<service.languages.length; i++) {
+            var lang = service.languages[i];
+            if(settingValues.disabledLanguages.indexOf(lang.code) < 0) {
+                langs.push(lang);
+            }
+        }
+
+        return langs;
     };
 
-    service.setSettingValue = function(name, value) {
-        service.settings[name] = value;
-        $rootScope.$emit('settings-updated', { 'name': name });
-        return ipcRenderer.sendSync('settings-set', {'name': ('app.' + name), 'value': value });
+    var getEnabledEngines = function() {
+        var enabled = [];
+        var engines = ['yandex', 'microsoft'];
+
+        for(var i=0; i<engines.length; i++) {
+            var engineSetting = settingValues[engines[i]];
+            if(engineSetting.enabled && engineSetting.token) {
+                enabled.push(engines[i]);
+            }
+        }
+
+        return enabled;
     };
 
-    service.setApiData = function(name, value) {
-        return service.setSettingValue('api_' + name, value);
+    var getUsefulEngines = function() {
+        var useful = [];
+        var engines = getEnabledEngines();
+        var fromLang = _.find(service.languages, function(lang) { return lang.code == settingValues.fromLang; });
+        var toLang = _.find(service.languages, function(lang) { return lang.code == settingValues.toLang; });
+
+        for(var i=0; i<engines.length; i++) {
+            var engine = engines[i];
+            if(fromLang && fromLang[engine] && toLang && toLang[engine]) {
+                useful.push(engine);
+            }
+        }
+
+        return useful;
     };
 
-    service.getApiData = function(name) {
-        return service.settings['api_' + name];
+    // Initialize special values.
+    settingValues.enabledLanguages = getEnabledLanguages();
+    settingValues.enabledEngines = getEnabledEngines();
+    settingValues.usefulEngines = getUsefulEngines();
+
+    // Keep special values updated.
+    service.store.watchAll(function(key) {
+        if(key === 'disabledLanguages') {
+            service.store.set('enabledLanguages', getEnabledLanguages());
+        }
+
+        if(key === 'yandex' || key === 'microsoft') {
+            service.store.set('enabledEngines', getEnabledEngines());
+
+            if(key === 'fromLang' || key === 'toLang') {
+                service.store.set('usefulEngines', getUsefulEngines());
+            }
+        }
+    });
+
+    // Method for link store value to scope.
+    service.linkStore = function(scope, target, sourceKey, targetKey) {
+        target[targetKey] = settingValues[sourceKey];
+
+        var updateTarget = function(key, newValue) { target[targetKey] = newValue; };
+        var unwatch = service.store.watch(sourceKey, updateTarget);
+
+        scope.$on('$destroy', unwatch);
     };
 
-    // Project's settings.
-    service.project = Object.assign({
-        fromLangCode: 'en',
-        toLangCode: 'es',
-        translationEngine: 'yandex',
-    }, ipcRenderer.sendSync('settings-get', 'project') || {});
+    // Update settings file after a change.
+    service.store.watchAll(function(key, newValue) {
+        // Don't save special values.
+        if(key != 'disabledLanguages' && key != 'enabledEngines' && key != 'usefulEngines') {
+            return ipcRenderer.sendSync('settings-set', {'name': ('app.' + key), 'value': newValue });
+        }
+    });
 
-    service.setProjectValue = function(name, value) {
-        service.project[name] = value;
-        ipcRenderer.sendSync('settings-set', {'name': ('project.' + name), 'value': value });
+    // Utility functions.
+    service.setLanguage = function(type, newValue) {
+        var key = type == 'source' || type == 'from' || type == 'fromLang' ? 'fromLang' : 'toLang';
+        service.store.set(key, newValue);
     };
 
-    service.setLanguage = function(type, langCode) {
-        var langKey = (type === 'source' || type === 'from')? 'fromLangCode' : 'toLangCode';
-        service.setProjectValue(langKey, langCode);
-    };
+    // --- Files --- //
 
-    service.setEngine = function(engineCode) {
-        service.setProjectValue('translationEngine', engineCode);
-    };
-
-    // File's data.
     service.files = {
         source: {
             name: null,

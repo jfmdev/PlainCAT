@@ -7,7 +7,7 @@ myApp.factory('YandexTranslator', ['Shared', function (Shared) {
     service.translate = function(fromLang, toLang, content) {
         return new Promise(function(resolve, reject) {
             // Initialize variables.
-            var apiData = Shared.getApiData('yandex');
+            var apiData = Shared.store.get('yandex');
             var apiKey = apiData ? apiData.token : null;
             var lang = fromLang + "-" + toLang;
 
