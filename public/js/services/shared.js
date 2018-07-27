@@ -136,5 +136,26 @@ myApp.factory('Shared', [function () {
         service.store.set(key, newValue);
     };
 
+    service.getLanguage = function(type) {
+        var key = type == 'source' || type == 'from' || type == 'fromLang' ? 'fromLang' : 'toLang';
+        return service.store.get(key);
+    };
+
+    service.getLanguageLocale = function(langCode) {
+        var locale = null;
+
+        var preferredLocales = service.store.get('languageLocales');
+        if(preferredLocales && preferredLocales[langCode]) {
+            locale = preferredLocales[langCode];
+        } else {
+            var language = _.find(service.languages, function(lang) { return lang.code === langCode; });
+            if(language && language.spellcheck) {
+                locale = language.spellcheck[0].locale;
+            }
+        }
+
+        return locale;
+    };
+
     return service;
 }]);

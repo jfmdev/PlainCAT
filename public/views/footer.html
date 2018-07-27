@@ -15,11 +15,6 @@
 
         <div class="row">
             <div class="col-sm-6 text-left">
-                <button class="btn btn-info btn-xs" ng-click="openTranslationSettings()">
-                    <i class="glyphicon glyphicon-cog" aria-hidden="true"></i>
-                    Translation settings
-                </button>
-                
                 <select ng-if="availableEngines.length > 0"
                     ng-model="translationEngine"
                     ng-change="updateEngine(translationEngine)"
@@ -32,6 +27,13 @@
                 <span class="text-info" ng-if="enabledEngines.length > 0 && availableEngines.length == 0">
                     The Translation Engine don't support the current languages
                 </span>
+
+                <i class="separator"></i>
+
+                <button class="btn btn-info btn-xs" ng-click="openTranslationSettings()">
+                    <i class="glyphicon glyphicon-cog" aria-hidden="true"></i>
+                    Translation settings
+                </button>
             </div>
 
             <div class="col-sm-6 text-right" ng-show="translation && !error">
@@ -41,7 +43,9 @@
                 <a ng-show="translationEngine === 'microsoft'" href="https://translator.microsoft.com/" target="_blank">
                     <small>Powered by Microsoft Translator</small>
                 </a>
+
                 <i class="separator"></i>
+
                 <button class="btn btn-primary btn-xs" ng-click="pasteTranslation(translation)">
                     <i class="glyphicon glyphicon-paste" aria-hidden="true"></i>
                     Paste translation
