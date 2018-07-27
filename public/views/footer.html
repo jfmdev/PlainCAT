@@ -15,7 +15,8 @@
 
         <div class="row">
             <div class="col-sm-6 text-left">
-                <select ng-if="availableEngines.length > 0"
+                <select class="capitalize" 
+                    ng-if="availableEngines.length > 0"
                     ng-model="translationEngine"
                     ng-change="updateEngine(translationEngine)"
                     ng-options="engine for engine in availableEngines"

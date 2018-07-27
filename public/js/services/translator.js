@@ -5,22 +5,6 @@ myApp.factory('Translator', [
         var service = {};
         var ipcRenderer = require('electron').ipcRenderer;
 
-        service.getTranslatorsList = function() {
-            // Define list.
-            var list = [
-                { code: 'yandex', name: "Yandex" },
-                { code: 'microsoft', name: "Microsoft" },
-            ];
-
-            // Check availability.
-            for(var i=0; i<list.length; i++) {
-                var apiData = Shared.store.get(list[i].code)
-                list[i].available = apiData && apiData.token && apiData.enabled;
-            }
-
-            return list;
-        };
-
         service.getCachedTranslation = function(fromLang, toLang, engine, content) {
             return new Promise(function(resolve, reject) {
                 ipcRenderer.once('cached-translation.got', function(sender, translation) {

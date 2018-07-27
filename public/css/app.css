@@ -157,3 +157,7 @@ table > tbody > tr > td.cell-middle {
 .clickable {
     cursor: pointer;
 }
+
+.capitalize {
+    text-transform: capitalize;
+}
