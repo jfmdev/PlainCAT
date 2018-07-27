@@ -15,7 +15,7 @@ myApp.controller('settingsController', [
         $scope.updateTranslation = function(engine) {
             Shared.store.set(engine, $scope[engine]);
         };
-        
+
         // Language settings.
         $scope.languages = Shared.languages;
         $scope.langSettings = {};
@@ -42,7 +42,23 @@ myApp.controller('settingsController', [
             }
         }
 
-        // Cancel button.
+        // Buttons.
+        $scope.checkAll = function() {
+            $scope.langSettings.disabled = [];
+            Shared.store.set('disabledLanguages', $scope.langSettings.disabled);
+        };
+
+        $scope.checkWithSpellchecker = function() {
+            var withoutSpellchecker = _.filter($scope.languages, function(language) { return !language.spellcheck; });
+            $scope.langSettings.disabled = _.map(withoutSpellchecker, function(language) { return language.code; });
+            Shared.store.set('disabledLanguages', $scope.langSettings.disabled);
+        };
+
+        $scope.uncheckAll = function() {
+            $scope.langSettings.disabled = _.map($scope.languages, function(language) { return language.code; });
+            Shared.store.set('disabledLanguages', $scope.langSettings.disabled);
+        };
+
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
