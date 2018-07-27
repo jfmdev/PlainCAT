@@ -35,9 +35,9 @@
                 </div>
                 <div class="col-sm-5 text-right">
                     <select class="select-language"
-                        ng-model="lang.source"
+                        ng-model="sourceLang"
                         ng-options="language.code as language.name for language in mainLanguages"
-                        ng-change="languageSelected('source', lang.source)">
+                        ng-change="languageSelected('source', sourceLang)">
                     </select>
                 </div>
             </div>
@@ -81,10 +81,10 @@
                     </a>
                 </div>
                 <div class="col-sm-5 text-right">
-                    <select class="select-language" 
+                    <select class="select-language"
+                        ng-model="targetLang" 
                         ng-options="language.code as language.name for language in mainLanguages" 
-                        ng-model="lang.target" 
-                        ng-change="languageSelected('target', lang.target)">
+                        ng-change="languageSelected('target', targetLang)">
                     </select>
                 </div>
             </div>

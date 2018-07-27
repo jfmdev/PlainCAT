@@ -8,9 +8,9 @@ myApp.controller('footerController', [
         $scope.error = null;
         $scope.loading = false;
 
-        Shared.linkStore($scope, $scope, 'selectedEngine', 'translationEngine');
-        Shared.linkStore($scope, $scope, 'enabledEngines', 'enabledEngines');
-        Shared.linkStore($scope, $scope, 'usefulEngines', 'availableEngines');
+        Shared.linkStoreToScope($scope, 'enabledEngines');
+        Shared.linkStoreToScope($scope, 'usefulEngines', 'availableEngines');
+        Shared.linkStoreToScope($scope, 'selectedEngine', 'translationEngine');
 
         // When a paragraph is focused, update the automatic translation.
         $scope.$on('paragraph-focused', function(event, data) {

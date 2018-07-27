@@ -112,10 +112,11 @@ myApp.factory('Shared', [function () {
     });
 
     // Method for link store value to scope.
-    service.linkStore = function(scope, target, sourceKey, targetKey) {
-        target[targetKey] = storeValues[sourceKey];
+    service.linkStoreToScope = function(scope, sourceKey, targetKey) {
+        if(!targetKey) { targetKey = sourceKey; }
+        scope[targetKey] = storeValues[sourceKey];
 
-        var updateTarget = function(key, newValue) { target[targetKey] = newValue; };
+        var updateTarget = function(key, newValue) { scope[targetKey] = newValue; };
         var unwatch = service.store.watch(sourceKey, updateTarget);
 
         scope.$on('$destroy', unwatch);

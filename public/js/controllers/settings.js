@@ -1,7 +1,7 @@
 // Define controller.
 myApp.controller('settingsController', [
-    '$scope', '$rootScope', 'Shared', 'Translator', '$uibModalInstance', 'tab',
-    function ($scope, $rootScope, Shared, Translator, $uibModalInstance, tab) {
+    '$scope', '$rootScope', 'Shared', '$uibModalInstance', 'tab',
+    function ($scope, $rootScope, Shared, $uibModalInstance, tab) {
         // Initialize active tab.
         $scope.activeTab = 0;
         if(tab === 'spellchecker') { $scope.activeTab = 0; }
@@ -9,8 +9,8 @@ myApp.controller('settingsController', [
         if(tab === 'about') { $scope.activeTab = 2; }
 
         // Translation settings.
-        Shared.linkStore($scope, $scope, 'yandex', 'yandex');
-        Shared.linkStore($scope, $scope, 'microsoft', 'microsoft');
+        Shared.linkStoreToScope($scope, 'yandex');
+        Shared.linkStoreToScope($scope, 'microsoft');
 
         $scope.updateTranslation = function(engine) {
             Shared.store.set(engine, $scope[engine]);
@@ -18,45 +18,44 @@ myApp.controller('settingsController', [
 
         // Language settings.
         $scope.languages = Shared.languages;
-        $scope.langSettings = {};
-        Shared.linkStore($scope, $scope.langSettings, 'disabledLanguages', 'disabled');
-        Shared.linkStore($scope, $scope.langSettings, 'languageLocales', 'locales');
+        Shared.linkStoreToScope($scope, 'disabledLanguages');
+        Shared.linkStoreToScope($scope, 'languageLocales');
 
         $scope.toggleLanguage = function(lang) {
-            if($scope.langSettings.disabled.indexOf(lang.code) >= 0) {
-                $scope.langSettings.disabled = _.without($scope.langSettings.disabled, lang.code);
+            if($scope.disabledLanguages.indexOf(lang.code) >= 0) {
+                $scope.disabledLanguages = _.without($scope.disabledLanguages.disabled, lang.code);
             } else {
-                $scope.langSettings.disabled.push(lang.code);
+                $scope.disabledLanguages.push(lang.code);
             }
-            Shared.store.set('disabledLanguages', $scope.langSettings.disabled);
+            Shared.store.set('disabledLanguages', $scope.disabledLanguages);
         };
 
         $scope.localeUpdated = function(lang) {
-            Shared.store.set('languageLocales', $scope.langSettings.locales);
+            Shared.store.set('languageLocales', $scope.languageLocales);
         };
 
         for(var i=0; i<$scope.languages.length; i++) {
             var lang = $scope.languages[i];
-            if(lang.spellcheck && !$scope.langSettings.locales[lang.code]) {
-                $scope.langSettings.locales[lang.code] = lang.spellcheck[0].locale;
+            if(lang.spellcheck && !$scope.languageLocales[lang.code]) {
+                $scope.languageLocales[lang.code] = lang.spellcheck[0].locale;
             }
         }
 
         // Buttons.
         $scope.checkAll = function() {
-            $scope.langSettings.disabled = [];
-            Shared.store.set('disabledLanguages', $scope.langSettings.disabled);
+            $scope.disabledLanguages = [];
+            Shared.store.set('disabledLanguages', $scope.disabledLanguages);
         };
 
         $scope.checkWithSpellchecker = function() {
             var withoutSpellchecker = _.filter($scope.languages, function(language) { return !language.spellcheck; });
-            $scope.langSettings.disabled = _.map(withoutSpellchecker, function(language) { return language.code; });
-            Shared.store.set('disabledLanguages', $scope.langSettings.disabled);
+            $scope.disabledLanguages = _.map(withoutSpellchecker, function(language) { return language.code; });
+            Shared.store.set('disabledLanguages', $scope.disabledLanguages);
         };
 
         $scope.uncheckAll = function() {
-            $scope.langSettings.disabled = _.map($scope.languages, function(language) { return language.code; });
-            Shared.store.set('disabledLanguages', $scope.langSettings.disabled);
+            $scope.disabledLanguages = _.map($scope.languages, function(language) { return language.code; });
+            Shared.store.set('disabledLanguages', $scope.disabledLanguages);
         };
 
         $scope.cancel = function () {

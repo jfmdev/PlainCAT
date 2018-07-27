@@ -5,10 +5,9 @@ myApp.controller('headerController', [
         // Initialize variables.
         $scope.files = Shared.files;
 
-        $scope.lang = {};
-        Shared.linkStore($scope, $scope.lang, 'fromLang', 'source');
-        Shared.linkStore($scope, $scope.lang, 'toLang', 'target');
-        Shared.linkStore($scope, $scope, 'enabledLanguages', 'mainLanguages');
+        Shared.linkStoreToScope($scope, 'fromLang', 'sourceLang');
+        Shared.linkStoreToScope($scope, 'toLang', 'targetLang');
+        Shared.linkStoreToScope($scope, 'enabledLanguages', 'mainLanguages');
 
         // File actions.
         $scope.closeFile = FileManager.closeFile;
