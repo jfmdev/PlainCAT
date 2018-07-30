@@ -129,19 +129,23 @@ function getDocLines(text) {
                 'end': (match.index+match[0].length)
             });
         }
-        
+
         // Generate result.
         var start = 0, end;
         for(var i=0; i<=indexes.length; i++) {
             start = (i > 0)? indexes[i-1].end : 0;
             end = (i < indexes.length)? indexes[i].start : text.length;
-            
+
             if(start != end) {
-                result.push({'index': start, 'text': text.substring(start, end)});
+                result.push({
+                    'index': start,
+                    'length': (end - start),
+                    'text': text.substring(start, end),
+                });
             }
         }
     }
-    
+
     // Return result.
     return result;
 }
@@ -163,6 +167,7 @@ function readAndParseFile(event, filePath, target) {
             let fileReadData = {
                 path: filePath,
                 name: path.basename(filePath),
+                text: fileData,
                 lines: docLines,
                 encoding: encoding,
             };
@@ -179,7 +184,7 @@ function readAndParseFile(event, filePath, target) {
 ipcMain.on('open-file', function(event, target) {
     // Read file.
     var files = dialog.showOpenDialog({ properties: ['openFile']});
-    
+
     // Verify if the file was selected.
     if(files != null && files.length > 0) {
         readAndParseFile(event, files[0], target);
@@ -213,7 +218,7 @@ ipcMain.on('save-file', function(event, type, filePath, data, encoding) {
 ipcMain.on('save-file-as', function(event, type, data, encoding) {
     // Read file.
     var filePath = dialog.showSaveDialog();
-    
+
     // Verify if the file was selected.
     if(filePath) {
         // Save file.
@@ -322,12 +327,6 @@ ipcMain.on('get-languages', function(event) {
 
     // Sort by name (instead of by code).
     res.sort(function(a, b) { return a.name < b.name? -1 : 1; });
-
-    // TODO: Verify which languages are disabled.
-    // Should read that from AppSettings.
-
-    // TODO: Verify the preferred spell checkers.
-    // Should read that from AppSettings.
 
     // Return result.
     event.returnValue = res;

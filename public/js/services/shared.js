@@ -13,6 +13,7 @@ myApp.factory('Shared', [function () {
             content: null,
             dirty: false,
             encoding: 'UTF-8',
+            text: '',
         },
         target: {
             name: null,
@@ -20,6 +21,7 @@ myApp.factory('Shared', [function () {
             content: null,
             dirty: false,
             encoding: 'UTF-8',
+            text: '',
         },
     };
 

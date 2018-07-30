@@ -191,14 +191,6 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
             });
             return res;
         },
-
-        // Get all content of <p> elements as a string.
-        getContentAsString: function(type) {
-            // TODO: Ideally should replace new paragraphs in original file.
-            var paragraphSeparator =  ipcRenderer.sendSync('get-platform') !== 'win32'? '\n' : '\r\n';
-            var content = this.getContentAsArray(type).join(paragraphSeparator);
-            return content;
-        },
     };
 
     // Return factory.
