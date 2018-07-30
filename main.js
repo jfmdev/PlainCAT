@@ -337,7 +337,7 @@ ipcMain.on('get-languages', function(event) {
 // --- Translation cache --- //
 
 const NodeCache = require("node-cache");
-const translationCache = new NodeCache({ stdTTL: 120, checkperiod: 140 });
+const translationCache = new NodeCache({ stdTTL: 7200, checkperiod: 1200 });
 
 const crypto = require('crypto');
 function sha1(data) {

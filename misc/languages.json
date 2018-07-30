@@ -110,7 +110,8 @@
         "en": [{"locale": "en-US", "place": "United States"}, {"locale": "en-GB", "place": "United Kingdom"}],
         "es": [{"locale": "es-ES", "place": "Spain"}, {"locale": "es-MX", "place": "Mexico"}], 
         "fr": [{"locale": "fr-FR", "place": "France"}], 
-        "nl": [{"locale": "nl-NL", "place": "Netherlands"}] 
+        "nl": [{"locale": "nl-NL", "place": "Netherlands"}],
+        "pt": [{"locale": "pt-BR", "place": "Brazil"}]
     },
 
     "translation": {
