@@ -1,7 +1,7 @@
 // Define controller.
 myApp.controller('footerController', [
-    '$scope', '$rootScope', 'Shared', 'Translator', '$uibModal', 
-    function ($scope, $rootScope, Shared, Translator, $uibModal) {
+    '$scope', '$rootScope', 'Editor', 'Shared', 'Translator', '$uibModal', 
+    function ($scope, $rootScope, Editor, Shared, Translator, $uibModal) {
         // Initialize variables.
         $scope.translation = null;
         $scope.sourceIndex = null;
@@ -11,16 +11,14 @@ myApp.controller('footerController', [
         Shared.linkStoreToScope($scope, 'enabledEngines');
         Shared.linkStoreToScope($scope, 'usefulEngines', 'availableEngines');
         Shared.linkStoreToScope($scope, 'selectedEngine', 'translationEngine');
+        Shared.linkStoreToScope($scope, 'automaticTranslation');
 
-        // When a paragraph is focused, update the automatic translation.
-        $scope.$on('paragraph-focused', function(event, data) {
+        var translateText = function(index, content) {
             // Put loading message.
             $scope.loading = true;
-            $scope.$apply();
 
             // Translate text.
-            $scope.sourceIndex = data.index;
-            Translator.translate(data.content).then(function(result) {
+            Translator.translate(content).then(function(result) {
                 // Set translation.
                 $scope.error = null;
                 $scope.translation = result;
@@ -32,8 +30,27 @@ myApp.controller('footerController', [
                 // Update flag and refresh UI.
                 $scope.loading = false;
                 $scope.$apply();
-            });;
+            });
+        }
+
+        // When a paragraph is focused, update the translation.
+        $scope.$on('paragraph-focused', function(event, data) {
+            // Check if automatic translation is enabled.
+            $scope.sourceIndex = data.index;
+            if($scope.automaticTranslation) {
+                translateText(data.index, data.content);
+                $scope.$apply();
+            }
         });
+
+        // Paste the translation into the source paragraph.
+        $scope.translateNow = function() {
+            var index = $scope.sourceIndex;
+            var content = Editor.getParagraphContent('source', index);
+            if(content) {
+                translateText(index, content);
+            }
+        };
 
         // Paste the translation into the source paragraph.
         $scope.pasteTranslation = function(translation) {
@@ -55,6 +72,11 @@ myApp.controller('footerController', [
         // Update the translation engine.
         $scope.updateEngine = function(engine) {
             Shared.store.set('selectedEngine', engine);
+        };
+
+        // Update the automatic translation.
+        $scope.updateAutoTranslation = function(auto) {
+            Shared.store.set('automaticTranslation', auto);
         };
 
         // Set default values to engine if the list is updated.

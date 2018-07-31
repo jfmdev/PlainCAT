@@ -36,6 +36,13 @@ footer > div {
     overflow-y: auto;
 }
 
+footer label {
+    color: white;
+    font-weight: normal;
+    margin: 0;
+    cursor: pointer;
+}
+
 /* --- Header and footer --- */
 
 .file-name {

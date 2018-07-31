@@ -35,6 +35,7 @@ myApp.factory('Shared', [function () {
         fromLang: 'en',
         toLang: 'es',
         selectedEngine: 'yandex',
+        automaticTranslation: true,
 
         sourceFile: null,
         targetFile: null,

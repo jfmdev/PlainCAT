@@ -191,6 +191,18 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
             });
             return res;
         },
+
+        // Get the content of a give paragraph.
+        getParagraphContent: function(type, index) {
+            var container = mainContainers[type];
+
+            if(container) {
+                var paragraph = container.children().eq(index);
+                return paragraph.text();
+            }
+
+            return null;
+        },
     };
 
     // Return factory.
