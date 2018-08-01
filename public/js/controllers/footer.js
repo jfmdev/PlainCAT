@@ -36,11 +36,21 @@ myApp.controller('footerController', [
         // When a paragraph is focused, update the translation.
         $scope.$on('paragraph-focused', function(event, data) {
             // Check if automatic translation is enabled.
-            $scope.sourceIndex = data.index;
             if($scope.automaticTranslation) {
+                // Translate text.
                 translateText(data.index, data.content);
                 $scope.$apply();
+            } else {
+                // If the current translation is from another paragraph, delete it.
+                if($scope.sourceIndex !== data.index) {
+                    $scope.translation = null;                  
+                    $scope.error = null;
+                    $scope.$apply();
+                }
             }
+
+            // Update index.
+            $scope.sourceIndex = data.index;
         });
 
         // Paste the translation into the source paragraph.
