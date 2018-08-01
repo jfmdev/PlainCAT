@@ -176,6 +176,7 @@ myApp.factory('FileManager', [
                     name: null,
                     path: null,
                     content: null,
+                    text: '',
                 };
 
                 // Update UI if need.
