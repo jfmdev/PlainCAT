@@ -7,6 +7,7 @@ const dialog = electron.dialog;
 const path = require('path');
 const fs = require('fs');
 const jschardet = require('jschardet');
+const isDev = require('electron-is-dev');
 
 
 // ----- Initialization ----- // 
@@ -28,8 +29,8 @@ function createWindow () {
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/public/index.html');
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // Open the DevTools (only when running in dev mode).
+  if(isDev) mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function() {
@@ -371,4 +372,9 @@ ipcMain.on('cached-translation.set', function(event, fromLang, toLang, engine, c
 // Get the current platform.
 ipcMain.on('get-platform', function(event) {
     event.returnValue = process.platform;
+});
+
+// Check if the app is running on development mode.
+ipcMain.on('is-dev', function(event) {
+    event.returnValue = isDev;
 });

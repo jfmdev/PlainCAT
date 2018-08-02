@@ -109,9 +109,15 @@ var default_template = [
 // Service for initialize the application's menu.
 myApp.factory('Menu', ['$uibModal', function($uibModal) {
     // Load dependencies.
+    var ipcRenderer = require('electron').ipcRenderer;
     var remote = require('electron').remote;
     var Menu = remote.Menu;
     var template = [].concat(default_template);
+
+    // Remove 'View' section when running on production.
+    if(!ipcRenderer.sendSync('is-dev')) {
+        template = _.filter(template, function(section) { return section.label !== 'View'; }); 
+    }
 
     // Add 'File' section to default template.
     var openSourceItem = {
