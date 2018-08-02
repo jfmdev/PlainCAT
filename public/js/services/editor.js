@@ -5,9 +5,15 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
 
     // Paste machine translation (on target).
     $rootScope.$on('paste-translation', function(event, data) {
-        var row = container.children().eq(data.index)
+        var row = container.children().eq(data.index);
+
+        // Update paragraph and textarea (if exists).
         var paragraph = row.children().eq(1).find('p');
         paragraph.text(data.text);
+        var textarea = row.children().eq(1).find('textarea');
+        if(textarea.size() > 0) {
+            textarea.val(data.text);
+        }
 
         // Trigger event indicating the paragrah was edited.
         $rootScope.$broadcast('paragraph-edited', {
@@ -113,12 +119,30 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
             }
         },
 
+        removeCurrentTextarea: function() {
+            var textarea = container.find('textarea');
+            if(textarea.size() > 0) {
+                var row = textarea.parent().parent();
+                var paragraph = textarea.parent().find('p');
+
+                // Remove highlight from row.
+                row.removeClass('editing');
+
+                // Show paragraph and temove textarea.
+                paragraph.show();
+                textarea.remove();
+            }
+        },
+
         // Behaviour for the focus event on a paragraph.
         onFocus: function(event) {
             // Initialization.
             var paragraph = $(this);
             var type = paragraph.parent().index() == 0 ? 'source' : 'target';
             var row = paragraph.parent().parent();
+
+            // Remove current textarea (if any).
+            factory.removeCurrentTextarea();
 
             // Highlight row.
             row.addClass('editing');
@@ -146,8 +170,6 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
 
             // Assign behaviour for the blur event.
             textarea.blur(function(event) {
-                // Remove highlight on twin.
-                row.removeClass('editing');
 
                 // Check if content was updated.
                 if(paragraph.text() !== textarea.val()) {
@@ -160,10 +182,6 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
                         'index': row.index()
                     });
                 }
-
-                // Show paragraph and temove textarea.
-                paragraph.show();
-                textarea.remove();
             });
         },
 
