@@ -43,7 +43,7 @@ myApp.controller('footerController', [
             } else {
                 // If the current translation is from another paragraph, delete it.
                 if($scope.sourceIndex !== data.index) {
-                    $scope.translation = null;                  
+                    $scope.translation = null;
                     $scope.error = null;
                     $scope.$apply();
                 }
@@ -53,7 +53,7 @@ myApp.controller('footerController', [
             $scope.sourceIndex = data.index;
         });
 
-        // Paste the translation into the source paragraph.
+        // Translate the source paragraph of the last selected row.
         $scope.translateNow = function() {
             var index = $scope.sourceIndex;
             var content = Editor.getParagraphContent('source', index);

@@ -71,10 +71,18 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
                 } else {
                     cell.html('<p></p>');
                 }
+
+                // Check if the content is duplicated.
+                factory.checkDuplicatedContent(i);
             }
-            
+
             // Remove empty rows (if any).
-            var rowsCount = rows.length;
+            factory.removeEmptyRows();
+        },
+
+        removeEmptyRows: function() {0
+            // Remove empty rows (if any).
+            var rowsCount = container.children().length;
             for(var k=rowsCount; k>0; --k) {
                 var row = container.children().eq(k-1);
                 var p1 = row.children().eq(0).find('p');
@@ -87,11 +95,24 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
             }
         },
 
+        checkDuplicatedContent: function(index) {
+            var row = container.children().eq(index);
+            if(row.size() > 0) {
+                var p1 = row.children().eq(0).find('p');
+                var p2 = row.children().eq(1).find('p');
+                if(p1.text() === p2.text()) {
+                    p2.addClass('text-light');
+                } else {
+                    p2.removeClass('text-light');
+                }
+            }
+        },
+
         // Behaviour for the focus event on a paragraph.
         onFocus: function(event) {
             // Initialization.
             var paragraph = $(this);
-            var type = paragraph.index() == 0 ? 'source' : 'target';
+            var type = paragraph.parent().index() == 0 ? 'source' : 'target';
             var row = paragraph.parent().parent();
 
             // Highlight row.
@@ -128,11 +149,14 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
                     // Trigger the corresponding event
                     $rootScope.$broadcast('paragraph-edited', {
                         'type': type, 
-                        'index': paragraph.index()
+                        'index': row.index()
                     });
 
                     // Update paragraph.
                     paragraph.text(textarea.val());
+
+                    // Check for duplicated content.
+                    factory.checkDuplicatedContent(row.index());
                 }
 
                 // Show paragraph and temove textarea.

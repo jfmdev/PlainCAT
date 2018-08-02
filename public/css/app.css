@@ -172,6 +172,16 @@ div.modal-content .nav-tabs {
     margin-bottom: 8px;
 }
 
+/* --- Ng Confirm --- */
+
+.ng-confirm .ng-confirm-buttons .ng-confirm-btn-text {
+    font-size: 12px;
+}
+
+.ng-confirm .ng-confirm-box div.ng-confirm-title-c .ng-confirm-title {
+    font-size: 19px;
+}
+
 /* --- Misc --- */
 
 table > thead > tr > th.cell-middle,
@@ -185,4 +195,8 @@ table > tbody > tr > td.cell-middle {
 
 .capitalize {
     text-transform: capitalize;
+}
+
+.text-light {
+    color: #aaa;
 }
