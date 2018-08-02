@@ -36,7 +36,7 @@ myApp.controller('footerController', [
         // When a paragraph is focused, update the translation.
         $scope.$on('paragraph-focused', function(event, data) {
             // Check if automatic translation is enabled.
-            if($scope.automaticTranslation) {
+            if($scope.automaticTranslation && $scope.availableEngines.length > 0) {
                 // Translate text.
                 translateText(data.index, data.content);
                 $scope.$apply();

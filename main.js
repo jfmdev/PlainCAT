@@ -309,7 +309,7 @@ electronContextMenu({
 // Get the list of supported languages.
 ipcMain.on('get-languages', function(event) {
     // Read languages file.
-    var fileContent = fs.readFileSync('./misc/languages.json');
+    var fileContent = fs.readFileSync(__dirname  + '/misc/languages.json');
     var langData = JSON.parse(fileContent);
     var res = langData.list;
 
