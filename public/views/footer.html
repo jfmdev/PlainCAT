@@ -60,19 +60,21 @@
                     </a>
 
                     <i class="separator"></i>
-
-                    <button class="btn btn-primary btn-xs" ng-click="pasteTranslation(translation)">
-                        <i class="glyphicon glyphicon-paste" aria-hidden="true"></i>
-                        Paste translation
-                    </button>
-
-                    <i class="separator"></i>
                 </span>
 
                 <span ng-show="availableEngines.length">
                     <button class="btn btn-primary btn-xs" ng-click="translateNow()">
                         <i class="glyphicon glyphicon-flash" aria-hidden="true"></i>
                         Translate
+                    </button>
+                </span>
+
+                <span ng-show="translation && !error">
+                    <i class="separator"></i>
+
+                    <button class="btn btn-primary btn-xs" ng-click="pasteTranslation(translation)">
+                        <i class="glyphicon glyphicon-paste" aria-hidden="true"></i>
+                        Paste translation
                     </button>
                 </span>
             </div>

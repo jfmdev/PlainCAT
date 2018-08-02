@@ -16,6 +16,11 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
         });
     });
 
+    // Check for duplicated content when updating a paragraph.
+    $rootScope.$on('paragraph-edited', function(event, data) {
+        factory.checkDuplicatedContent(data.index);
+    });
+
     // Paste word suggestion.
     ipcRenderer.on('paste-misspelled', function(event, word) {
         // Search container currently having a textarea.
@@ -146,17 +151,14 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
 
                 // Check if content was updated.
                 if(paragraph.text() !== textarea.val()) {
+                    // Update paragraph.
+                    paragraph.text(textarea.val());
+
                     // Trigger the corresponding event
                     $rootScope.$broadcast('paragraph-edited', {
                         'type': type, 
                         'index': row.index()
                     });
-
-                    // Update paragraph.
-                    paragraph.text(textarea.val());
-
-                    // Check for duplicated content.
-                    factory.checkDuplicatedContent(row.index());
                 }
 
                 // Show paragraph and temove textarea.
@@ -180,6 +182,7 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
 
         // Get the content of a give paragraph.
         getParagraphContent: function(type, index) {
+            var col = type === 'source' ? 0 : 1;
             var row = container.children().eq(index);
             var paragraph = row.children().eq(col).find('p');
             return paragraph.text();

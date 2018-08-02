@@ -65,6 +65,7 @@ myApp.controller('footerController', [
         // Paste the translation into the source paragraph.
         $scope.pasteTranslation = function(translation) {
             $rootScope.$emit('paste-translation', { index: $scope.sourceIndex, text: translation });
+            $scope.translation = null;
         };
 
         // Open Settings dialog on the Translation tab.
