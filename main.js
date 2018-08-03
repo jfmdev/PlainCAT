@@ -129,53 +129,14 @@ function readFileWithAnyEncoding(filePath, callback) {
     });
 };
 
-// Parse a file, separating his lines.
-function getDocLines(text) {
-    // Initialization.
-    var result = [];
-    var regexp = /(\r\n|\n)+/g;
-
-    if(text != null && typeof text == 'string') {
-        // Generate indexes.
-        var match, indexes= [];
-        while (match = regexp.exec(text)) {
-            indexes.push({
-                'start': match.index, 
-                'end': (match.index+match[0].length)
-            });
-        }
-
-        // Generate result.
-        var start = 0, end;
-        for(var i=0; i<=indexes.length; i++) {
-            start = (i > 0)? indexes[i-1].end : 0;
-            end = (i < indexes.length)? indexes[i].start : text.length;
-
-            if(start != end) {
-                result.push({
-                    'index': start,
-                    'length': (end - start),
-                    'text': text.substring(start, end),
-                });
-            }
-        }
-    }
-
-    // Return result.
-    return result;
-}
-
 // Read a file and send the corresponding events.
 function readAndParseFile(event, filePath, target) {
     // Read file.
     readFileWithAnyEncoding(filePath, function (err, fileData, encoding) {
         // Verify if the file was read.
         if (!err) {
-            // Parse file's data.
-            let docLines = getDocLines(fileData);
-
             // Save file's path and data.
-            openedFiles[target] = {'path': filePath, 'data': docLines, 'encoding': encoding};
+            openedFiles[target] = {'path': filePath, 'encoding': encoding};
             settingsStore.put('app.' + target + 'File', filePath);
 
             // Return data.
@@ -183,7 +144,6 @@ function readAndParseFile(event, filePath, target) {
                 path: filePath,
                 name: path.basename(filePath),
                 text: fileData,
-                lines: docLines,
                 encoding: encoding,
             };
 

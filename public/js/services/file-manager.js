@@ -7,13 +7,49 @@ myApp.factory('FileManager', [
 
         // --- Private methods --- //
 
+        // Parse a file, separating his lines.
+        var getDocLines = function(text) {
+            // Initialization.
+            var result = [];
+            var regexp = /(\r\n|\n)+/g;
+
+            if(text != null && typeof text == 'string') {
+                // Generate indexes.
+                var match, indexes= [];
+                while (match = regexp.exec(text)) {
+                    indexes.push({
+                        'start': match.index, 
+                        'end': (match.index+match[0].length)
+                    });
+                }
+
+                // Generate result.
+                var start = 0, end;
+                for(var i=0; i<=indexes.length; i++) {
+                    start = (i > 0)? indexes[i-1].end : 0;
+                    end = (i < indexes.length)? indexes[i].start : text.length;
+
+                    if(start != end) {
+                        result.push({
+                            'index': start,
+                            'length': (end - start),
+                            'text': text.substring(start, end),
+                        });
+                    }
+                }
+            }
+
+            // Return result.
+            return result;
+        }
+
         // Load a file on either the source or the target panel.
         var loadFile = function(type, fileData) {
             Shared.files[type] = {
                 dirty: false,
                 name: fileData.name,
                 path: fileData.path,
-                content: fileData.lines,
+                content: getDocLines(fileData.text),
                 encoding: fileData.encoding,
                 text: fileData.text,
             };
