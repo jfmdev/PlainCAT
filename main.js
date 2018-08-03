@@ -87,6 +87,20 @@ ipcMain.on('settings-set', function(event, arg) {
 // Initialize files.
 var openedFiles = {};
 
+// Helper function for ensure that a file has 
+function checkFileExtension(filePath) {
+    if(!path.extname(filePath)) {
+        let ext = null;
+        for (let key in openedFiles) {
+            if(!ext && openedFiles[key] && openedFiles[key].path) {
+                ext = path.extname(openedFiles[key].path);
+            }
+        }
+        return filePath + (ext || '.txt');
+    }
+    return filePath;
+}
+
 // Helper function for support reading files with and unknown encoding.
 function readFileWithAnyEncoding(filePath, callback) {
     // Read file for detect his encoding.
@@ -203,6 +217,9 @@ ipcMain.on('last-file', function(event, type) {
 
 // Saves a text file.
 ipcMain.on('save-file', function(event, type, filePath, data, encoding) {
+    // Set default extension (if need).
+    filePath = checkFileExtension(filePath);
+
     // Save file.
     fs.writeFile(filePath, data, encoding || 'UTF-8', function(err) {
         // Return result.
@@ -212,6 +229,9 @@ ipcMain.on('save-file', function(event, type, filePath, data, encoding) {
             'path': filePath,
             'name': path.basename(filePath),
         });
+
+        // Update path on settings.
+        settingsStore.put('app.' + type + 'File', filePath);
     });
 });
 
@@ -222,6 +242,9 @@ ipcMain.on('save-file-as', function(event, type, data, encoding) {
 
     // Verify if the file was selected.
     if(filePath) {
+        // Set default extension (if need).
+        filePath = checkFileExtension(filePath);
+
         // Save file.
         fs.writeFile(filePath, data, encoding || 'UTF-8', function(err) {
             // Return result.
@@ -231,6 +254,9 @@ ipcMain.on('save-file-as', function(event, type, data, encoding) {
                 'path': filePath,
                 'name': path.basename(filePath),
             });
+
+            // Update path on settings.
+            settingsStore.put('app.' + type + 'File', filePath);
         });
     } else {
         // Return error.
