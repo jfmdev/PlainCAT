@@ -1,15 +1,71 @@
 PlainCAT
 ========
 
-> A simple Computer Assisted Translation tool for translate plain text files
+A simple _Computer Assisted Translation_ tool for translate plain text files,
+with help of automatic translation services.
 
-Supported encodings
--------------------
+> For now, *Yandek.Translate* and *Microsoft Translator* are supported.
 
-This software is intended to be used on files with UTF-8 encoding.
 
-Although it _may_ work with other encodings (like ASCII, latin1 or UTF-16LE),
-compatibility is not guaranteed.
+Usage
+-----
+
+In order to use the software, just:
+
+ * Select the source file (i.e. the file you want to translate).
+
+ > Note that paragraphs will be obtained by splitting the text by newlines).
+
+ * Select the destination file (i.e. the file with the translation) or use the source file as template. 
+
+ * Choose the languages of the source and the destination files.
+
+ * Set the API key of the translation service you want to use.
+
+ > To know how to obtain these keys, you can visit the sites from
+ [Yandek.Translate](https://tech.yandex.com/translate/)
+ or from [Microsoft Translator](https://www.microsoft.com/en-us/translator/translatorapi.aspx).
+
+ * Click on a paragraph and start translating.
+
+
+Limitations
+-----------
+
+### Spellchecker
+
+The integrated spellchecker currently only supports Dutch, English, French, German, Portuguese and Spanish.
+
+### Supported encodings
+
+The software is intended to be used on files with UTF-8 encoding.
+
+Although it _may_ work with other encodings (like ASCII, latin1 or UTF-16LE), compatibility is not guaranteed.
+
+### Files size
+
+The software has only been tested with small files (< 1 MB), opening larger files _could_ make the software crash.
+
+### New paragraphs
+
+The software allows only to edit the paragraphs of files, if you want to add a new paragraph or delete one, you will have to use an external editor.
+
+
+Development
+-----------
+
+The software was developed using *Electron* and *JavaScript*, so it requires *NodeJS* for testing and compilation.
+
+For running the software on development mode, just install dependencies and execute the start command:
+
+```
+npm install
+npm start
+```
+
+For compile the application and distribute compiled binaries, you can check the [Electron documentation](https://electronjs.org/docs/tutorial/application-distribution).
+
+> When compiling, don't forget to use `npm install --production` instead of `npm install`
 
 License
 -------

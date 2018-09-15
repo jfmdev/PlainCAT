@@ -6,135 +6,160 @@
 </div>
 <div class="modal-body">
     <uib-tabset active="activeTab">
-      <uib-tab index="0" heading="Spellchecker settings">
-          <div>
-              <button class="btn btn-primary btn-sm" ng-click="checkAll()">
-                  Check all
-              </button>
-              <button class="btn btn-primary btn-sm" ng-click="checkWithSpellchecker()">
-                  Check all with spellchecker
-              </button>
-              <button class="btn btn-info btn-sm" ng-click="uncheckAll()">
-                  Un-check all
-              </button>
-          </div>
+        <uib-tab index="0" heading="Spellchecker settings">
+            <div>
+                <button class="btn btn-primary btn-sm" ng-click="checkAll()">
+                    Check all
+                </button>
+                <button class="btn btn-primary btn-sm" ng-click="checkWithSpellchecker()">
+                    Check all with spellchecker
+                </button>
+                <button class="btn btn-info btn-sm" ng-click="uncheckAll()">
+                    Un-check all
+                </button>
+            </div>
 
-          <table class="table">
-              <thead>
-                  <tr>
-                      <th class="text-center">Active</th>
-                      <th>Language</th>
-                      <th class="text-center">Spellchecker</th>
-                      <th class="text-center">Yandex</th>
-                      <th class="text-center">Microsoft</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr ng-repeat="lang in languages">
-                      <td class="text-center cell-middle">
-                          <input type="checkbox"
-                              class="clickable"
-                              ng-checked="disabledLanguages.indexOf(lang.code) < 0"
-                              ng-click="toggleLanguage(lang)"
-                          />
-                      </td>
-                      <td class="cell-middle">{{ lang.name }}</td>
-                      <td class="text-center">
-                          <i class="glyphicon glyphicon-remove text-muted" aria-hidden="true" ng-if="!lang.spellcheck"></i>
-                          <select class="form-control"
-                              ng-if="lang.spellcheck"
-                              ng-model="languageLocales[lang.code]"
-                              ng-options="option.locale as option.place for option in lang.spellcheck"
-                              ng-change="localeUpdated(lang)"
-                          >
-                          </select>
-                      </td>
-                      <td class="text-center cell-middle">
-                          <i class="glyphicon glyphicon-ok text-success" aria-hidden="true" ng-if="lang.yandex"></i>
-                          <i class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ng-if="!lang.yandex"></i>
-                      </td>
-                      <td class="text-center cell-middle">
-                          <i class="glyphicon glyphicon-ok text-success" aria-hidden="true" ng-if="lang.microsoft"></i>
-                          <i class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ng-if="!lang.microsoft"></i>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-      </uib-tab>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Active</th>
+                        <th>Language</th>
+                        <th class="text-center">Spellchecker</th>
+                        <th class="text-center">Yandex</th>
+                        <th class="text-center">Microsoft</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="lang in languages">
+                        <td class="text-center cell-middle">
+                            <input type="checkbox"
+                                class="clickable"
+                                ng-checked="disabledLanguages.indexOf(lang.code) < 0"
+                                ng-click="toggleLanguage(lang)"
+                            />
+                        </td>
+                        <td class="cell-middle">{{ lang.name }}</td>
+                        <td class="text-center">
+                            <i class="glyphicon glyphicon-remove text-muted" aria-hidden="true" ng-if="!lang.spellcheck"></i>
+                            <select class="form-control"
+                                ng-if="lang.spellcheck"
+                                ng-model="languageLocales[lang.code]"
+                                ng-options="option.locale as option.place for option in lang.spellcheck"
+                                ng-change="localeUpdated(lang)"
+                            >
+                            </select>
+                        </td>
+                        <td class="text-center cell-middle">
+                            <i class="glyphicon glyphicon-ok text-success" aria-hidden="true" ng-if="lang.yandex"></i>
+                            <i class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ng-if="!lang.yandex"></i>
+                        </td>
+                        <td class="text-center cell-middle">
+                            <i class="glyphicon glyphicon-ok text-success" aria-hidden="true" ng-if="lang.microsoft"></i>
+                            <i class="glyphicon glyphicon-remove text-danger" aria-hidden="true" ng-if="!lang.microsoft"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </uib-tab>
 
-      <uib-tab index="1" heading="Translation settings">
-          <table class="table">
-              <thead>
-                  <tr>
-                      <th class="text-center">Active</th>
-                      <th>Engine</th>
-                      <th>API Token</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                      <td class="text-center">
-                          <div class="checkbox">
-                              <input type="checkbox"
-                                  class="clickable"
-                                  name="yandex_enabled"
-                                  ng-model="yandex.enabled"
-                                  ng-disabled="!yandex.token"
-                                  ng-change="updateTranslation('yandex')"
-                              />
-                          </div>
-                      </td>
-                      <td class="cell-middle">
-                          Yandex
-                          <a href="https://tech.yandex.com/translate/" title="Yandex Translate API" target="_blank">
-                              <i class="glyphicon glyphicon-question-sign"></i>
-                          </a>
-                      </td>
-                      <td>
-                          <input type="text"
-                              class="form-control"
-                              name="yandex_token"
-                              ng-model="yandex.token"
-                              ng-blur="updateTranslation('yandex')"
-                          />
-                      </td>
-                  </tr>
-                  <tr>
-                      <td class="text-center">
-                          <div class="checkbox">
-                              <input type="checkbox"
-                                  class="clickable"
-                                  name="microsoft_enabled"
-                                  ng-model="microsoft.enabled"
-                                  ng-disabled="!microsoft.token"
-                                  ng-change="updateTranslation('microsoft')"
-                              />
-                          </div>
-                      </td>
-                      <td class="cell-middle">
-                          Microsoft
-                          <a href="https://www.microsoft.com/en-us/translator/translatorapi.aspx" title="Microsoft Translator Text API" target="_blank">
-                              <i class="glyphicon glyphicon-question-sign"></i>
-                          </a>
-                      </td>
-                      <td>
-                          <input type="text"
-                              class="form-control"
-                              name="microsoft_token"
-                              ng-model="microsoft.token"
-                              ng-blur="updateTranslation('microsoft')"
-                          />
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-      </uib-tab>
+        <uib-tab index="1" heading="Translation settings">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="text-center">Active</th>
+                        <th>Engine</th>
+                        <th>API Token</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center">
+                            <div class="checkbox">
+                                <input type="checkbox"
+                                    class="clickable"
+                                    name="yandex_enabled"
+                                    ng-model="yandex.enabled"
+                                    ng-disabled="!yandex.token"
+                                    ng-change="updateTranslation('yandex')"
+                                />
+                            </div>
+                        </td>
+                        <td class="cell-middle">
+                            Yandex
+                            <a href="https://tech.yandex.com/translate/" title="Yandex Translate API" target="_blank">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <input type="text"
+                                class="form-control"
+                                name="yandex_token"
+                                ng-model="yandex.token"
+                                ng-blur="updateTranslation('yandex')"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <div class="checkbox">
+                                <input type="checkbox"
+                                    class="clickable"
+                                    name="microsoft_enabled"
+                                    ng-model="microsoft.enabled"
+                                    ng-disabled="!microsoft.token"
+                                    ng-change="updateTranslation('microsoft')"
+                                />
+                            </div>
+                        </td>
+                        <td class="cell-middle">
+                            Microsoft
+                            <a href="https://www.microsoft.com/en-us/translator/translatorapi.aspx" title="Microsoft Translator Text API" target="_blank">
+                                <i class="glyphicon glyphicon-question-sign"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <input type="text"
+                                class="form-control"
+                                name="microsoft_token"
+                                ng-model="microsoft.token"
+                                ng-blur="updateTranslation('microsoft')"
+                            />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </uib-tab>
 
-      <uib-tab index ="2" heading="About">
-          <br>
-          <p><strong>PlainCAT</strong> is a simple Computer Assisted Translation tool for translate plain text files</p>
-          <!-- TODO: Extend explanation, describing features and limitations, include also the links for getting the API Keys -->
-      </uib-tab>
+        <uib-tab index ="2" heading="About">
+            <br>
+            <p>
+                <strong>PlainCAT</strong> is a simple <em>Computer Assisted Translation</em> tool for 
+                translate plain text files, with help of automatic translation services.
+            </p>
+
+            <p>In order to use the software, just:</p>
+            <ul>
+                <li>Select the source file (i.e. the file you want to translate).</li>
+                <li>Select the destination file (i.e. the file with the translation) or use the source file as template.</li>
+                <li>Choose the languages of the source and the destination files.</li>
+                <li>
+                    Set the API key of the translation service you want to use
+                    (for now <a href="https://tech.yandex.com/translate/" target="_blank">Yandex.Translate</a>
+                    and <a href="https://www.microsoft.com/en-us/translator/translatorapi.aspx" target="_blank">Microsoft Translator</a>
+                    are supported).
+                </li>
+                <li>Click on a paragraph and start translating.</li>
+            </ul>
+
+            <p>Be aware of the following limitations:</p>
+            <ul>
+                <li><em>Spellchecker:</em> The integrated spellchecker currently only supports Dutch, English, French, German, Portuguese and Spanish.</li>
+                <li><em>Supported encodings:</em> The software is intended to be used on files with UTF-8 encoding. Although it may work with other encodings (like ASCII, latin1 or UTF-16LE), compatibility is not guaranteed.</li>
+                <li><em>Files size:</em> The software has only been tested with small files (< 1 MB), opening larger files could make the software crash.</li>
+                <li><em>New paragraphs:</em> The software allows only to edit the paragraphs of files, if you want to add a new paragraph or delete one, you will have to use an external editor.</li>
+            </ul>
+        </uib-tab>
+    </uib-tabset>
 </div>
 
 <div class="modal-footer">
