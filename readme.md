@@ -3,6 +3,13 @@ PlainCAT
 
 > A simple Computer Assisted Translation tool for translate plain text files
 
+Supported encodings
+-------------------
+
+This software is intended to be used on files with UTF-8 encoding.
+
+Although it _may_ work with other encodings (like ASCII, latin1 or UTF-16LE),
+compatibility is not guaranteed.
 
 License
 -------

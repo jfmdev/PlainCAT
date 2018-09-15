@@ -9,6 +9,8 @@ const fs = require('fs');
 const jschardet = require('jschardet');
 const isDev = require('electron-is-dev');
 
+const Utils = require('./misc/utils');
+
 
 // ----- Initialization ----- // 
 
@@ -108,12 +110,7 @@ function readFileWithAnyEncoding(filePath, callback) {
         // Verify if the file was read.
         if (!err) {
             // Detect file encoding.
-            let encoding = (jschardet.detect(rawBuffer).encoding || 'UTF-8').toLowerCase();
-
-            // Replace Windows-1252 by ASCII (jschardet don't use the same naming convention that node.js).
-            if(encoding === 'windows-1252') {
-              encoding = 'ascii';
-            }
+            let encoding = Utils.convertChardetEncoding(jschardet.detect(rawBuffer).encoding || 'UTF-8');
 
             try{
                 // Read file again with the corresponding encoding.
