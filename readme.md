@@ -48,7 +48,7 @@ The software has only been tested with small files (< 1 MB), opening larger file
 
 ### New paragraphs
 
-The software allows only to edit the paragraphs of files, if you want to add a new paragraph or delete one, you will have to use an external editor.
+The software allows only to edit the paragraphs of files, if you want to add a new paragraph or delete one, you will have to use an external editor (but please note that the software can't yet detect if a opened file has been modified by an external editor).
 
 
 Development
