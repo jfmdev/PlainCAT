@@ -120,6 +120,10 @@ main .body {
     background-color: #dfd;
 }
 
+#files-content > div.editing > div > textarea {
+    background-color: #efe;
+}
+
 .file-prompt {
     top: 0;
     width: 50%;
