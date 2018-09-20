@@ -26,7 +26,7 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600, icon: 'img/icon-32.png' });
+  mainWindow = new BrowserWindow({ width: 800, height: 600, icon: 'resources/img/icon-32.png' });
 
   // and load the index.html of the app.
   mainWindow.loadURL('file://' + __dirname + '/public/index.html');
@@ -224,21 +224,50 @@ ipcMain.on('save-file-as', function(event, type, data, encoding) {
 
 // --- Spell check --- //
 
-const SpellChecker = require('simple-spellchecker');
-const DICTIONARIES_FOLDER = "./node_modules/simple-spellchecker/dict";
+const nodehun = require('nodehun');
 let Dictionaries = {};
-let ActiveLang = 'en';
+let ActiveLang = 'en_US';
+
+function readDictionaryFiles(lang, callback) {
+    let result = {};
+    let error = null;
+    let count = 0;
+
+    const exts = ['aff', 'dic'];
+    exts.forEach(function (ext, index) {
+        fs.readFile('./resources/dict/'+lang+'.'+ext, function (err, data) {
+            if(err) {
+                error = err;
+            } else {
+                result[ext] = data;
+            }
+
+            ++count;
+            if(count == exts.length) {
+                callback(error, result);
+            }
+        });
+    });
+}
 
 // Event for load a dictionary.
 ipcMain.on('dictionary.load', function(event, lang) {
     // Verify if the dictionary is not already loaded.
     if(Dictionaries[lang] == null) {
-        // Load dictionary.
-        SpellChecker.getDictionary(lang, DICTIONARIES_FOLDER, function(err, result) {
-            // Return result.
-            Dictionaries[lang] = result;
-            event.sender.send('dictionary.loaded', {'error': err, 'success': result != null});
-        }); 
+        try {
+            // Load dictionary.
+            readDictionaryFiles(lang, (err, data) => {
+                if(!err && data) {
+                    Dictionaries[lang] = new nodehun(data.aff, data.dic);
+                }
+
+                // Return result.
+                event.sender.send('dictionary.loaded', {'error': err, 'success': !!data});              
+            })
+        } catch(err) {
+            // Return error message.
+            event.sender.send('dictionary.loaded', {'error': err, 'success': false});
+        }
     } else {
         // Return success message.
         event.sender.send('dictionary.loaded', {'error': null, 'success': true});
@@ -249,7 +278,7 @@ ipcMain.on('dictionary.load', function(event, lang) {
 ipcMain.on('dictionary.check-word', function(event, lang, word) {
     var res = null;
     if(lang != null && Dictionaries[lang] != null && word != null) {
-        res = Dictionaries[lang].spellCheck(word);
+        res = Dictionaries[lang].isCorrectSync(word);
     }
     event.returnValue = res;
 });
@@ -264,6 +293,7 @@ ipcMain.on('dictionary.set-active-lang', function(event, lang) {
 // --- Context menu (for copy/paste and for suggest misspelled words) --- //
 
 const electronContextMenu = require('electron-context-menu');
+const MAX_SUGGESTIONS = 5;
 
 electronContextMenu({
     prepend: function(params, browserWindow) {
@@ -271,8 +301,8 @@ electronContextMenu({
 
         // If it's an editable text and there is a word misspelled, show suggestions.
         if(params.isEditable && params.misspelledWord && ActiveLang != null && Dictionaries[ActiveLang] != null) {
-            let suggestions = Dictionaries[ActiveLang].getSuggestions(params.misspelledWord, 5, 2);
-            for(let i=0; suggestions && i<suggestions.length; i++) {
+            let suggestions = Dictionaries[ActiveLang].spellSuggestionsSync(params.misspelledWord);
+            for(let i=0; i<suggestions.length && i<MAX_SUGGESTIONS; i++) {
                 let word = suggestions[i];
                 menuItems.push({
                     label: word,

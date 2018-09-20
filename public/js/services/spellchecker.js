@@ -3,7 +3,7 @@ myApp.factory('Spellchecker', ['$rootScope', 'Shared', function($rootScope, Shar
     // Initialize variables.
     var webFrame = require('electron').webFrame;
     var ipcRenderer = require('electron').ipcRenderer;
-    var spellLanguage = 'en-US';
+    var spellLanguage = 'en_US';
 
     // Initialize spell checker.
     webFrame.setSpellCheckProvider("en-US", false, {

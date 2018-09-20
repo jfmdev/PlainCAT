@@ -24,7 +24,7 @@ In order to use the software, just:
 
  > To know how to obtain these keys, you can visit the sites from
  [Yandek.Translate](https://tech.yandex.com/translate/)
- or from [Microsoft Translator](https://www.microsoft.com/en-us/translator/translatorapi.aspx).
+ and [Microsoft Translator](https://www.microsoft.com/en-us/translator/translatorapi.aspx).
 
  * Click on a paragraph and start translating.
 
@@ -34,7 +34,9 @@ Limitations
 
 ### Spellchecker
 
-The integrated spellchecker currently only supports Dutch, English, French, German, Portuguese and Spanish.
+The integrated spellchecker only supports Dutch, English, French, German, Italian, Portuguese, Russian and Spanish.
+
+> Other languages can be added manually (you just need to download the corresponding Hunspell files, put them on the `./resources/dict` folder and you update the `./misc/languages.json` file).
 
 ### Supported encodings
 
@@ -56,14 +58,17 @@ Development
 
 The software was developed using *Electron* and *JavaScript*, so it requires *NodeJS* for testing and compilation.
 
-For running the software on development mode, just install dependencies and execute the start command:
+For running the software on development mode, you must: 
 
-```
-npm install
-npm start
-```
+ 1. Install dependencies with `npm install`.
 
-For compile the application and distribute compiled binaries, you can check the [Electron documentation](https://electronjs.org/docs/tutorial/application-distribution).
+ 2. [Re-build the native modules for Electron](https://electronjs.org/docs/tutorial/using-native-node-modules) using `./node_modules/.bin/electron-rebuild` (Linux and MacOS) or `.\node_modules\.bin\electron-rebuild.cmd` (Windows).
+
+ > Currently the only dependency with native code is `nodehun`, the Hunspell library.
+
+ 3. Launche the app with `npm start`.
+
+For compile the application and distribute compiled binaries, you can check the [Electron's documentation](https://electronjs.org/docs/tutorial/application-distribution).
 
 > When compiling, don't forget to use `npm install --production` instead of `npm install`
 

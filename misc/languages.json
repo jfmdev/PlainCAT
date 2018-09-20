@@ -106,12 +106,14 @@
     ],
 
     "spellchecker": {
-        "de": [{"locale": "de-DE", "place": "Germany" }], 
-        "en": [{"locale": "en-US", "place": "United States"}, {"locale": "en-GB", "place": "United Kingdom"}],
-        "es": [{"locale": "es-ES", "place": "Spain"}, {"locale": "es-MX", "place": "Mexico"}], 
-        "fr": [{"locale": "fr-FR", "place": "France"}], 
-        "nl": [{"locale": "nl-NL", "place": "Netherlands"}],
-        "pt": [{"locale": "pt-BR", "place": "Brazil"}]
+        "de": [{"locale": "de_DE", "place": "Germany"}], 
+        "en": [{"locale": "en_US", "place": "United States"}, {"locale": "en_GB", "place": "United Kingdom"}],
+        "es": [{"locale": "es_ANY", "place": "International"}], 
+        "fr": [{"locale": "fr_FR", "place": "France"}], 
+        "it": [{"locale": "it_IT", "place": "Italy"}], 
+        "nl": [{"locale": "nl_NL", "place": "Netherlands"}],
+        "pt": [{"locale": "pt_PT", "place": "Portugal"}, {"locale": "pt_BR", "place": "Brazil"}],
+        "ru": [{"locale": "ru_RU", "place": "Russia"}]
     },
 
     "translation": {
