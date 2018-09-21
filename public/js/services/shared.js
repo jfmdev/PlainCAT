@@ -45,6 +45,9 @@ myApp.factory('Shared', [function () {
 
         disabledLanguages: [],
         languageLocales: {},
+
+        fontSize: 14,
+        fontFamily: 'Arial, Helvetica, sans-serif',
     }, ipcRenderer.sendSync('settings-get', 'app') || {});
 
     service.store = new SimpleObserver(storeValues);

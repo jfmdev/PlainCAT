@@ -7,7 +7,39 @@
 <div class="modal-body">
     <uib-tabset active="activeTab">
         <uib-tab index="3" heading="General">
-            TODO: General settings
+            <h3>Editor</h3>
+
+            <form>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputFontFamily">Font family</label>
+                            <select class="form-control" id="inputFontFamily" ng-model="fontFamily" ng-change="updateFont('fontFamily', fontFamily)">
+                                <optgroup ng-repeat="group in fontFamilies" label="{{ group.groupName }}">
+                                    <option ng-repeat="item in group.list" value="{{ item.value }}">
+                                        {{ item.name }}
+                                    </option>
+                                </optgroup>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="inputFontSize">Font size</label>
+                            <input type="number" class="form-control" id="inputFontSize" ng-model="fontSize" ng-change="updateFont('fontSize', fontSize)">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 text-muted">
+                        <div style="text-decoration: underline">Sample text:</div>
+                        <p ng-style="{ 'font-size': (fontSize + 'px'), 'font-family': fontFamily }">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        </p>
+                    </div>
+                </div>
+            </form>
         </uib-tab>
 
         <uib-tab index="0" heading="Languages">

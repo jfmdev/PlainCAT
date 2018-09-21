@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="myApp" ng-controller="mainController">
   <head>
     <meta charset="UTF-8">
     <title>PlainCAT</title>
@@ -9,9 +9,17 @@
     <link rel="stylesheet" type="text/css" href="../node_modules/angular-confirm1/dist/angular-confirm.min.css">
     <link rel="stylesheet" type="text/css" href="../node_modules/angular-toastr/dist/angular-toastr.min.css">
     <link rel="stylesheet" type="text/css" href="css/app.css">
+
+    <style>
+        #files-content > div.row > div > p,
+        #files-content > div.row > div > textarea {
+            font-size: {{ fontSize }}px;
+            font-family: {{ fontFamily }};
+        }
+    </style>
   </head>
 
-  <body ng-app="myApp" ng-controller="mainController"> 
+  <body> 
     <div class="main-container">
       <header ng-include="'views/header.html'"></header>
       <main ng-include="'views/body.html'" class="nice-scroll"></main>

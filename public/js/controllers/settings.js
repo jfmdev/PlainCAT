@@ -9,6 +9,43 @@ myApp.controller('settingsController', [
         if(tab === 'about') { $scope.activeTab = 2; }
         if(tab === 'general') { $scope.activeTab = 3; }
 
+        // General settings.
+        Shared.linkStoreToScope($scope, 'fontSize');
+        Shared.linkStoreToScope($scope, 'fontFamily');
+        $scope.fontFamilies = [
+            {
+                groupName: 'Serif fonts',
+                list: [
+                    { name: 'Georgia', value: 'Georgia, serif'},
+                    { name: 'Palatino', value: '"Palatino Linotype", "Book Antiqua", Palatino, serif'},
+                    { name: 'Times New Roman', value: '"Times New Roman", Times, serif'},
+                ]
+            },
+            {
+                groupName: 'Sans-Serif fonts',
+                list: [
+                    { name: 'Arial', value: 'Arial, Helvetica, sans-serif'},
+                    { name: 'Arial Black', value: '"Arial Black", Gadget, sans-serif'},
+                    { name: 'Comic Sans', value: '"Comic Sans MS", cursive, sans-serif'},
+                    { name: 'Impact', value: 'Impact, Charcoal, sans-serif'},
+                    { name: 'Lucida', value: '"Lucida Sans Unicode", "Lucida Grande", sans-serif'},
+                    { name: 'Tahoma', value: 'Tahoma, Geneva, sans-serif'},
+                    { name: 'Trebuchet', value: '"Trebuchet MS", Helvetica, sans-serif'},
+                    { name: 'Verdana', value: 'Verdana, Geneva, sans-serif'},
+                ]
+            },
+            {
+                groupName: 'Monospace fonts',
+                list: [
+                    { name: 'Courier New', value: '"Courier New", Courier, monospace'},
+                    { name: 'Lucida Console', value: '"Lucida Console", Monaco, monospace'},
+                ]
+            },
+        ];
+        $scope.updateFont = function(key, value) {
+            Shared.store.set(key, value);
+        };
+
         // Translation settings.
         Shared.linkStoreToScope($scope, 'yandex');
         Shared.linkStoreToScope($scope, 'microsoft');
