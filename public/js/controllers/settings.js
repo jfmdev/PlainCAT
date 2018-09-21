@@ -4,9 +4,10 @@ myApp.controller('settingsController', [
     function ($scope, $rootScope, Shared, $uibModalInstance, tab) {
         // Initialize active tab.
         $scope.activeTab = 0;
-        if(tab === 'spellchecker') { $scope.activeTab = 0; }
+        if(tab === 'languages') { $scope.activeTab = 0; }
         if(tab === 'translation') { $scope.activeTab = 1; }
         if(tab === 'about') { $scope.activeTab = 2; }
+        if(tab === 'general') { $scope.activeTab = 3; }
 
         // Translation settings.
         Shared.linkStoreToScope($scope, 'yandex');

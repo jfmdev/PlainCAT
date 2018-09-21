@@ -207,48 +207,36 @@ myApp.factory('Menu', ['$uibModal', '$rootScope', function($uibModal, $rootScope
     });
 
     // Add 'Settings' section to default template.
-    var generalItem = {
-        label: 'Spellchecker',
-        click: function(item, focusedWindow) {
-            $uibModal.open({
-                templateUrl: 'views/settings.html',
-                controller: 'settingsController',
-                size: 'lg',
-                resolve: {
-                    tab: function () { return 'spellchecker'; }
-                }
-            });
-        }
-    };
-    var languageItem = {
-        label: 'Translation',
-        click: function(item, focusedWindow) {
-            $uibModal.open({
-                templateUrl: 'views/settings.html',
-                controller: 'settingsController',
-                size: 'lg',
-                resolve: {
-                    tab: function () { return 'translation'; }
-                }
-            });
-        }
-    };
-    var aboutItem = {
-        label: 'About',
-        click: function(item, focusedWindow) {
-            $uibModal.open({
-                templateUrl: 'views/settings.html',
-                controller: 'settingsController',
-                size: 'lg',
-                resolve: {
-                    tab: function () { return 'about'; }
-                }
-            });
-        }
+    var openSettings = function(defaultTab) {
+        $uibModal.open({
+            templateUrl: 'views/settings.html',
+            controller: 'settingsController',
+            size: 'lg',
+            resolve: {
+                tab: function () { return defaultTab; }
+            }
+        });
     };
     template.push({
         label: 'Settings', 
-        submenu: [generalItem, languageItem, aboutItem] 
+        submenu: [
+            {
+                label: 'General',
+                click: openSettings.bind(this, 'general')
+            },
+            {
+                label: 'Languages',
+                click: openSettings.bind(this, 'languages')
+            },
+            {
+                label: 'Translation',
+                click: openSettings.bind(this, 'translation')
+            },
+            {
+                label: 'About',
+                click: openSettings.bind(this, 'about')
+            }
+        ]
     });
 
     // Define factory.
