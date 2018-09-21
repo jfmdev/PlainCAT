@@ -64,13 +64,13 @@ myApp.factory('FileManager', [
             if(result) {
                 if(!result.error) {
                     // Load file.
-                    loadFile(result.target, result.data);
+                    loadFile(result.type, result.data);
                 } else {
                     // Display warning or error.
                     if(result.error.code === 'NO_FILE_SELECTED') {
-                        toastr.info('No file was selected');
+                        toastr.info('No file was selected for ' + result.type);
                     } else {
-                        toastr.error(result.error.message || "File couldn't be read", 'Error opening file');
+                        toastr.error(result.error.message || "File couldn't be read", 'Error opening ' + result.type + ' file');
                     }
                 }
             }
@@ -79,13 +79,14 @@ myApp.factory('FileManager', [
         // Event handler for when a file is read.
         var onFileSaved = function(event, result) {
             // Verify if the operation was successful.
+            var type = result.type.charAt(0).toUpperCase() + result.type.substr(1);
             if(!result.err) {
                 Shared.files[result.type].dirty = false;
                 Shared.files[result.type].name = result.name;
                 Shared.files[result.type].path = result.path;
-                toastr.success('The file was saved');
+                toastr.success(type + ' file was saved');
             } else {
-                toastr.error(result.err + '', "File not saved");
+                toastr.error(result.err + '', type + ' file not saved');
             }
         }
 

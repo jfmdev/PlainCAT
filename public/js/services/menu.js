@@ -107,7 +107,7 @@ var default_template = [
 ];
 
 // Service for initialize the application's menu.
-myApp.factory('Menu', ['$uibModal', function($uibModal) {
+myApp.factory('Menu', ['$uibModal', '$rootScope', function($uibModal, $rootScope) {
     // Load dependencies.
     var ipcRenderer = require('electron').ipcRenderer;
     var remote = require('electron').remote;
@@ -122,18 +122,22 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
     // Add 'File' section to default template.
     var openSourceItem = {
         label: 'Open',
+        accelerator: 'CmdOrCtrl+O',
         click: function(item, focusedWindow) {}
     };
     var openTargetItem = {
         label: 'Open',
+        accelerator: 'CmdOrCtrl+Shift+O',
         click: function(item, focusedWindow) {}
     };
     var saveSourceItem = {
         label: 'Save',
+        accelerator: 'CmdOrCtrl+S',
         click: function(item, focusedWindow) {}
     };
     var saveTargetItem = {
         label: 'Save',
+        accelerator: 'CmdOrCtrl+Shift+S',
         click: function(item, focusedWindow) {}
     };
     var saveAsSourceItem = {
@@ -178,6 +182,27 @@ myApp.factory('Menu', ['$uibModal', function($uibModal) {
               ]
             },
             exitItem,
+        ] 
+    });
+
+    // Add 'Translate' section to default template.
+    template.push({
+        label: 'Translate', 
+        submenu: [
+            {
+                label: 'Translate',
+                accelerator: 'CmdOrCtrl+T',
+                click: function(item, focusedWindow) {
+                    $rootScope.$emit('menu-translate');
+                }
+            },
+            {
+                label: 'Paste Translation',
+                accelerator: 'CmdOrCtrl+Shift+T',
+                click: function(item, focusedWindow) {
+                    $rootScope.$emit('menu-paste-translation');
+                }
+            },
         ] 
     });
 

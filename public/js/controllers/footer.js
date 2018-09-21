@@ -61,12 +61,14 @@ myApp.controller('footerController', [
                 translateText(index, content);
             }
         };
+        $rootScope.$on('menu-translate', $scope.translateNow);
 
         // Paste the translation into the source paragraph.
-        $scope.pasteTranslation = function(translation) {
-            $rootScope.$emit('paste-translation', { index: $scope.sourceIndex, text: translation });
+        $scope.pasteTranslation = function() {
+            $rootScope.$emit('paste-translation', { index: $scope.sourceIndex, text: $scope.translation });
             $scope.translation = null;
         };
+        $rootScope.$on('menu-paste-translation', $scope.pasteTranslation);
 
         // Open Settings dialog on the Translation tab.
         $scope.openTranslationSettings = function() {

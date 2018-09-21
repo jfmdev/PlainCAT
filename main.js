@@ -127,14 +127,14 @@ function readFileWithAnyEncoding(filePath, callback) {
 };
 
 // Read a file and send the corresponding events.
-function readAndParseFile(event, filePath, target) {
+function readAndParseFile(event, filePath, type) {
     // Read file.
     readFileWithAnyEncoding(filePath, function (err, fileData, encoding) {
         // Verify if the file was read.
         if (!err) {
             // Save file's path and data.
-            openedFiles[target] = {'path': filePath, 'encoding': encoding};
-            settingsStore.put('app.' + target + 'File', filePath);
+            openedFiles[type] = {'path': filePath, 'encoding': encoding};
+            settingsStore.put('app.' + type + 'File', filePath);
 
             // Return data.
             let fileReadData = {
@@ -144,25 +144,25 @@ function readAndParseFile(event, filePath, target) {
                 encoding: encoding,
             };
 
-            event.sender.send('file-read', {'error': null, 'data': fileReadData, 'target': target});
+            event.sender.send('file-read', {'error': null, 'data': fileReadData, 'type': type});
         } else {
             // Return error.
-            event.sender.send('file-read', {'error': {'code': "UNEXPECTED_ERROR", 'message': err}, 'data': null, 'target': target});
+            event.sender.send('file-read', {'error': {'code': "UNEXPECTED_ERROR", 'message': err}, 'data': null, 'type': type});
         }
     });
 };
 
 // Open and read a text file.
-ipcMain.on('open-file', function(event, target) {
+ipcMain.on('open-file', function(event, type) {
     // Read file.
     var files = dialog.showOpenDialog({ properties: ['openFile']});
 
     // Verify if the file was selected.
     if(files != null && files.length > 0) {
-        readAndParseFile(event, files[0], target);
+        readAndParseFile(event, files[0], type);
     } else {
         // Return error.
-        event.sender.send('file-read', {'error': {'code': "NO_FILE_SELECTED", 'message': "No file was selected"}, 'data': null});
+        event.sender.send('file-read', {'error': {'code': "NO_FILE_SELECTED", 'message': "No file was not selected"}, 'data': null, 'type': type});
     }
 });
 
