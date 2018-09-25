@@ -38,7 +38,8 @@ myApp.controller('footerController', [
             // Check if automatic translation is enabled.
             if($scope.automaticTranslation && $scope.availableEngines.length > 0) {
                 // Translate text.
-                translateText(data.index, data.content);
+                var content = Editor.getParagraphContent('source', data.index);
+                translateText(data.index, content);
                 $scope.$apply();
             } else {
                 // If the current translation is from another paragraph, delete it.
