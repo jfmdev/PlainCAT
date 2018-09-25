@@ -34,9 +34,9 @@ Limitations
 
 ### Spellchecker
 
-The integrated spellchecker only supports Dutch, English, French, German, Italian, Portuguese, Russian and Spanish.
+The integrated spellchecker only supports Dutch, English, French, German, Italian, Portuguese, Russian and Spanish, but more languages could be added.
 
-> Other languages can be added manually (you just need to download the corresponding Hunspell files, put them on the `./resources/dict` folder and you update the `./misc/languages.json` file).
+> In order to add more languages, you just need to download the corresponding Hunspell files, move the files to the `./resources/dict` folder, and then update the `./misc/languages.json` file.
 
 ### Supported encodings
 
@@ -50,7 +50,7 @@ The software has only been tested with small files (< 1 MB), opening larger file
 
 ### New paragraphs
 
-The software allows only to edit the paragraphs of files, if you want to add a new paragraph or delete one, you will have to use an external editor (but please note that the software can't yet detect if a opened file has been modified by an external editor).
+The software only allows to edit current paragraphs, if you want to add new paragraphs or delete existing ones, you will have to use an external editor.
 
 
 Development
@@ -64,9 +64,9 @@ For running the software on development mode, you must:
 
  2. [Re-build the native modules for Electron](https://electronjs.org/docs/tutorial/using-native-node-modules) using `./node_modules/.bin/electron-rebuild` (Linux and MacOS) or `.\node_modules\.bin\electron-rebuild.cmd` (Windows).
 
- > Currently the only dependency with native code is `nodehun`, the Hunspell library.
+ > Currently the only dependency with native code is `nodehun` (a Hunspell library).
 
- 3. Launche the app with `npm start`.
+ 3. Launch the app with `npm start`.
 
 For compile the application and distribute compiled binaries, you can check the [Electron's documentation](https://electronjs.org/docs/tutorial/application-distribution).
 

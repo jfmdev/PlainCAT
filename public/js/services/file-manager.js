@@ -115,6 +115,37 @@ myApp.factory('FileManager', [
             if (!$rootScope.$$phase) $rootScope.$apply();
         });
 
+        // Listen for external changes on the current files.
+        ipcRenderer.on('file-changed', function(event, result) {
+            // Upload dirty flag.
+            Shared.files[result.type].dirty = true;
+
+            // Ask user if he wants to reload the file.
+            var type = result.type.charAt(0).toUpperCase() + result.type.substr(1);
+            $ngConfirm({
+                title: type + ' file updated',
+                content: 'The file <strong>' + result.name + '</strong> has been modified by another program.<br>Do you want to reload it?',
+                columnClass: 'col-xs-offset-1 col-xs-10 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6',
+                buttons: {
+                    yes: {
+                        text: 'Yes, reload file',
+                        btnClass: 'btn-orange',
+                        action: function(scope, button){
+                            // Re-open file.
+                            ipcRenderer.send('reopen-file', result.type); 
+                        }
+                    },
+                    no: {
+                        text: "No, keep current file",
+                        btnClass: 'btn-blue',
+                        action: function(scope, button){
+                            // Do nothing and close modal.
+                        }
+                    }
+                }
+            });
+        });
+
         // --- Public methods --- //
 
         // Function for open a file selector.

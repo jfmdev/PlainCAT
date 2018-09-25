@@ -87,7 +87,35 @@ ipcMain.on('settings-set', function(event, arg) {
 // --- File management --- // 
 
 // Initialize files.
-var openedFiles = {};
+let openedFiles = {};
+
+// Remember the data of the files opened.
+function storeFileData(type, filePath, encoding) {
+    // Stop watching changes on the previous file.
+    if(openedFiles[type] && openedFiles[type].watcher) {
+        try{ openedFiles[type].watcher.close(); }catch(watErr) { console.log(watErr); }
+    }
+
+    // Save file's path and data.
+    openedFiles[type] = {'path': filePath, 'encoding': encoding, 'writing': false, 'watcher': null};
+    settingsStore.put('app.' + type + 'File', filePath);
+
+    // Watch for changes on the file.
+    let lastTime = false;
+    openedFiles[type].watcher = fs.watch(filePath, function(event, fileName) {
+        // Don't trigger the event too often or when writing the file.
+        let time = new Date().getTime();
+        if(event === 'change' && time - lastTime > 500 && !openedFiles[type].writing) {
+            mainWindow.webContents.send('file-changed', {
+                'type': type, 
+                'path': filePath,
+                'name': fileName,
+            });
+
+            lastTime = time;
+        }
+    });
+}
 
 // Helper function for ensure that a file has 
 function checkFileExtension(filePath) {
@@ -132,9 +160,8 @@ function readAndParseFile(event, filePath, type) {
     readFileWithAnyEncoding(filePath, function (err, fileData, encoding) {
         // Verify if the file was read.
         if (!err) {
-            // Save file's path and data.
-            openedFiles[type] = {'path': filePath, 'encoding': encoding};
-            settingsStore.put('app.' + type + 'File', filePath);
+            // Store file's path and data.
+            storeFileData(type, filePath, encoding)
 
             // Return data.
             let fileReadData = {
@@ -154,15 +181,29 @@ function readAndParseFile(event, filePath, type) {
 
 // Open and read a text file.
 ipcMain.on('open-file', function(event, type) {
-    // Read file.
+    // Show file chooser..
     var files = dialog.showOpenDialog({ properties: ['openFile']});
 
     // Verify if the file was selected.
     if(files != null && files.length > 0) {
+        // Read file.
         readAndParseFile(event, files[0], type);
     } else {
         // Return error.
-        event.sender.send('file-read', {'error': {'code': "NO_FILE_SELECTED", 'message': "No file was not selected"}, 'data': null, 'type': type});
+        event.sender.send('file-read', {'error': {'code': "NO_FILE_SELECTED", 'message': "No file was selected"}, 'data': null, 'type': type});
+    }
+});
+
+// Re-open and read a text file.
+ipcMain.on('reopen-file', function(event, type) {
+    // Verify if the path is defined.
+    let path = openedFiles[type] ? openedFiles[type].path : null;
+    if(path) {
+        // Read file.
+        readAndParseFile(event, path, type);
+    } else {
+        // Return error.
+        event.sender.send('file-read', {'error': {'code': "NO_FILE_AVAILABLE", 'message': "The file couldn't be reloaded"}, 'data': null, 'type': type});
     }
 });
 
@@ -178,7 +219,10 @@ ipcMain.on('save-file', function(event, type, filePath, data, encoding) {
     filePath = checkFileExtension(filePath);
 
     // Save file.
+    openedFiles[type].writing = true;
     fs.writeFile(filePath, data, encoding || 'UTF-8', function(err) {
+        openedFiles[type].writing = false;
+
         // Return result.
         event.sender.send('file-saved', {
             'type': type, 
@@ -187,8 +231,8 @@ ipcMain.on('save-file', function(event, type, filePath, data, encoding) {
             'name': path.basename(filePath),
         });
 
-        // Update path on settings.
-        settingsStore.put('app.' + type + 'File', filePath);
+        // Store file's path and data.
+        storeFileData(type, filePath, encoding)
     });
 });
 
