@@ -19,16 +19,21 @@ myApp.controller('footerController', [
 
             // Translate text.
             Translator.translate(content).then(function(result) {
-                // Set translation.
-                $scope.error = null;
-                $scope.translation = result;
+                // Set translation (if still relevant).
+                if(index === $scope.sourceIndex) {
+                    $scope.error = null;
+                    $scope.translation = result;
+                    $scope.loading = false;
+                }
             }).catch(function(error) {
-                // Set error.
-                $scope.error = error;
-                $scope.translation = null;
+                // Set error (if still relevant).
+                if(index === $scope.sourceIndex) {
+                    $scope.error = error;
+                    $scope.translation = null;
+                    $scope.loading = false;
+                }
             }).finally(function() {
-                // Update flag and refresh UI.
-                $scope.loading = false;
+                // Refresh UI.
                 $scope.$apply();
             });
         }
