@@ -124,20 +124,16 @@ main .body {
     background-color: #efe;
 }
 
-.file-prompt {
-    top: 0;
-    width: 50%;
-    padding: 40px;
-    text-align: center;
-    position: absolute;
+.row-paragraph:not(:first-child) {
+    border-top: 1px dashed gray;
 }
 
-.file-prompt-left {
-    left: 0;
+.col-xs-12.col-source {
+    color: #004;
 }
 
-.file-prompt-right {
-    right: 0;
+div.editing .col-xs-12.col-source {
+    color: black;;
 }
 
 .nice-scroll::-webkit-scrollbar {
@@ -203,4 +199,14 @@ table > tbody > tr > td.cell-middle {
 
 .text-light {
     color: #aaa;
+}
+
+.alert-trim {
+  display: inline-block;
+}
+
+.alert-fit {
+  padding: 8px;
+  margin-top: 6px;
+  margin-bottom: 6px;
 }

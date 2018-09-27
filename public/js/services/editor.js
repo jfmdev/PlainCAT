@@ -1,5 +1,5 @@
 // Service for initialize the application's menu.
-myApp.factory('Editor', ['$rootScope', function($rootScope) {
+myApp.factory('Editor', ['$rootScope', 'Shared', function($rootScope, Shared) {
     var ipcRenderer = require('electron').ipcRenderer;
     var container = {};
 
@@ -43,6 +43,16 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
           }
     });
 
+    // Change paragraphs columns when updating the corresponding settings.
+    Shared.store.watch('paragraphsPos', function(key, newValue) {
+        var jqDivs = $('#files-content > .row-paragraph > div');
+        if(newValue === 'divided') {
+            jqDivs.addClass('col-xs-6').removeClass('col-xs-12')
+        } else {
+            jqDivs.addClass('col-xs-12').removeClass('col-xs-6')
+        }
+    });
+    
     // Define factory.
     var factory = {
         // Initialization.
@@ -57,11 +67,12 @@ myApp.factory('Editor', ['$rootScope', function($rootScope) {
             // Add rows (if need).
             if(docLines) {
                 var rowsDiff = docLines.length - container.children().size();
+                var columnsWidth = Shared.store.get('paragraphsPos') == 'divided' ? 6 : 12;
                 for(var j=0; j<rowsDiff; ++j) {
                     container.append([
-                        '<div class="row">',
-                            '<div class="col-xs-6"></div>',
-                            '<div class="col-xs-6"></div>',
+                        '<div class="row row-paragraph">',
+                            '<div class="col-xs-' + columnsWidth + ' col-source"></div>',
+                            '<div class="col-xs-' + columnsWidth + ' col-target"></div>',
                         '</div>',
                     ].join(''));
                 }

@@ -11,10 +11,22 @@
 
             <form>
                 <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="paragraphsPosition">Paragraphs position</label>
+                            <select class="form-control" id="paragraphsPosition" ng-model="paragraphsPos" ng-change="updateSetting('paragraphsPos', paragraphsPos)">
+                                <option ng-repeat="orientation in orientations" value="{{ orientation.value }}">
+                                    {{ orientation.name }}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-sm-6">
                         <div class="form-group">
                             <label for="inputFontFamily">Font family</label>
-                            <select class="form-control" id="inputFontFamily" ng-model="fontFamily" ng-change="updateFont('fontFamily', fontFamily)">
+                            <select class="form-control" id="inputFontFamily" ng-model="fontFamily" ng-change="updateSetting('fontFamily', fontFamily)">
                                 <optgroup ng-repeat="group in fontFamilies" label="{{ group.groupName }}">
                                     <option ng-repeat="item in group.list" value="{{ item.value }}">
                                         {{ item.name }}

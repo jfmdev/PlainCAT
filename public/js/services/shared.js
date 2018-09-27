@@ -48,6 +48,7 @@ myApp.factory('Shared', [function () {
 
         fontSize: 14,
         fontFamily: 'Arial, Helvetica, sans-serif',
+        paragraphsPos: 'divided',
     }, ipcRenderer.sendSync('settings-get', 'app') || {});
 
     service.store = new SimpleObserver(storeValues);

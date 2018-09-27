@@ -10,8 +10,13 @@ myApp.controller('settingsController', [
         if(tab === 'general') { $scope.activeTab = 3; }
 
         // General settings.
+        Shared.linkStoreToScope($scope, 'paragraphsPos');
         Shared.linkStoreToScope($scope, 'fontSize');
         Shared.linkStoreToScope($scope, 'fontFamily');
+        $scope.orientations = [
+            { value: 'divided', name: 'Divided (paragraphs side by sided)' },
+            { value: 'stacked', name: 'Stacked (one paragraph after another)' },
+        ];
         $scope.fontFamilies = [
             {
                 groupName: 'Serif fonts',
@@ -42,7 +47,7 @@ myApp.controller('settingsController', [
                 ]
             },
         ];
-        $scope.updateFont = function(key, value) {
+        $scope.updateSetting = function(key, value) {
             Shared.store.set(key, value);
         };
 
