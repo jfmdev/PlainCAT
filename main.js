@@ -97,22 +97,22 @@ function storeFileData(type, filePath, encoding) {
     }
 
     // Save file's path and data.
-    openedFiles[type] = {'path': filePath, 'encoding': encoding, 'writing': false, 'watcher': null};
+    openedFiles[type] = {'path': filePath, 'encoding': encoding, 'writing': false, 'watcher': null, 'lastTime': false};
     settingsStore.put('app.' + type + 'File', filePath);
 
     // Watch for changes on the file.
-    let lastTime = false;
+    openedFiles[type].lastTime = false;
     openedFiles[type].watcher = fs.watch(filePath, function(event, fileName) {
         // Don't trigger the event too often or when writing the file.
         let time = new Date().getTime();
-        if(event === 'change' && time - lastTime > 500 && !openedFiles[type].writing) {
+        if(event === 'change' && time - openedFiles[type].lastTime > 500 && !openedFiles[type].writing) {
             mainWindow.webContents.send('file-changed', {
                 'type': type, 
                 'path': filePath,
                 'name': fileName,
             });
 
-            lastTime = time;
+            openedFiles[type].lastTime = time;
         }
     });
 }
@@ -161,7 +161,7 @@ function readAndParseFile(event, filePath, type) {
         // Verify if the file was read.
         if (!err) {
             // Store file's path and data.
-            storeFileData(type, filePath, encoding)
+            storeFileData(type, filePath, encoding);
 
             // Return data.
             let fileReadData = {
@@ -220,7 +220,9 @@ ipcMain.on('save-file', function(event, type, filePath, data, encoding) {
 
     // Save file.
     openedFiles[type].writing = true;
+
     fs.writeFile(filePath, data, encoding || 'UTF-8', function(err) {
+        openedFiles[type].lastTime = new Date().getTime();
         openedFiles[type].writing = false;
 
         // Return result.
@@ -257,7 +259,7 @@ ipcMain.on('save-file-as', function(event, type, data, encoding) {
             });
 
             // Update path on settings.
-            settingsStore.put('app.' + type + 'File', filePath);
+            storeFileData(type, filePath, encoding);
         });
     } else {
         // Return error.
