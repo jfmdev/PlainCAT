@@ -1,6 +1,6 @@
 {
   "name": "plaincat",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "A simple Computer Assisted Translation tool for translate plain text files",
   "main": "main.js",
   "scripts": {

@@ -279,7 +279,7 @@ function readDictionaryFiles(lang, callback) {
 
     const exts = ['aff', 'dic'];
     exts.forEach(function (ext, index) {
-        fs.readFile('./resources/dict/'+lang+'.'+ext, function (err, data) {
+        fs.readFile(path.join(__dirname, '/resources/dict/'+lang+'.'+ext), function (err, data) {
             if(err) {
                 error = err;
             } else {
