@@ -14,6 +14,7 @@ myApp.factory('Shared', [function () {
             dirty: false,
             encoding: 'UTF-8',
             text: '',
+            askReload: false,
         },
         target: {
             name: null,
@@ -22,6 +23,7 @@ myApp.factory('Shared', [function () {
             dirty: false,
             encoding: 'UTF-8',
             text: '',
+            askReload: false,
         },
     };
 
