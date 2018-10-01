@@ -10,23 +10,15 @@ with help of automatic translation services.
 Usage
 -----
 
-In order to use the software, just:
+In order to use the software, you can simply download a binary from the [release](https://github.com/jfmdev/PlainCAT/releases) section, unzip it and execute it.
 
- * Select the source file (i.e. the file you want to translate).
+Once the application is running, you must select the languages from/to you will be translating, set the API key of the translation service you want to use (in case you want to use one), open the source file (i.e. the file you want to translate) and select the destination file (i.e. the file where the traslation will be saved), which can be another file or a copy of the source file. 
 
- > Note that paragraphs will be obtained by splitting the text by newlines).
-
- * Select the destination file (i.e. the file with the translation) or use the source file as template. 
-
- * Choose the languages of the source and the destination files.
-
- * Set the API key of the translation service you want to use.
-
- > To know how to obtain these keys, you can visit the sites from
+> To know how to obtain these API key for the translation services, you can visit the sites from
  [Yandek.Translate](https://tech.yandex.com/translate/)
  and [Microsoft Translator](https://www.microsoft.com/en-us/translator/translatorapi.aspx).
 
- * Click on a paragraph and start translating.
+After you selected both the source and the destination, the paragraphs of both files (obtained by splitting the texts on newlines) will be displayed side by side (or one after another, depending of your settings). Then you should simply click on a paragraph and start translating.
 
 
 Limitations
