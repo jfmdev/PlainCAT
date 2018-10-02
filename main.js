@@ -8,6 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const jschardet = require('jschardet');
 const isDev = require('electron-is-dev');
+const sha1File = require('sha1-file');
 
 const Utils = require(__dirname + '/misc/utils');
 
@@ -97,23 +98,41 @@ function storeFileData(type, filePath, encoding) {
     }
 
     // Save file's path and data.
-    openedFiles[type] = {'path': filePath, 'encoding': encoding, 'watcher': null, 'lastTime': false};
+    openedFiles[type] = {
+        path: filePath,
+        encoding: encoding,
+        watcher: null,
+        lastTime: false,
+        sha1: null,
+    };
     settingsStore.put('app.' + type + 'File', filePath);
 
-    // Watch for changes on the file.
-    openedFiles[type].lastTime = new Date().getTime();
-    openedFiles[type].watcher = fs.watch(filePath, function(event, fileName) {
-        // Don't trigger the event too often.
-        let time = new Date().getTime();
-        if(event === 'change' && time - openedFiles[type].lastTime > 500) {
-            mainWindow.webContents.send('file-changed', {
-                'type': type, 
-                'path': filePath,
-                'name': fileName,
-            });
+    // Calculate SHA-1 hash.
+    sha1File(filePath, (err1, sha1) => {
+        openedFiles[type].sha1 = !err1 ? sha1 : null;
 
-            openedFiles[type].lastTime = time;
-        }
+        // Watch for changes on the file.
+        openedFiles[type].watcher = fs.watch(filePath, function(event, fileName) {
+            // Don't trigger the event too often.
+            let time = new Date().getTime();
+            if(event === 'change' && time - openedFiles[type].lastTime > 500) {
+                // Re-calculate hash value of the file.
+                // HACK: Wait a bit in order to avoid racing conditions (between the external program and the hash algorithm).
+                setTimeout(() => sha1File(filePath, (err2, newSha1) => {
+                    // Compare hash value (i.e. check content is different).
+                    if(!err2 && openedFiles[type].sha1 != newSha1) {
+                        // Send notification to UI.
+                        mainWindow.webContents.send('file-changed', {
+                            'type': type, 
+                            'path': filePath,
+                            'name': fileName,
+                        });
+
+                        openedFiles[type].lastTime = time;
+                    }
+                }), 500);
+            }
+        });
     });
 }
 
@@ -259,7 +278,7 @@ ipcMain.on('save-file-as', function(event, type, data, encoding) {
                 'name': path.basename(filePath),
             });
 
-            // Update path on settings.
+            // Store file's path and data.
             storeFileData(type, filePath, encoding);
         });
     } else {
