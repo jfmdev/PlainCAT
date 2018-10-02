@@ -69,11 +69,11 @@ app.on('activate', function () {
 
 // Init storage.
 const Storage = require('node-storage');
-var settingsStore = new Storage('./settings.json');
+let settingsStore = new Storage(path.join(app.getPath('userData'), 'plaincat.json'));
 
 // Get a settings item.
 ipcMain.on('settings-get', function(event, arg) {
-    var item = settingsStore.get(arg);
+    let item = settingsStore.get(arg);
     event.returnValue = item || false;
 });
 
@@ -101,7 +101,7 @@ function storeFileData(type, filePath, encoding) {
     settingsStore.put('app.' + type + 'File', filePath);
 
     // Watch for changes on the file.
-    openedFiles[type].lastTime = false;
+    openedFiles[type].lastTime = new Date().getTime();
     openedFiles[type].watcher = fs.watch(filePath, function(event, fileName) {
         // Don't trigger the event too often.
         let time = new Date().getTime();
@@ -182,7 +182,7 @@ function readAndParseFile(event, filePath, type) {
 // Open and read a text file.
 ipcMain.on('open-file', function(event, type) {
     // Show file chooser..
-    var files = dialog.showOpenDialog({ properties: ['openFile']});
+    let files = dialog.showOpenDialog({ properties: ['openFile']});
 
     // Verify if the file was selected.
     if(files != null && files.length > 0) {
@@ -209,7 +209,7 @@ ipcMain.on('reopen-file', function(event, type) {
 
 // Verify if a file already opened can be read.
 ipcMain.on('last-file', function(event, type) {
-    var filePath = settingsStore.get('app.' + type + 'File');
+    let filePath = settingsStore.get('app.' + type + 'File');
     if(filePath) { readAndParseFile(event, filePath, type); }
 });
 
@@ -242,7 +242,7 @@ ipcMain.on('save-file', function(event, type, filePath, data, encoding) {
 // Ask user to select a path and then saves a text file.
 ipcMain.on('save-file-as', function(event, type, data, encoding) {
     // Read file.
-    var filePath = dialog.showSaveDialog();
+    let filePath = dialog.showSaveDialog();
 
     // Verify if the file was selected.
     if(filePath) {
@@ -323,7 +323,7 @@ ipcMain.on('dictionary.load', function(event, lang) {
 
 // Check a word in a loaded dictionary.
 ipcMain.on('dictionary.check-word', function(event, lang, word) {
-    var res = null;
+    let res = null;
     if(lang != null && Dictionaries[lang] != null && word != null) {
         res = Dictionaries[lang].isCorrectSync(word);
     }
@@ -370,19 +370,19 @@ electronContextMenu({
 // Get the list of supported languages.
 ipcMain.on('get-languages', function(event) {
     // Read languages file.
-    var fileContent = fs.readFileSync(__dirname  + '/misc/languages.json');
-    var langData = JSON.parse(fileContent);
-    var res = langData.list;
+    let fileContent = fs.readFileSync(__dirname  + '/misc/languages.json');
+    let langData = JSON.parse(fileContent);
+    let res = langData.list;
 
     // Verify support of automatic translation.
-    for(var provider in langData.translation) {
-        for(var i=0; i<res.length; i++) {
+    for(let provider in langData.translation) {
+        for(let i=0; i<res.length; i++) {
             res[i][provider] = langData.translation[provider].indexOf( res[i].code ) >= 0;
         }
     }
 
     // Verify support for spellcheck.
-    for(var i=0; i<res.length; i++) {
+    for(let i=0; i<res.length; i++) {
         res[i].spellcheck = langData.spellchecker[res[i].code]? langData.spellchecker[res[i].code] : false;
     }
 
@@ -401,7 +401,7 @@ const translationCache = new NodeCache({ stdTTL: 7200, checkperiod: 1200 });
 
 const crypto = require('crypto');
 function sha1(data) {
-    var generator = crypto.createHash('sha1');
+    let generator = crypto.createHash('sha1');
     generator.update(data);
     return generator.digest('hex'); 
 }
