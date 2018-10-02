@@ -9,7 +9,7 @@ const fs = require('fs');
 const jschardet = require('jschardet');
 const isDev = require('electron-is-dev');
 
-const Utils = require('./misc/utils');
+const Utils = require(__dirname + '/misc/utils');
 
 
 // ----- Initialization ----- // 
@@ -69,7 +69,7 @@ app.on('activate', function () {
 
 // Init storage.
 const Storage = require('node-storage');
-var settingsStore = new Storage('settings.json');
+var settingsStore = new Storage('./settings.json');
 
 // Get a settings item.
 ipcMain.on('settings-get', function(event, arg) {
@@ -97,15 +97,15 @@ function storeFileData(type, filePath, encoding) {
     }
 
     // Save file's path and data.
-    openedFiles[type] = {'path': filePath, 'encoding': encoding, 'writing': false, 'watcher': null, 'lastTime': false};
+    openedFiles[type] = {'path': filePath, 'encoding': encoding, 'watcher': null, 'lastTime': false};
     settingsStore.put('app.' + type + 'File', filePath);
 
     // Watch for changes on the file.
     openedFiles[type].lastTime = false;
     openedFiles[type].watcher = fs.watch(filePath, function(event, fileName) {
-        // Don't trigger the event too often or when writing the file.
+        // Don't trigger the event too often.
         let time = new Date().getTime();
-        if(event === 'change' && time - openedFiles[type].lastTime > 500 && !openedFiles[type].writing) {
+        if(event === 'change' && time - openedFiles[type].lastTime > 500) {
             mainWindow.webContents.send('file-changed', {
                 'type': type, 
                 'path': filePath,
@@ -218,13 +218,14 @@ ipcMain.on('save-file', function(event, type, filePath, data, encoding) {
     // Set default extension (if need).
     filePath = checkFileExtension(filePath);
 
+    // Stop watching changes on the file (otherwise the app will self-trigger the listener).
+    if(openedFiles[type] && openedFiles[type].watcher) {
+        try{ openedFiles[type].watcher.close(); }catch(watErr) { console.log(watErr); }
+        openedFiles[type].watcher = null;
+    }
+
     // Save file.
-    openedFiles[type].writing = true;
-
     fs.writeFile(filePath, data, encoding || 'UTF-8', function(err) {
-        openedFiles[type].lastTime = new Date().getTime();
-        openedFiles[type].writing = false;
-
         // Return result.
         event.sender.send('file-saved', {
             'type': type, 
