@@ -42,7 +42,7 @@ The software has only been tested with small files (< 1 MB), opening larger file
 
 ### New paragraphs
 
-The software only allows to edit current paragraphs, if you want to add new paragraphs or delete existing ones, you will have to use an external editor.
+The software only allows to edit existing paragraphs, if you want to add new paragraphs or delete existing ones, you will have to use an external editor.
 
 
 Development
@@ -62,7 +62,7 @@ For running the software on development mode, you must:
 
 For compile the application and distribute compiled binaries, you can check the [Electron's documentation](https://electronjs.org/docs/tutorial/application-distribution).
 
-> When compiling, don't forget to use `npm install --production` instead of `npm install`
+> When compiling, don't forget to use `npm install --production` instead of `npm install`.
 
 License
 -------

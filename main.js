@@ -27,10 +27,18 @@ let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600, icon: 'resources/img/icon-32.png' });
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    icon: 'resources/img/icon-32.png',
+    webPreferences: {
+      nodeIntegration: false,
+      preload: path.join(__dirname, 'public/js/preload.js')
+    }
+  });
 
   // and load the index.html of the app.
-  mainWindow.loadURL('file://' + __dirname + '/public/index.html');
+  mainWindow.loadURL(path.join(__dirname, 'public/index.html'));
 
   // Open the DevTools (only when running in dev mode).
   if(isDev) mainWindow.webContents.openDevTools();
