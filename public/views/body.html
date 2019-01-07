@@ -1,25 +1,27 @@
 <div class="body" ng-controller="bodyController">
 
-    <div class="row" ng-if="files.source.content === null || files.target.content === null">
-        <div ng-if="files.source.content === null"
-             ng-class="{'col-sm-offset-3': (files.target.content !== null)}"
-             class="col-sm-6 text-center">
-            <div class="alert alert-warning alert-trim alert-fit" role="alert">
-                <p>You have not selected the source file</p>
-                <p><button class="btn btn-success" ng-click="openFile('source')">Select file</button></p>
+    <div class="container-fluid">
+        <div class="row" ng-if="files.source.content === null || files.target.content === null">
+            <div ng-if="files.source.content === null"
+                 ng-class="{'col-sm-offset-3': (files.target.content !== null)}"
+                 class="col-sm-6 text-center">
+                <div class="alert alert-warning alert-trim alert-fit" role="alert">
+                    <p>You have not selected the source file</p>
+                    <p><button class="btn btn-success" ng-click="openFile('source')">Select file</button></p>
+                </div>
             </div>
-        </div>
-        <div ng-if="files.target.content === null"
-             ng-class="{'col-sm-offset-3': (files.source.content !== null)}"
-             class="col-sm-6 text-center">
-            <div class="alert alert-warning alert-trim alert-fit" role="alert">
-                <p>You have not selected the target file</p>
-                <p>
-                    <button class="btn btn-success" ng-click="openFile('target')">Select file</button>
-                    <span ng-show="files.source.content !== null">
-                        or <button class="btn btn-success" ng-click="copySource()">Copy source</button>
-                    </span>
-                </p>
+            <div ng-if="files.target.content === null"
+                 ng-class="{'col-sm-offset-3': (files.source.content !== null)}"
+                 class="col-sm-6 text-center">
+                <div class="alert alert-warning alert-trim alert-fit" role="alert">
+                    <p>You have not selected the target file</p>
+                    <p>
+                        <button class="btn btn-success" ng-click="openFile('target')">Select file</button>
+                        <span ng-show="files.source.content !== null">
+                            or <button class="btn btn-success" ng-click="copySource()">Copy source</button>
+                        </span>
+                    </p>
+                </div>
             </div>
         </div>
     </div>
