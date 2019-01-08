@@ -41,6 +41,7 @@
     "bootstrap": "^3.3.7",
     "electron-context-menu": "^0.9.1",
     "electron-is-dev": "^0.3.0",
+    "electron-search-text": "^0.3.0",
     "jquery": "^2.2.4",
     "jschardet": "^1.6.0",
     "node-cache": "^4.1.1",

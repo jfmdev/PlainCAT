@@ -1,0 +1,59 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.electronSearchText-box {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 2px 2px 1px 5px;
+    background-color: white;
+    display: none;
+    border: 3px 0 0 0;
+}
+
+.electronSearchText-box > input {
+    border: 0;
+    border-bottom: 1px solid lightgray;
+    position: relative;
+    bottom: 1px;
+}
+
+.electronSearchText-box > button {
+    padding: 1px 2px;
+    background-color: white;
+    border: 1px solid lightgray;
+    border-radius: 2px;
+    font-size: 13px;
+}
+
+.electronSearchText-box > button:hover {
+    background-color: #e8e8e8;
+}
+
+.electronSearchText-box > button:active {
+    background-color: #e0e0e0;
+}
+
+.electronSearchText-visible {
+    display: block;
+}
+
+.electronSearchText-count {
+    font-family: Verdana;
+    font-size: 12px;
+    display: inline-block;
+    min-width: 40px;
+    text-align: right;
+}

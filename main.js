@@ -26,19 +26,26 @@ const BrowserWindow = electron.BrowserWindow;
 let mainWindow;
 
 function createWindow () {
-  // Create the browser window.
+  // Create browser window and load html file.
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: 'resources/img/icon-32.png',
-    webPreferences: {
-      nodeIntegration: false,
-      preload: path.join(__dirname, 'public/js/preload.js')
-    }
+    icon: 'resources/img/icon-32.png'
   });
-
-  // and load the index.html of the app.
   mainWindow.loadURL(path.join(__dirname, 'public/index.html'));
+
+  // Create browser window and load app html directly, without putting the app in a webview
+  // (Developer Tools will work better, but Find feature will not work).
+  // mainWindow = new BrowserWindow({
+    // width: 800,
+    // height: 600,
+    // icon: 'resources/img/icon-32.png',
+    // webPreferences: {
+      // nodeIntegration: false,
+      // preload: path.join(__dirname, 'public/js/preload.js')
+    // }
+  // });
+  // mainWindow.loadURL(path.join(__dirname, 'public/app.html'));
 
   // Open the DevTools (only when running in dev mode).
   if(isDev) mainWindow.webContents.openDevTools();
@@ -144,7 +151,7 @@ function storeFileData(type, filePath, encoding) {
     });
 }
 
-// Helper function for ensure that a file has 
+// Helper function for ensure that a file has extension.
 function checkFileExtension(filePath) {
     if(!path.extname(filePath)) {
         let ext = null;

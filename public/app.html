@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="mainController">
+  <head>
+    <meta charset="UTF-8">
+    <title>PlainCAT</title>
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/angular-block-ui/dist/angular-block-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/angular-confirm1/dist/angular-confirm.min.css">
+    <link rel="stylesheet" type="text/css" href="../node_modules/angular-toastr/dist/angular-toastr.min.css">
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+
+    <style>
+        #files-content > div.row > div > p,
+        #files-content > div.row > div > textarea,
+        footer .translation-result {
+            font-size: {{ fontSize }}px;
+            font-family: {{ fontFamily }};
+        }
+    </style>
+  </head>
+
+  <body> 
+    <div class="main-container">
+      <header ng-include="'views/header.html'"></header>
+      <main ng-include="'views/body.html'" class="nice-scroll"></main>
+      <footer ng-include="'views/footer.html'"></footer>
+    </div>
+ 
+    <!-- Include libraries -->
+    <script src="../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../node_modules/angular/angular.min.js"></script>
+    <script src="../node_modules/angular-animate/angular-animate.min.js"></script>
+    <script src="../node_modules/angular-block-ui/dist/angular-block-ui.min.js"></script>
+    <script src="../node_modules/angular-confirm1/dist/angular-confirm.min.js"></script>
+    <script src="../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script src="../node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="../node_modules/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
+    <script src="../node_modules/bluebird/js/browser/bluebird.min.js"></script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../node_modules/underscore/underscore-min.js"></script>
+    <script src="lib/autosize.js"></script>
+    <script src="lib/jquery.selectRange.js"></script>
+    <script src="lib/simple-observer.js"></script>
+
+    <!-- Include app files -->
+    <script src="js/app.js"></script>
+    <script src="js/services/editor.js"></script>
+    <script src="js/services/file-manager.js"></script>
+    <script src="js/services/menu.js"></script>
+    <script src="js/services/shared.js"></script>
+    <script src="js/services/spellchecker.js"></script>
+    <script src="js/services/translator.yandex.js"></script>
+    <script src="js/services/translator.microsoft.js"></script>
+    <script src="js/services/translator.js"></script>
+    <script src="js/controllers/body.js"></script>
+    <script src="js/controllers/footer.js"></script>
+    <script src="js/controllers/header.js"></script>
+    <script src="js/controllers/main.js"></script>
+    <script src="js/controllers/settings.js"></script>
+  </body>
+</html>

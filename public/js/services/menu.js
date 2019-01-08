@@ -1,3 +1,6 @@
+// Load dependencies.
+var ipcRenderer = require('electron').ipcRenderer;
+var remote = require('electron').remote;
 
 // Define default template (source: https://github.com/atom/electron/blob/master/docs/api/menu.md).
 var default_template = [
@@ -17,6 +20,13 @@ var default_template = [
       // {
         // type: 'separator'
       // },
+      {
+        label: 'Find',
+        accelerator: 'CmdOrCtrl+F',
+        click: function(item, focusedWindow) {
+          ipcRenderer.sendToHost('toggleSearch');
+        }
+      },
       {
         label: 'Cut',
         accelerator: 'CmdOrCtrl+X',
@@ -108,9 +118,7 @@ var default_template = [
 
 // Service for initialize the application's menu.
 myApp.factory('Menu', ['$uibModal', '$rootScope', function($uibModal, $rootScope) {
-    // Load dependencies.
-    var ipcRenderer = require('electron').ipcRenderer;
-    var remote = require('electron').remote;
+    // Get menu and define template.
     var Menu = remote.Menu;
     var template = [].concat(default_template);
 
