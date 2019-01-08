@@ -54,9 +54,9 @@
                     </span>
                 </div>
                 <div class="col-sm-5 text-right">
-                    <a class="btn btn-danger btn-xs" ng-click="closeFile('target')" ng-show="files.target.name">
+                    <a class="btn btn-danger btn-xs" ng-click="closeFile('target')" ng-show="files.target.content !== null">
                         <i class="glyphicon glyphicon-remove" aria-hidden="true"></i>
-                        Close
+                        {{ files.target.name ? 'Close' : 'Clear' }}
                     </a>
                 </div>
             </div>

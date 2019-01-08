@@ -27,27 +27,30 @@ let mainWindow;
 
 function createWindow () {
   // Create browser window and load html file.
-  mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
-    icon: 'resources/img/icon-32.png'
-  });
-  mainWindow.loadURL(path.join(__dirname, 'public/index.html'));
+  let useWrapper = true;
+  if(useWrapper) {
+    // Load index.html (this embeds app.html in a webview for enable the Find feature).
+    mainWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      icon: 'resources/img/icon-32.png'
+    });
+    mainWindow.loadURL(path.join(__dirname, 'public/index.html'));
+  } else {
+    // Load app.html (the Find feature will be disabled but Developer Tools will work better).
+    mainWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      icon: 'resources/img/icon-32.png',
+      webPreferences: {
+        nodeIntegration: false,
+        preload: path.join(__dirname, 'public/js/preload.js')
+      }
+    });
+    mainWindow.loadURL(path.join(__dirname, 'public/app.html'));
+  }
 
-  // Create browser window and load app html directly, without putting the app in a webview
-  // (Developer Tools will work better, but Find feature will not work).
-  // mainWindow = new BrowserWindow({
-    // width: 800,
-    // height: 600,
-    // icon: 'resources/img/icon-32.png',
-    // webPreferences: {
-      // nodeIntegration: false,
-      // preload: path.join(__dirname, 'public/js/preload.js')
-    // }
-  // });
-  // mainWindow.loadURL(path.join(__dirname, 'public/app.html'));
-
-  // Open the DevTools (only when running in dev mode).
+  // Open the DevTools if running in dev mode.
   if(isDev) mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
