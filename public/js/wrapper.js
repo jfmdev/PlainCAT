@@ -1,5 +1,4 @@
-// Load dependencies.
-const { ipcRenderer } = require('electron');
+// Load dependency.
 const ElectronSearchText = require('electron-search-text');
 
 // Initialize searcher.

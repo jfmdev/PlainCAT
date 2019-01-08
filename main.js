@@ -26,29 +26,23 @@ const BrowserWindow = electron.BrowserWindow;
 let mainWindow;
 
 function createWindow () {
+  // Initialize web preferences and main URL.
+  let webPrefs = { nodeIntegration: true };
+  let mainUrl = path.join(__dirname, 'public/index.html');
+  
+  // Loading app.html directly (instead of loading index.html which embeds app.html in a webview)
+  // will disable the Find feature will be disabled but Developer Tools will work better).
+  // webPrefs = { nodeIntegration: false, preload: path.join(__dirname, 'public/js/preload.js') };
+  // mainUrl = path.join(__dirname, 'public/app.html');
+
   // Create browser window and load html file.
-  let useWrapper = true;
-  if(useWrapper) {
-    // Load index.html (this embeds app.html in a webview for enable the Find feature).
-    mainWindow = new BrowserWindow({
-      width: 800,
-      height: 600,
-      icon: 'resources/img/icon-32.png'
-    });
-    mainWindow.loadURL(path.join(__dirname, 'public/index.html'));
-  } else {
-    // Load app.html (the Find feature will be disabled but Developer Tools will work better).
-    mainWindow = new BrowserWindow({
-      width: 800,
-      height: 600,
-      icon: 'resources/img/icon-32.png',
-      webPreferences: {
-        nodeIntegration: false,
-        preload: path.join(__dirname, 'public/js/preload.js')
-      }
-    });
-    mainWindow.loadURL(path.join(__dirname, 'public/app.html'));
-  }
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    icon: 'resources/img/icon-32.png',
+    webPreferences: webPrefs
+  });
+  mainWindow.loadURL(mainUrl);
 
   // Open the DevTools if running in dev mode.
   if(isDev) mainWindow.webContents.openDevTools();
