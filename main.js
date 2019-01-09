@@ -224,7 +224,7 @@ function readAndParseFile(event, filePath, type) {
     });
 };
 
-// Open and read a text file.
+// Select and read a text file.
 ipcMain.on('open-file', function(event, type) {
     // Show file chooser..
     let files = dialog.showOpenDialog({ properties: ['openFile']});
@@ -252,10 +252,9 @@ ipcMain.on('reopen-file', function(event, type) {
     }
 });
 
-// Verify if a file already opened can be read.
-ipcMain.on('last-file', function(event, type) {
-    let filePath = settingsStore.get('app.' + type + 'File');
-    if(filePath) { readAndParseFile(event, filePath, type); }
+// Read a file.	
+ipcMain.on('read-file', function(event, type, filePath) {
+    readAndParseFile(event, filePath, type);
 });
 
 // Saves a text file.

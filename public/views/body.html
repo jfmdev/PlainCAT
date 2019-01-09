@@ -7,7 +7,14 @@
                  class="col-sm-6 text-center">
                 <div class="alert alert-warning alert-trim alert-fit" role="alert">
                     <p>You have not selected the source file</p>
-                    <p><button class="btn btn-success" ng-click="openFile('source')">Select file</button></p>
+                    <p><button class="btn btn-primary btn-sm" ng-click="openFile('source')">Select file</button></p>
+                    <p ng-show="lastSourceFile">
+                        <span>or</span>
+                        <br>
+                        <button class="btn btn-primary btn-sm" ng-click="readFile('source', lastSourceFile)">
+                            Re-open {{ lastSourceFile | basename }}
+                        </button>
+                    </p>
                 </div>
             </div>
             <div ng-if="files.target.content === null"
@@ -15,11 +22,16 @@
                  class="col-sm-6 text-center">
                 <div class="alert alert-warning alert-trim alert-fit" role="alert">
                     <p>You have not selected the target file</p>
-                    <p>
-                        <button class="btn btn-success" ng-click="openFile('target')">Select file</button>
-                        <span ng-show="files.source.content !== null">
-                            or <button class="btn btn-success" ng-click="copySource()">Copy source</button>
-                        </span>
+                    <p><button class="btn btn-primary btn-sm" ng-click="openFile('target')">Select file</button></p>
+                    <p ng-show="lastTargetFile">
+                        <span>or</span><br>
+                        <button class="btn btn-primary btn-sm" ng-click="readFile('target', lastTargetFile)">
+                            Re-open {{ lastTargetFile | basename }}
+                        </button>
+                    </p>
+                    <p ng-show="files.source.content !== null">
+                        <span>or</span><br>
+                        <button class="btn btn-primary btn-sm" ng-click="copySource()">Copy source</button>
                     </p>
                 </div>
             </div>

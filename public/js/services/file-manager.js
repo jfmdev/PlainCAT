@@ -154,7 +154,7 @@ myApp.factory('FileManager', [
 
         // --- Public methods --- //
 
-        // Function for open a file selector.
+        // Function for open a file selector and read a file.
         service.openFile = function(type) {
             // Check if there is a file already opened an if it's dirty.
             if(Shared.files[type].name && Shared.files[type].dirty) {
@@ -187,6 +187,11 @@ myApp.factory('FileManager', [
             }
         };
         ipcRenderer.on('file-read', onFileRead);
+
+        // Function for read a file from a path.
+        service.readFile = function(type, filePath) {
+            ipcRenderer.send('read-file', type, filePath);
+        };
 
         // Function for save a file.
         service.saveFile = function(type) {

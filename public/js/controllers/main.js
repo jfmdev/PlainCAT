@@ -65,10 +65,6 @@ myApp.controller('mainController', [
             },
         });
 
-        // Load (if availables) the last opened files.
-        ipcRenderer.send('last-file', 'source');
-        ipcRenderer.send('last-file', 'target');
-
         // Get font settings for override default styles.
         Shared.linkStoreToScope($scope, 'fontSize');
         Shared.linkStoreToScope($scope, 'fontFamily');

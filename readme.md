@@ -48,7 +48,7 @@ The software only allows to edit existing paragraphs, if you want to add new par
 Development
 -----------
 
-The software was developed using *Electron* and *JavaScript*, so it requires *NodeJS* for testing and compilation.
+The software was developed using *Electron* and *JavaScript*, so it requires *NodeJS* and *NPM* for testing and compilation.
 
 For running the software on development mode, you must: 
 
