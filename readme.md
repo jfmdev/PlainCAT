@@ -14,7 +14,7 @@ In order to use the software, you can simply download a binary from the [release
 
 Once the application is running, you must select the languages from/to you will be translating, set the API key of the translation service you want to use (in case you want to use one), open the source file (i.e. the file you want to translate) and select the destination file (i.e. the file where the traslation will be saved), which can be another file or a copy of the source file. 
 
-> To know how to obtain these API key for the translation services, you can visit the sites from
+> To know how to obtain the API key for the translation services, you can visit the sites from
  [Yandek.Translate](https://tech.yandex.com/translate/)
  and [Microsoft Translator](https://www.microsoft.com/en-us/translator/translatorapi.aspx).
 
@@ -60,9 +60,9 @@ For running the software on development mode, you must:
 
  3. Launch the app with `npm start`.
 
-For compile the application and distribute compiled binaries, you can check the [Electron's documentation](https://electronjs.org/docs/tutorial/application-distribution).
+For compile the application and distribute compiled binaries, just run: `npm run dist`.
 
-> When compiling, don't forget to use `npm install --production` instead of `npm install`.
+  > The application uses *Electron Builder* which will do everything for you.
 
 License
 -------

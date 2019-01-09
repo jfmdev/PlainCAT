@@ -1,10 +1,13 @@
 {
   "name": "plaincat",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "A simple Computer Assisted Translation tool for translate plain text files",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron main.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
   },
   "repository": {
     "type": "git",
@@ -27,6 +30,7 @@
   "homepage": "https://github.com/jfmdev/plaincat#readme",
   "devDependencies": {
     "electron": "^2.0.2",
+    "electron-builder": "^20.38.4",
     "electron-rebuild": "^1.8.2"
   },
   "dependencies": {
@@ -49,5 +53,13 @@
     "nodehun": "^2.0.12",
     "sha1-file": "^1.0.1",
     "underscore": "^1.8.3"
+  },
+  "build": {
+    "appId": "com.electron.plaincat",
+    "productName": "PlainCAT",
+    "copyright": "Copyright 2018 JFMDev",
+    "mac": {
+      "category": "public.app-category.education"
+    }
   }
 }
