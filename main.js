@@ -28,12 +28,12 @@ let mainWindow;
 function createWindow () {
     // Initialize web preferences and main URL.
     let webPrefs = { nodeIntegration: true };
-    let mainUrl = path.join(__dirname, 'public/index.html');
+    let mainUrl = 'file://' + __dirname + '/public/index.html';
     
     // Loading app.html directly (instead of loading index.html which embeds app.html in a webview)
     // will disable the Find feature will be disabled but Developer Tools will work better).
     // webPrefs = { nodeIntegration: false, preload: path.join(__dirname, 'public/js/preload.js') };
-    // mainUrl = path.join(__dirname, 'public/app.html');
+    // mainUrl = 'file://' + __dirname + '/public/app.html';
 
     // Create browser window and load html file.
     mainWindow = new BrowserWindow({
