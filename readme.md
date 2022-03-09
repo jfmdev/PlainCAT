@@ -1,3 +1,5 @@
+> **Notice:** this project has been archived. If you still need a CAT tool, I recommend you [OmegaT](http://omegat.org/).
+
 PlainCAT
 ========
 
